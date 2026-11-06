@@ -1,10 +1,13 @@
-name = "wedding-invitation"
+name = "marrime"
+main = "src/server/cloudflare-worker.ts"
 compatibility_date = "2024-11-01"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = "./dist"
 
-# Configuration for Cloudflare Pages / Worker deployment
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+
+# Environment Variables
 [vars]
 ENVIRONMENT = "production"
 APP_NAME = "Wedding Invitation & RSVP"
-

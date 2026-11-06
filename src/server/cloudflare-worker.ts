@@ -141,6 +141,11 @@ export default {
         }
       }
 
+      // 5. Fallback to Static Assets (For Cloudflare Workers with Assets)
+      if (env && env.ASSETS && typeof env.ASSETS.fetch === 'function') {
+        return env.ASSETS.fetch(request);
+      }
+
       return new Response(
         JSON.stringify({ error: 'Endpoint not found' }),
         { status: 404, headers: corsHeaders }
