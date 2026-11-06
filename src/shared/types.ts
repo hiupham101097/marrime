@@ -68,9 +68,24 @@ export interface WeddingEventSchedule {
   googleMapsUrl: string;
 }
 
-export type WeddingTheme = 'burgundy' | 'rose' | 'gold' | 'navy' | 'emerald';
-export type WeddingTemplate = 'royal' | 'modern' | 'classic';
+export type WeddingTheme = 'burgundy' | 'rose' | 'gold' | 'navy' | 'emerald' | 'lavender';
+export type WeddingTemplate = 'royal' | 'vintage' | 'modern' | 'fairytale';
 export type EnvelopeStyle = 'royal_velvet' | 'blush_ribbon' | 'modern_minimal' | 'emerald_brass';
+export type AnimationEffect =
+  | 'mixed_romance'
+  | 'rose_petals'
+  | 'golden_stardust'
+  | 'glowing_hearts'
+  | 'winter_snow'
+  | 'none';
+
+export interface GalleryPhotoItem {
+  id: string;
+  url: string;
+  title: string;
+  category: 'royal' | 'moments' | 'vows';
+  caption: string;
+}
 
 export interface WeddingMusicConfig {
   trackId: string;
@@ -83,6 +98,10 @@ export interface WeddingData {
   theme: WeddingTheme;
   template: WeddingTemplate;
   envelopeStyle: EnvelopeStyle;
+  animationEffect?: AnimationEffect;
+  enableMouseTrail?: boolean;
+  heroImage?: string;
+  gallery?: GalleryPhotoItem[];
   music: WeddingMusicConfig;
   groom: CoupleMember;
   bride: CoupleMember;

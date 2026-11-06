@@ -80,20 +80,31 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Dynamic Theme Class mapping
+  // Dynamic Theme & Template Class mapping
   const getThemeWrapperClass = () => {
+    let themeClass = 'theme-burgundy';
     switch (weddingData.theme) {
       case 'rose':
-        return 'theme-rose';
+        themeClass = 'theme-rose';
+        break;
       case 'gold':
-        return 'theme-gold';
+        themeClass = 'theme-gold';
+        break;
       case 'navy':
-        return 'theme-navy';
+        themeClass = 'theme-navy';
+        break;
       case 'emerald':
-        return 'theme-emerald';
+        themeClass = 'theme-emerald';
+        break;
+      case 'lavender':
+        themeClass = 'theme-lavender';
+        break;
       default:
-        return 'theme-burgundy';
+        themeClass = 'theme-burgundy';
+        break;
     }
+    const templateClass = `template-${weddingData.template || 'royal'}`;
+    return `${themeClass} ${templateClass}`;
   };
 
   return (
@@ -113,7 +124,10 @@ export const App: React.FC = () => {
       />
 
       {/* Floating Rose Petals & Golden Stardust & Mouse Trail Canvas */}
-      <FloatingEffects />
+      <FloatingEffects
+        animationEffect={weddingData.animationEffect}
+        enableMouseTrail={weddingData.enableMouseTrail}
+      />
 
       {/* Floating Music Player */}
       <MusicPlayer
@@ -274,6 +288,8 @@ export const App: React.FC = () => {
           brideName={weddingData.bride.name}
           weddingDateIso={weddingData.weddingDate}
           weddingDateFormatted={weddingData.weddingDateFormatted}
+          heroImage={weddingData.heroImage}
+          template={weddingData.template}
           onExploreClick={() => scrollToSection('timeline')}
           onRsvpClick={() => scrollToSection('rsvp')}
         />
@@ -292,7 +308,7 @@ export const App: React.FC = () => {
         <CoupleSection groom={weddingData.groom} bride={weddingData.bride} />
 
         {/* 4. Royal Wedding Photo Gallery (Khoảnh khắc đẹp nhất) */}
-        <RoyalGallerySection />
+        <RoyalGallerySection photos={weddingData.gallery} />
 
         {/* 5. Timeline Section (Từng chặng đường & hình ảnh kỷ niệm) */}
         <TimelineSection milestones={weddingData.timeline} />

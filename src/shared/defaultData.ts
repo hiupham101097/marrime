@@ -1,4 +1,98 @@
-import { WeddingData, WishMessage, WeddingMusicConfig } from './types';
+import { WeddingData, WishMessage, WeddingMusicConfig, GalleryPhotoItem } from './types';
+
+export const DEFAULT_GALLERY_PHOTOS: GalleryPhotoItem[] = [
+  {
+    id: 'g-1',
+    url: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop',
+    title: 'Ánh Nhìn Ngập Tràn Yêu Thương',
+    category: 'royal',
+    caption: 'Trong lễ đường trang nghiêm, em là cô dâu xinh đẹp nhất trần đời.',
+  },
+  {
+    id: 'g-2',
+    url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200&auto=format&fit=crop',
+    title: 'Nắm Chặt Tay Nhau',
+    category: 'vows',
+    caption: 'Bàn tay ấm che chở nhau qua mọi thăng trầm giông bão cuộc đời.',
+  },
+  {
+    id: 'g-3',
+    url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop',
+    title: 'Nụ Cười Ngày Chung Đôi',
+    category: 'moments',
+    caption: 'Nụ cười rạng rỡ của niềm hạnh phúc trọn vẹn và tự hào.',
+  },
+  {
+    id: 'g-4',
+    url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=1200&auto=format&fit=crop',
+    title: 'Lời Hẹn Ước Trăm Năm',
+    category: 'vows',
+    caption: 'Chiếc nhẫn ước hẹn gắn kết hai cuộc đời thành một thể không thể tách rời.',
+  },
+  {
+    id: 'g-5',
+    url: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=1200&auto=format&fit=crop',
+    title: 'Hoàng Hôn Nơi Biển Vắng',
+    category: 'moments',
+    caption: 'Chuyến đi lưu giữ thanh xuân rực rỡ và những cái ôm dịu dàng.',
+  },
+  {
+    id: 'g-6',
+    url: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=1200&auto=format&fit=crop',
+    title: 'Vũ Điệu Hạnh Phúc',
+    category: 'royal',
+    caption: 'Bản hòa ca của tình yêu đơm hoa kết trái dưới sự chúc phúc của gia đình.',
+  },
+];
+
+export const SAMPLE_PHOTO_LIBRARY = {
+  heroBackgrounds: [
+    {
+      name: 'Lễ Đường Hoàng Gia',
+      url: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop',
+    },
+    {
+      name: 'Nắng Hoàng Hôn Lãng Mạn',
+      url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2000&auto=format&fit=crop',
+    },
+    {
+      name: 'Cổng Hoa Vườn Cổ Tích',
+      url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=2000&auto=format&fit=crop',
+    },
+    {
+      name: 'Bãi Biển Trắng Mộng Mơ',
+      url: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=2000&auto=format&fit=crop',
+    },
+  ],
+  groomAvatars: [
+    {
+      name: 'Âu Phục Lịch Lãm',
+      url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop',
+    },
+    {
+      name: 'Vest Đen Cổ Điển',
+      url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop',
+    },
+    {
+      name: 'Nụ Cười Rạng Rỡ',
+      url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=800&auto=format&fit=crop',
+    },
+  ],
+  brideAvatars: [
+    {
+      name: 'Váy Cưới Dịu Dàng',
+      url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop',
+    },
+    {
+      name: 'Voan Cài Tóc Lãng Mạn',
+      url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800&auto=format&fit=crop',
+    },
+    {
+      name: 'Nàng Thơ Tươi Tắn',
+      url: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800&auto=format&fit=crop',
+    },
+  ],
+};
 
 export const PRESET_MUSIC_TRACKS: WeddingMusicConfig[] = [
   {
@@ -37,6 +131,10 @@ export const DEFAULT_WEDDING_DATA: WeddingData = {
   theme: 'burgundy',
   template: 'royal',
   envelopeStyle: 'royal_velvet',
+  animationEffect: 'mixed_romance',
+  enableMouseTrail: true,
+  heroImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop',
+  gallery: DEFAULT_GALLERY_PHOTOS,
   music: PRESET_MUSIC_TRACKS[0],
   groom: {
     role: 'Chú Rể',

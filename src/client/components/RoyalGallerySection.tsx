@@ -1,67 +1,24 @@
 import React, { useState } from 'react';
 import { Camera, ZoomIn, X, ChevronLeft, ChevronRight, Heart, Sparkles } from 'lucide-react';
+import { GalleryPhotoItem } from '../../shared/types';
+import { DEFAULT_GALLERY_PHOTOS } from '../../shared/defaultData';
 
-interface GalleryPhoto {
-  id: string;
-  url: string;
-  title: string;
-  category: 'royal' | 'moments' | 'vows';
-  caption: string;
+interface RoyalGallerySectionProps {
+  photos?: GalleryPhotoItem[];
 }
 
-const GALLERY_PHOTOS: GalleryPhoto[] = [
-  {
-    id: 'g-1',
-    url: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop',
-    title: 'Ánh Nhìn Ngập Tràn Yêu Thương',
-    category: 'royal',
-    caption: 'Trong lễ đường trang nghiêm, em là cô dâu xinh đẹp nhất trần đời.',
-  },
-  {
-    id: 'g-2',
-    url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200&auto=format&fit=crop',
-    title: 'Nắm Chặt Tay Nhau',
-    category: 'vows',
-    caption: 'Bàn tay ấm che chở nhau qua mọi thăng trầm giông bão cuộc đời.',
-  },
-  {
-    id: 'g-3',
-    url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop',
-    title: 'Nụ Cười Ngày Chung Đôi',
-    category: 'moments',
-    caption: 'Nụ cười rạng rỡ của niềm hạnh phúc trọn vẹn và tự hào.',
-  },
-  {
-    id: 'g-4',
-    url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=1200&auto=format&fit=crop',
-    title: 'Lời Hẹn Ước Trăm Năm',
-    category: 'vows',
-    caption: 'Chiếc nhẫn ước hẹn gắn kết hai cuộc đời thành một thể không thể tách rời.',
-  },
-  {
-    id: 'g-5',
-    url: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=1200&auto=format&fit=crop',
-    title: 'Hoàng Hôn Nơi Biển Vắng',
-    category: 'moments',
-    caption: 'Chuyến đi lưu giữ thanh xuân rực rỡ và những cái ôm dịu dàng.',
-  },
-  {
-    id: 'g-6',
-    url: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=1200&auto=format&fit=crop',
-    title: 'Vũ Điệu Hạnh Phúc',
-    category: 'royal',
-    caption: 'Bản hòa ca của tình yêu đơm hoa kết trái dưới sự chúc phúc của gia đình.',
-  },
-];
-
-export const RoyalGallerySection: React.FC = () => {
+export const RoyalGallerySection: React.FC<RoyalGallerySectionProps> = ({
+  photos = DEFAULT_GALLERY_PHOTOS,
+}) => {
   const [activeTab, setActiveTab] = useState<'all' | 'royal' | 'moments' | 'vows'>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
+  const displayList = photos && photos.length > 0 ? photos : DEFAULT_GALLERY_PHOTOS;
+
   const filteredPhotos =
     activeTab === 'all'
-      ? GALLERY_PHOTOS
-      : GALLERY_PHOTOS.filter((p) => p.category === activeTab);
+      ? displayList
+      : displayList.filter((p) => p.category === activeTab);
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Calendar, Clock, ChevronDown, Sparkles } from 'lucide-react';
+import { Heart, Calendar, Clock, ChevronDown, Sparkles, Crown, Feather } from 'lucide-react';
+import { WeddingTemplate } from '../../shared/types';
 
 interface HeroSectionProps {
   groomName: string;
@@ -8,6 +9,8 @@ interface HeroSectionProps {
   weddingDateFormatted: string;
   onExploreClick: () => void;
   onRsvpClick: () => void;
+  heroImage?: string;
+  template?: WeddingTemplate;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -17,6 +20,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   weddingDateFormatted,
   onExploreClick,
   onRsvpClick,
+  heroImage = 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop',
+  template = 'royal',
 }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -54,7 +59,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       {/* Background Hero Image with prestige cinematic color grading */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop"
+          src={heroImage}
           alt="Wedding Ceremony"
           className="w-full h-full object-cover object-center filter brightness-[0.85] contrast-[1.1]"
         />

@@ -22,9 +22,8 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
       <button
         type="button"
         onClick={onTogglePlay}
-        className={`relative w-10 h-10 rounded-full bg-stone-900 border-2 border-wedding-gold flex items-center justify-center text-wedding-gold-light cursor-pointer shadow-md overflow-hidden ${
-          isPlaying ? 'animate-spin' : ''
-        }`}
+        className={`relative w-10 h-10 rounded-full bg-stone-900 border-2 border-wedding-gold flex items-center justify-center text-wedding-gold-light cursor-pointer shadow-md overflow-hidden ${isPlaying ? 'animate-spin' : ''
+          }`}
         style={{ animationDuration: '6s' }}
         title={isPlaying ? 'Tạm dừng nhạc' : 'Phát nhạc cưới'}
       >

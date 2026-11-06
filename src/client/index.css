@@ -158,3 +158,32 @@
 .theme-emerald .text-wedding-burgundy {
   color: #064E3B !important;
 }
+
+.theme-lavender .bg-wedding-burgundy {
+  background-color: #5B21B6 !important;
+}
+.theme-lavender .text-wedding-burgundy {
+  color: #5B21B6 !important;
+}
+.theme-lavender .border-wedding-burgundy {
+  border-color: #5B21B6 !important;
+}
+
+/* Template Conceptual Styles */
+.template-royal {
+  /* Royal Palace Luxury */
+}
+
+.template-vintage {
+  /* Vintage Romance */
+  filter: sepia(0.06);
+}
+
+.template-modern {
+  /* Modern Minimalist */
+  letter-spacing: 0.015em;
+}
+
+.template-fairytale {
+  /* Fairytale Botanical Garden */
+}
