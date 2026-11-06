@@ -350,13 +350,13 @@ export const PlatformLandingPage: React.FC = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-2">
             <span className="text-xs font-bold text-wedding-gold uppercase tracking-[0.25em]">
-              BẢNG GIÁ DỊCH VỤ
+              BẢNG GIÁ DỊCH VỤ CƯỚI TIẾT KIỆM
             </span>
             <h2 className="font-serif text-2xl sm:text-4xl text-white font-normal">
-              Gói Dịch Vụ Cưới Dành Cho Hai Bạn
+              Gói Thiệp Cưới Trọn Gói — Chỉ Tầm 200k - 300k
             </h2>
             <p className="text-stone-400 text-xs sm:text-sm">
-              Chi phí 1 lần duy nhất, không phí duy trì hàng tháng. Xuất bản thiệp cưới và gửi link tới khách mời không giới hạn.
+              Tiết kiệm hơn 90% chi phí so với in thiệp giấy truyền thống. Chi phí 1 lần duy nhất cho toàn bộ tuần lễ cưới, xuất bản và gửi link mời không giới hạn số lượng khách.
             </p>
           </div>
 
@@ -374,25 +374,25 @@ export const PlatformLandingPage: React.FC = () => {
 
                 <div className="mt-5 pt-5 border-t border-stone-800 flex items-baseline space-x-1">
                   <span className="font-serif text-3xl font-bold text-white">199.000đ</span>
-                  <span className="text-xs text-stone-500">/ trọn gói hôn lễ</span>
+                  <span className="text-xs text-stone-500">/ trọn gói mùa cưới</span>
                 </div>
 
                 <ul className="mt-6 space-y-3 text-xs text-stone-300">
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Thiệp cưới điện tử đầy đủ thông tin</span>
+                    <span>Thiệp cưới điện tử đầy đủ thông tin hôn lễ</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Nhạc nền đám cưới hòa tấu</span>
+                    <span>Nhạc nền đám cưới hòa tấu lãng mạn</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Đồng hồ đếm ngược & Bản đồ Google Maps</span>
+                    <span>Đồng hồ đếm ngược & Bản đồ chỉ đường Google Maps</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Lưu trữ 12 tháng</span>
+                    <span>Lưu trữ trọn vẹn suốt mùa cưới</span>
                   </li>
                 </ul>
               </div>
@@ -401,7 +401,7 @@ export const PlatformLandingPage: React.FC = () => {
                 onClick={() => scrollToSection('login-portal')}
                 className="w-full py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-white font-bold text-xs transition-colors cursor-pointer"
               >
-                Chọn Gói Tiêu Chuẩn
+                Chọn Gói 199.000đ
               </button>
             </div>
 
@@ -421,8 +421,8 @@ export const PlatformLandingPage: React.FC = () => {
                 </p>
 
                 <div className="mt-5 pt-5 border-t border-stone-800 flex items-baseline space-x-1">
-                  <span className="font-serif text-4xl font-bold text-gold-luxury">399.000đ</span>
-                  <span className="text-xs text-stone-400">/ vĩnh viễn</span>
+                  <span className="font-serif text-4xl font-bold text-gold-luxury">249.000đ</span>
+                  <span className="text-xs text-stone-400">/ trọn gói mùa cưới</span>
                 </div>
 
                 <ul className="mt-6 space-y-3 text-xs text-stone-200">
@@ -436,7 +436,7 @@ export const PlatformLandingPage: React.FC = () => {
                   </li>
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-wedding-gold shrink-0" />
-                    <span>Album ảnh 4K & Timeline chặng đường tình yêu</span>
+                    <span>Tự tải ảnh từ điện thoại/máy tính hoặc chọn ảnh mẫu 4K</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-wedding-gold shrink-0" />
@@ -444,11 +444,11 @@ export const PlatformLandingPage: React.FC = () => {
                   </li>
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-wedding-gold shrink-0" />
-                    <span>Sổ lưu bút chúc phúc & Quản lý khách RSVP</span>
+                    <span>Sổ lưu bút chúc phúc & Quản lý khách xác nhận tham dự</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-wedding-gold shrink-0" />
-                    <span>Lưu trữ vĩnh viễn kỷ niệm không bao giờ xóa</span>
+                    <span>Gửi link tới khách mời không giới hạn</span>
                   </li>
                 </ul>
               </div>
@@ -457,7 +457,7 @@ export const PlatformLandingPage: React.FC = () => {
                 onClick={() => scrollToSection('login-portal')}
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-wedding-rose-700 via-wedding-burgundy to-[#4A1020] text-white font-bold text-xs shadow-luxury hover:opacity-95 transition-all cursor-pointer border border-wedding-gold/60"
               >
-                Bắt Đầu Tạo Thiệp Hoàng Gia
+                Chọn Gói Hoàng Gia 249.000đ
               </button>
             </div>
 
@@ -469,30 +469,30 @@ export const PlatformLandingPage: React.FC = () => {
                 </span>
                 <h3 className="font-serif text-xl font-bold text-white mt-1">Diamond Grand</h3>
                 <p className="text-xs text-stone-400 mt-2 leading-relaxed">
-                  Dành cho những cặp đôi mong muốn có tên miền riêng theo tên hai bạn và được thiết kế theo yêu cầu đặc biệt.
+                  Gói cao cấp không giới hạn: Lưu trữ kỷ niệm dài hạn, toàn quyền cập nhật ảnh, đổi phong cách bất kỳ lúc nào.
                 </p>
 
                 <div className="mt-5 pt-5 border-t border-stone-800 flex items-baseline space-x-1">
-                  <span className="font-serif text-3xl font-bold text-white">699.000đ</span>
-                  <span className="text-xs text-stone-500">/ độc quyền</span>
+                  <span className="font-serif text-3xl font-bold text-white">299.000đ</span>
+                  <span className="text-xs text-stone-500">/ trọn gói VIP</span>
                 </div>
 
                 <ul className="mt-6 space-y-3 text-xs text-stone-300">
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Tất cả tính năng của gói Hoàng Gia</span>
+                    <span>Tất cả tính năng cao cấp của gói Hoàng Gia</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span className="text-white font-semibold">Tên miền riêng theo tên (VD: tuananhmaiphuong.com)</span>
+                    <span className="text-white font-semibold">Tự do đổi nhạc nền MP3 riêng & Album 4K không giới hạn</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Chuyên viên hỗ trợ thiết kế ảnh & nội dung 1-1</span>
+                    <span>Lưu giữ trang web cưới làm kỷ niệm trọn đời</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Hỗ trợ kỹ thuật VIP 24/7 suốt tuần lễ cưới</span>
+                    <span>Hỗ trợ kỹ thuật trực tiếp suốt quá trình tổ chức</span>
                   </li>
                 </ul>
               </div>
@@ -501,7 +501,7 @@ export const PlatformLandingPage: React.FC = () => {
                 onClick={() => scrollToSection('login-portal')}
                 className="w-full py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-white font-bold text-xs transition-colors cursor-pointer"
               >
-                Đăng Ký Gói Đặc Quyền
+                Chọn Gói VIP 299.000đ
               </button>
             </div>
           </div>
