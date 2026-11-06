@@ -19,15 +19,26 @@ import { EventDetailsSection } from './components/EventDetailsSection';
 import { RSVPSection } from './components/RSVPSection';
 import { WishingWallSection } from './components/WishingWallSection';
 import { GiftBoxModal } from './components/GiftBoxModal';
-import { AdminPanelModal } from './components/AdminPanelModal';
 import { FloatingEffects } from './components/FloatingEffects';
 import { MusicPlayer } from './components/MusicPlayer';
+import { WeddingStudioPage } from './pages/WeddingStudioPage';
 
 export const App: React.FC = () => {
+  // Check if current route is the dedicated Bride & Groom Creation Studio
+  const isStudioMode =
+    typeof window !== 'undefined' &&
+    (window.location.pathname.startsWith('/studio') ||
+      window.location.pathname.startsWith('/admin') ||
+      new URLSearchParams(window.location.search).get('studio') === 'true' ||
+      new URLSearchParams(window.location.search).get('admin') === 'true');
+
+  if (isStudioMode) {
+    return <WeddingStudioPage />;
+  }
+
   const [weddingData, setWeddingData] = useState<WeddingData>(DEFAULT_WEDDING_DATA);
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(true);
   const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -35,9 +46,13 @@ export const App: React.FC = () => {
   const { isPlaying, isMuted, toggleMute, startMusic, toggleMusic, playEnvelopeOpeningSound, currentTrackTitle } =
     useWeddingAudio(weddingData.music);
 
-  // Fetch live wedding data from Backend API
+  // Fetch live wedding data from Backend API (supports unique ?w=slug)
   useEffect(() => {
-    fetch('/api/wedding-info')
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('w') || params.get('slug') || '';
+    const fetchUrl = slug ? `/api/wedding-info?w=${encodeURIComponent(slug)}` : '/api/wedding-info';
+
+    fetch(fetchUrl)
       .then((res) => res.json())
       .then((data) => {
         if (data && data.success && data.data) {
@@ -121,6 +136,7 @@ export const App: React.FC = () => {
         weddingDateFormatted={weddingData.weddingDateFormatted}
         playOpenSound={playEnvelopeOpeningSound}
         envelopeStyle={weddingData.envelopeStyle}
+        waxSealMonogram={weddingData.waxSealMonogram}
       />
 
       {/* Floating Rose Petals & Golden Stardust & Mouse Trail Canvas */}
@@ -361,19 +377,8 @@ export const App: React.FC = () => {
             "Hạnh phúc trọn đời bắt đầu từ hôm nay. Cảm ơn tình cảm thương quý vô bờ bến của gia đình, người thân và bè bạn đã luôn đồng hành cùng chúng mình!"
           </p>
 
-          <div className="pt-6 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-3">
+          <div className="pt-6 border-t border-stone-800 flex items-center justify-center text-xs text-stone-500">
             <span>© 2026 Lễ Thành Hôn • Trăm Năm Hạnh Phúc</span>
-
-            {/* Secret Admin Panel Trigger Button for Bride & Groom */}
-            <button
-              type="button"
-              onClick={() => setIsAdminOpen(true)}
-              className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-stone-900 border border-stone-700 text-[11px] text-stone-400 hover:text-wedding-gold hover:border-wedding-gold/50 transition-all cursor-pointer"
-              title="Quản trị tiệc cưới (Dành riêng cho dâu rể)"
-            >
-              <Settings className="w-3.5 h-3.5 text-wedding-gold" />
-              <span>Quản Trị Tiệc Cưới (Admin)</span>
-            </button>
           </div>
         </div>
       </footer>
@@ -384,14 +389,6 @@ export const App: React.FC = () => {
         onClose={() => setIsGiftModalOpen(false)}
         groom={weddingData.groom}
         bride={weddingData.bride}
-      />
-
-      {/* Admin Management Dashboard Modal */}
-      <AdminPanelModal
-        isOpen={isAdminOpen}
-        onClose={() => setIsAdminOpen(false)}
-        currentData={weddingData}
-        onSaveSuccess={(updated) => setWeddingData(updated)}
       />
     </div>
   );

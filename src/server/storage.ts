@@ -7,6 +7,7 @@ export interface StorageData {
   rsvps: RSVPRecord[];
   wishes: WishMessage[];
   weddingConfig: WeddingData;
+  projects?: Record<string, { slug: string; secretPin: string; data: WeddingData; updatedAt: string }>;
 }
 
 class WeddingStorage {
@@ -19,6 +20,14 @@ class WeddingStorage {
       rsvps: [],
       wishes: [...INITIAL_WISHES],
       weddingConfig: { ...DEFAULT_WEDDING_DATA },
+      projects: {
+        'tuan-anh-mai-phuong': {
+          slug: 'tuan-anh-mai-phuong',
+          secretPin: '123456',
+          data: { ...DEFAULT_WEDDING_DATA },
+          updatedAt: new Date().toISOString(),
+        },
+      },
     };
 
     // Attempt to set up JSON file storage for local Node.js environment
@@ -62,8 +71,24 @@ class WeddingStorage {
     }
   }
 
-  public getWeddingData(): WeddingData {
+  public getWeddingData(slug?: string): WeddingData {
+    if (slug && this.data.projects && this.data.projects[slug]) {
+      return this.data.projects[slug].data;
+    }
     return this.data.weddingConfig;
+  }
+
+  public publishProject(slug: string, secretPin: string, config: WeddingData) {
+    if (!this.data.projects) this.data.projects = {};
+    this.data.projects[slug] = {
+      slug,
+      secretPin,
+      data: config,
+      updatedAt: new Date().toISOString(),
+    };
+    this.data.weddingConfig = config;
+    this.saveToFile();
+    return this.data.projects[slug];
   }
 
   public updateWeddingData(newData: Partial<WeddingData>): WeddingData {

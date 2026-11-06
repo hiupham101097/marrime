@@ -3,6 +3,14 @@ import { RSVPRecord, WishMessage } from '../shared/types';
 
 // In-memory worker cache for Cloudflare edge execution
 let edgeWeddingData: any = { ...DEFAULT_WEDDING_DATA };
+const edgeProjects: Record<string, any> = {
+  'tuan-anh-mai-phuong': {
+    slug: 'tuan-anh-mai-phuong',
+    secretPin: '123456',
+    data: { ...DEFAULT_WEDDING_DATA },
+    updatedAt: new Date().toISOString(),
+  },
+};
 const edgeWishes: WishMessage[] = [...INITIAL_WISHES];
 const edgeRSVPs: RSVPRecord[] = [];
 
@@ -14,7 +22,7 @@ export default {
     // CORS headers
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
       'Content-Type': 'application/json; charset=utf-8',
     };
@@ -36,15 +44,69 @@ export default {
         );
       }
 
-      // 2. Wedding Data
+      // 2. Wedding Data (Supports query ?w=slug)
       if (pathname === '/api/wedding-info') {
+        const querySlug = searchParams.get('w') || searchParams.get('slug') || 'default';
+        const project = edgeProjects[querySlug] || edgeProjects['tuan-anh-mai-phuong'];
         return new Response(
           JSON.stringify({
             success: true,
-            data: edgeWeddingData,
+            slug: querySlug,
+            data: project ? project.data : edgeWeddingData,
           }),
           { headers: corsHeaders }
         );
+      }
+
+      // 3. Publish Wedding Project
+      if (pathname === '/api/weddings/publish' && request.method === 'POST') {
+        const body: any = await request.json();
+        const rawSlug = body.slug || `${body.config?.groom?.shortName || 'groom'}-${body.config?.bride?.shortName || 'bride'}`;
+        const slug = rawSlug
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9_-]/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-|-$/g, '') || 'wedding-' + Date.now();
+
+        const secretPin = body.secretPin || '123456';
+        const config = body.config || edgeWeddingData;
+
+        edgeProjects[slug] = {
+          slug,
+          secretPin,
+          data: config,
+          updatedAt: new Date().toISOString(),
+        };
+        edgeWeddingData = config;
+
+        return new Response(
+          JSON.stringify({
+            success: true,
+            message: 'Xuất bản thiệp cưới thành công!',
+            slug,
+            shareUrl: `https://${url.host}/?w=${slug}`,
+            data: config,
+          }),
+          { headers: corsHeaders }
+        );
+      }
+
+      // 4. Get Wedding by Slug
+      if (pathname.startsWith('/api/weddings/')) {
+        const targetSlug = pathname.replace('/api/weddings/', '').trim();
+        const project = edgeProjects[targetSlug] || edgeProjects['tuan-anh-mai-phuong'];
+        if (project) {
+          return new Response(
+            JSON.stringify({
+              success: true,
+              slug: project.slug,
+              data: project.data,
+            }),
+            { headers: corsHeaders }
+          );
+        }
       }
 
       // Admin Wedding Config Update

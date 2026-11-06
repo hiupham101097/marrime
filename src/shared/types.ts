@@ -79,6 +79,8 @@ export type AnimationEffect =
   | 'winter_snow'
   | 'none';
 
+export type TypographyFont = 'playfair' | 'cormorant' | 'inter_serif' | 'montserrat';
+
 export interface GalleryPhotoItem {
   id: string;
   url: string;
@@ -98,6 +100,8 @@ export interface WeddingData {
   theme: WeddingTheme;
   template: WeddingTemplate;
   envelopeStyle: EnvelopeStyle;
+  waxSealMonogram?: string;
+  typographyFont?: TypographyFont;
   animationEffect?: AnimationEffect;
   enableMouseTrail?: boolean;
   heroImage?: string;
@@ -115,6 +119,15 @@ export interface WeddingData {
     message: string;
     signatures: string;
   };
+}
+
+export interface PublishedWeddingProject {
+  slug: string;
+  secretPin: string;
+  title: string;
+  data: WeddingData;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface RSVPRecord {

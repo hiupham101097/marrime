@@ -20,9 +20,43 @@ app.get('/api/health', (req: Request, res: Response) => {
 
 // 2. Wedding Data (Info, Timeline, Events, Couple)
 app.get('/api/wedding-info', (req: Request, res: Response) => {
+  const slug = (req.query.w || req.query.slug) as string | undefined;
   res.json({
     success: true,
-    data: storage.getWeddingData(),
+    slug: slug || 'default',
+    data: storage.getWeddingData(slug),
+  });
+});
+
+// Publish Wedding Project
+app.post('/api/weddings/publish', (req: Request, res: Response) => {
+  const { slug, secretPin, config } = req.body;
+  const rawSlug = slug || `${config?.groom?.shortName || 'groom'}-${config?.bride?.shortName || 'bride'}`;
+  const cleanSlug = rawSlug
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9_-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '') || 'wedding-' + Date.now();
+
+  const published = storage.publishProject(cleanSlug, secretPin || '123456', config);
+  res.json({
+    success: true,
+    message: 'Xuất bản thiệp cưới thành công!',
+    slug: cleanSlug,
+    shareUrl: `/?w=${cleanSlug}`,
+    data: published.data,
+  });
+});
+
+app.get('/api/weddings/:slug', (req: Request, res: Response) => {
+  const slug = Array.isArray(req.params.slug) ? req.params.slug[0] : req.params.slug;
+  const data = storage.getWeddingData(String(slug));
+  res.json({
+    success: true,
+    slug,
+    data,
   });
 });
 

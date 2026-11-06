@@ -13,6 +13,7 @@ interface EnvelopeModalProps {
   weddingDateFormatted: string;
   playOpenSound?: () => void;
   envelopeStyle?: EnvelopeStyle;
+  waxSealMonogram?: string;
 }
 
 export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
@@ -24,6 +25,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   weddingDateFormatted,
   playOpenSound,
   envelopeStyle = 'royal_velvet',
+  waxSealMonogram,
 }) => {
   const [isOpening, setIsOpening] = useState(false);
 
@@ -227,10 +229,10 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
               >
                 {/* 3D Wax seal emblem */}
                 <span
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-serif font-black text-amber-100 shadow-md border border-amber-300/60 ring-2 ring-amber-400/20"
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-serif font-black text-amber-100 shadow-md border border-amber-300/60 ring-2 ring-amber-400/20 tracking-tighter"
                   style={{ background: styleConfig.sealBg }}
                 >
-                  A&P
+                  {waxSealMonogram || `${groomName.charAt(0)}&${brideName.charAt(0)}`}
                 </span>
                 <span className="font-semibold tracking-wide text-sm sm:text-base text-amber-50">
                   {isOpening ? 'Đang Mở Thiệp Cưới...' : 'Chạm Vào Đây Để Mở Thiệp'}
