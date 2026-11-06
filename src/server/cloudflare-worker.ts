@@ -2,6 +2,7 @@ import { DEFAULT_WEDDING_DATA, INITIAL_WISHES } from '../shared/defaultData';
 import { RSVPRecord, WishMessage } from '../shared/types';
 
 // In-memory worker cache for Cloudflare edge execution
+let edgeWeddingData: any = { ...DEFAULT_WEDDING_DATA };
 const edgeWishes: WishMessage[] = [...INITIAL_WISHES];
 const edgeRSVPs: RSVPRecord[] = [];
 
@@ -40,10 +41,69 @@ export default {
         return new Response(
           JSON.stringify({
             success: true,
-            data: DEFAULT_WEDDING_DATA,
+            data: edgeWeddingData,
           }),
           { headers: corsHeaders }
         );
+      }
+
+      // Admin Wedding Config Update
+      if (pathname === '/api/admin/wedding-config') {
+        if (request.method === 'PUT') {
+          const body: any = await request.json();
+          const validPin = env?.ADMIN_PIN || '123456';
+          if (body.pin !== validPin) {
+            return new Response(
+              JSON.stringify({ success: false, message: 'Mã PIN quản trị không chính xác!' }),
+              { status: 401, headers: corsHeaders }
+            );
+          }
+
+          if (!body.config) {
+            return new Response(
+              JSON.stringify({ success: false, message: 'Thiếu dữ liệu cấu hình.' }),
+              { status: 400, headers: corsHeaders }
+            );
+          }
+
+          edgeWeddingData = {
+            ...edgeWeddingData,
+            ...body.config,
+            groom: {
+              ...edgeWeddingData.groom,
+              ...(body.config.groom || {}),
+              parents: {
+                ...edgeWeddingData.groom.parents,
+                ...(body.config.groom?.parents || {}),
+              },
+              bankInfo: {
+                ...edgeWeddingData.groom.bankInfo,
+                ...(body.config.groom?.bankInfo || {}),
+              },
+            },
+            bride: {
+              ...edgeWeddingData.bride,
+              ...(body.config.bride || {}),
+              parents: {
+                ...edgeWeddingData.bride.parents,
+                ...(body.config.bride?.parents || {}),
+              },
+              bankInfo: {
+                ...edgeWeddingData.bride.bankInfo,
+                ...(body.config.bride?.bankInfo || {}),
+              },
+            },
+          };
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              message: 'Cập nhật cấu hình thành công!',
+              data: edgeWeddingData,
+            }),
+            { status: 200, headers: corsHeaders }
+          );
+        }
       }
 
       // 3. Wishes

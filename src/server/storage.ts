@@ -1,11 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import { RSVPRecord, WishMessage } from '../shared/types';
-import { INITIAL_WISHES } from '../shared/defaultData';
+import { RSVPRecord, WishMessage, WeddingData } from '../shared/types';
+import { INITIAL_WISHES, DEFAULT_WEDDING_DATA } from '../shared/defaultData';
 
 export interface StorageData {
   rsvps: RSVPRecord[];
   wishes: WishMessage[];
+  weddingConfig: WeddingData;
 }
 
 class WeddingStorage {
@@ -17,6 +18,7 @@ class WeddingStorage {
     this.data = {
       rsvps: [],
       wishes: [...INITIAL_WISHES],
+      weddingConfig: { ...DEFAULT_WEDDING_DATA },
     };
 
     // Attempt to set up JSON file storage for local Node.js environment
@@ -36,6 +38,9 @@ class WeddingStorage {
         const parsed = JSON.parse(raw);
         if (parsed.rsvps) this.data.rsvps = parsed.rsvps;
         if (parsed.wishes && parsed.wishes.length > 0) this.data.wishes = parsed.wishes;
+        if (parsed.weddingConfig) {
+          this.data.weddingConfig = { ...DEFAULT_WEDDING_DATA, ...parsed.weddingConfig };
+        }
         this.isPersisted = true;
       } else {
         this.saveToFile();
@@ -55,6 +60,43 @@ class WeddingStorage {
     } catch {
       // In serverless / read-only filesystem, fallback gracefully
     }
+  }
+
+  public getWeddingData(): WeddingData {
+    return this.data.weddingConfig;
+  }
+
+  public updateWeddingData(newData: Partial<WeddingData>): WeddingData {
+    this.data.weddingConfig = {
+      ...this.data.weddingConfig,
+      ...newData,
+      groom: {
+        ...this.data.weddingConfig.groom,
+        ...(newData.groom || {}),
+        parents: {
+          ...this.data.weddingConfig.groom.parents,
+          ...(newData.groom?.parents || {}),
+        },
+        bankInfo: {
+          ...this.data.weddingConfig.groom.bankInfo,
+          ...(newData.groom?.bankInfo || {}),
+        },
+      },
+      bride: {
+        ...this.data.weddingConfig.bride,
+        ...(newData.bride || {}),
+        parents: {
+          ...this.data.weddingConfig.bride.parents,
+          ...(newData.bride?.parents || {}),
+        },
+        bankInfo: {
+          ...this.data.weddingConfig.bride.bankInfo,
+          ...(newData.bride?.bankInfo || {}),
+        },
+      },
+    };
+    this.saveToFile();
+    return this.data.weddingConfig;
   }
 
   public getRSVPs(): RSVPRecord[] {
@@ -89,7 +131,7 @@ class WeddingStorage {
   }
 
   public likeWish(id: string): WishMessage | null {
-    const wish = this.data.wishes.find(w => w.id === id);
+    const wish = this.data.wishes.find((w) => w.id === id);
     if (wish) {
       wish.heartCount = (wish.heartCount || 0) + 1;
       this.saveToFile();
@@ -100,4 +142,3 @@ class WeddingStorage {
 }
 
 export const storage = new WeddingStorage();
-

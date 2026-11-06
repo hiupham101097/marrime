@@ -22,7 +22,37 @@ app.get('/api/health', (req: Request, res: Response) => {
 app.get('/api/wedding-info', (req: Request, res: Response) => {
   res.json({
     success: true,
-    data: DEFAULT_WEDDING_DATA,
+    data: storage.getWeddingData(),
+  });
+});
+
+// Admin Wedding Configuration Update
+app.put('/api/admin/wedding-config', (req: Request, res: Response) => {
+  const { pin, config } = req.body;
+
+  // Simple PIN check (default '123456')
+  const validPin = process.env.ADMIN_PIN || '123456';
+  if (pin !== validPin) {
+    res.status(401).json({
+      success: false,
+      message: 'Mã PIN quản trị không chính xác!',
+    });
+    return;
+  }
+
+  if (!config) {
+    res.status(400).json({
+      success: false,
+      message: 'Dữ liệu cấu hình không hợp lệ.',
+    });
+    return;
+  }
+
+  const updated = storage.updateWeddingData(config);
+  res.json({
+    success: true,
+    message: 'Cập nhật thông tin đám cưới thành công!',
+    data: updated,
   });
 });
 

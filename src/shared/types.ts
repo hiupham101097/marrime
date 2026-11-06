@@ -68,7 +68,12 @@ export interface WeddingEventSchedule {
   googleMapsUrl: string;
 }
 
+export type WeddingTheme = 'burgundy' | 'rose' | 'gold' | 'navy' | 'emerald';
+export type WeddingTemplate = 'royal' | 'modern' | 'classic';
+
 export interface WeddingData {
+  theme: WeddingTheme;
+  template: WeddingTemplate;
   groom: CoupleMember;
   bride: CoupleMember;
   weddingDate: string; // ISO string for countdown

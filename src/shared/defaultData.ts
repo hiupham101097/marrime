@@ -1,6 +1,8 @@
 import { WeddingData, WishMessage } from './types';
 
 export const DEFAULT_WEDDING_DATA: WeddingData = {
+  theme: 'burgundy',
+  template: 'royal',
   groom: {
     role: 'Chú Rể',
     name: 'Nguyễn Tuấn Anh',

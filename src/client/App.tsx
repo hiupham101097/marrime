@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Gift, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles } from 'lucide-react';
+import { Mail, Gift, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles, Settings } from 'lucide-react';
 import { DEFAULT_WEDDING_DATA } from '../shared/defaultData';
 import { WeddingData, GuestRole } from '../shared/types';
 import { useGuestInfo } from './hooks/useGuestInfo';
@@ -19,6 +19,7 @@ import { EventDetailsSection } from './components/EventDetailsSection';
 import { RSVPSection } from './components/RSVPSection';
 import { WishingWallSection } from './components/WishingWallSection';
 import { GiftBoxModal } from './components/GiftBoxModal';
+import { AdminPanelModal } from './components/AdminPanelModal';
 import { FloatingEffects } from './components/FloatingEffects';
 import { MusicPlayer } from './components/MusicPlayer';
 
@@ -26,14 +27,15 @@ export const App: React.FC = () => {
   const [weddingData, setWeddingData] = useState<WeddingData>(DEFAULT_WEDDING_DATA);
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(true);
   const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  const { guest, changeDemoGuest } = useGuestInfo();
+  const { guest } = useGuestInfo();
   const { isPlaying, isMuted, setIsMuted, startMusic, toggleMusic, playEnvelopeOpeningSound } =
     useWeddingAudio();
 
-  // Fetch live wedding data from Backend API if available
+  // Fetch live wedding data from Backend API
   useEffect(() => {
     fetch('/api/wedding-info')
       .then((res) => res.json())
@@ -60,7 +62,6 @@ export const App: React.FC = () => {
   const handleOpenEnvelope = () => {
     setIsEnvelopeOpen(false);
     startMusic(); // Auto start sweet acoustic wedding music
-    // Scroll smoothly to invitation card
     setTimeout(() => {
       const el = document.getElementById('invitation-card');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -79,8 +80,26 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Dynamic Theme Class mapping
+  const getThemeWrapperClass = () => {
+    switch (weddingData.theme) {
+      case 'rose':
+        return 'theme-rose';
+      case 'gold':
+        return 'theme-gold';
+      case 'navy':
+        return 'theme-navy';
+      case 'emerald':
+        return 'theme-emerald';
+      default:
+        return 'theme-burgundy';
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-wedding-cream text-stone-800 font-sans relative selection:bg-wedding-rose-200 selection:text-wedding-rose-900">
+    <div
+      className={`min-h-screen bg-wedding-cream text-stone-800 font-sans relative selection:bg-wedding-rose-200 selection:text-wedding-rose-900 ${getThemeWrapperClass()}`}
+    >
       {/* 1. Royal Envelope Opening Modal (Interactive First Experience) */}
       <EnvelopeModal
         isOpen={isEnvelopeOpen}
@@ -140,7 +159,10 @@ export const App: React.FC = () => {
             <span className="w-8 h-8 rounded-full bg-gradient-to-br from-wedding-burgundy to-[#4A1020] text-wedding-gold-light flex items-center justify-center text-xs font-serif font-bold border border-wedding-gold/50 shadow-sm">
               A&P
             </span>
-            <span className="tracking-wide">Tuấn Anh & Mai Phương</span>
+            <span className="tracking-wide">
+              {weddingData.groom.shortName || weddingData.groom.name} &{' '}
+              {weddingData.bride.shortName || weddingData.bride.name}
+            </span>
           </button>
 
           {/* Desktop Nav Links */}
@@ -203,13 +225,13 @@ export const App: React.FC = () => {
               onClick={() => scrollToSection('invitation-card')}
               className="block w-full text-left py-1.5 text-stone-700 hover:text-wedding-rose-600"
             >
-              Thư Mời Cá Nhân Hóa
+              Thư Mời
             </button>
             <button
               onClick={() => scrollToSection('gallery')}
               className="block w-full text-left py-1.5 text-stone-700 hover:text-wedding-rose-600"
             >
-              Album Ảnh Cưới Hoàng Gia
+              Album Ảnh Cưới
             </button>
             <button
               onClick={() => scrollToSection('timeline')}
@@ -254,11 +276,10 @@ export const App: React.FC = () => {
           onRsvpClick={() => scrollToSection('rsvp')}
         />
 
-        {/* 2. Personalized Guest Invitation Card */}
+        {/* 2. Personalized Guest Invitation Card (Chế độ chỉ đọc cho quan khách) */}
         <div id="invitation-card">
           <GuestInvitationCard
             guest={guest}
-            onRoleChange={changeDemoGuest}
             venueName={weddingData.events[0]?.venueName || 'Riverside Palace'}
             hallName={weddingData.events[0]?.hallName || 'Sảnh Grand Ballroom (Tầng 3)'}
             weddingDateFormatted={weddingData.weddingDateFormatted}
@@ -316,13 +337,25 @@ export const App: React.FC = () => {
             A&P
           </div>
           <h4 className="font-serif text-2xl sm:text-3xl text-white font-medium tracking-tight">
-            Nguyễn Tuấn Anh & Trần Mai Phương
+            {weddingData.groom.name} & {weddingData.bride.name}
           </h4>
           <p className="text-xs sm:text-sm text-stone-400 font-light italic max-w-lg mx-auto leading-relaxed">
             "Hạnh phúc trọn đời bắt đầu từ hôm nay. Cảm ơn tình cảm thương quý vô bờ bến của gia đình, người thân và bè bạn đã luôn đồng hành cùng chúng mình!"
           </p>
-          <div className="pt-6 border-t border-stone-800 text-xs text-stone-500 font-medium">
-            © 2026 Lễ Thành Hôn • Trăm Năm Hạnh Phúc • Fullstack React & Node.js on Cloudflare
+
+          <div className="pt-6 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-3">
+            <span>© 2026 Lễ Thành Hôn • Trăm Năm Hạnh Phúc</span>
+
+            {/* Secret Admin Panel Trigger Button for Bride & Groom */}
+            <button
+              type="button"
+              onClick={() => setIsAdminOpen(true)}
+              className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-stone-900 border border-stone-700 text-[11px] text-stone-400 hover:text-wedding-gold hover:border-wedding-gold/50 transition-all cursor-pointer"
+              title="Quản trị tiệc cưới (Dành riêng cho dâu rể)"
+            >
+              <Settings className="w-3.5 h-3.5 text-wedding-gold" />
+              <span>Quản Trị Tiệc Cưới (Admin)</span>
+            </button>
           </div>
         </div>
       </footer>
@@ -333,6 +366,14 @@ export const App: React.FC = () => {
         onClose={() => setIsGiftModalOpen(false)}
         groom={weddingData.groom}
         bride={weddingData.bride}
+      />
+
+      {/* Admin Management Dashboard Modal */}
+      <AdminPanelModal
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
+        currentData={weddingData}
+        onSaveSuccess={(updated) => setWeddingData(updated)}
       />
     </div>
   );

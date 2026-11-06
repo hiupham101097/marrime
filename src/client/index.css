@@ -128,3 +128,33 @@
 .ribbon-wave {
   animation: ribbonWave 4s ease-in-out infinite;
 }
+
+
+/* Color Theme Overrides for Admin Selection */
+.theme-rose .bg-wedding-burgundy {
+  background-color: #9D174D !important;
+}
+.theme-rose .text-wedding-burgundy {
+  color: #9D174D !important;
+}
+
+.theme-gold .bg-wedding-burgundy {
+  background-color: #855B14 !important;
+}
+.theme-gold .text-wedding-burgundy {
+  color: #855B14 !important;
+}
+
+.theme-navy .bg-wedding-burgundy {
+  background-color: #0F172A !important;
+}
+.theme-navy .text-wedding-burgundy {
+  color: #0F172A !important;
+}
+
+.theme-emerald .bg-wedding-burgundy {
+  background-color: #064E3B !important;
+}
+.theme-emerald .text-wedding-burgundy {
+  color: #064E3B !important;
+}
