@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Gift, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles, Settings } from 'lucide-react';
+import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles } from 'lucide-react';
 import { DEFAULT_WEDDING_DATA } from '../shared/defaultData';
 import { WeddingData, GuestRole } from '../shared/types';
 import { useGuestInfo } from './hooks/useGuestInfo';
@@ -18,27 +18,44 @@ import { ThankYouSection } from './components/ThankYouSection';
 import { EventDetailsSection } from './components/EventDetailsSection';
 import { RSVPSection } from './components/RSVPSection';
 import { WishingWallSection } from './components/WishingWallSection';
-import { GiftBoxModal } from './components/GiftBoxModal';
 import { FloatingEffects } from './components/FloatingEffects';
 import { MusicPlayer } from './components/MusicPlayer';
 import { WeddingStudioPage } from './pages/WeddingStudioPage';
+import { PlatformLandingPage } from './pages/PlatformLandingPage';
 
 export const App: React.FC = () => {
-  // Check if current route is the dedicated Bride & Groom Creation Studio
+  const searchParams =
+    typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
+
+  // 1. Studio Mode (Dedicated Wedding Creator for Bride & Groom)
   const isStudioMode =
-    typeof window !== 'undefined' &&
-    (window.location.pathname.startsWith('/studio') ||
-      window.location.pathname.startsWith('/admin') ||
-      new URLSearchParams(window.location.search).get('studio') === 'true' ||
-      new URLSearchParams(window.location.search).get('admin') === 'true');
+    pathname.startsWith('/studio') ||
+    pathname.startsWith('/admin') ||
+    searchParams.get('studio') === 'true' ||
+    searchParams.get('admin') === 'true';
 
   if (isStudioMode) {
     return <WeddingStudioPage />;
   }
 
+  // 2. Wedding Invitation Guest View:
+  // Triggered when opening a couple's unique link (e.g. ?w=slug OR ?guest=name OR /w/slug)
+  const isWeddingInviteView =
+    searchParams.has('w') ||
+    searchParams.has('slug') ||
+    searchParams.has('guest') ||
+    searchParams.has('role') ||
+    pathname.startsWith('/w/');
+
+  // 3. Platform Homepage (Service Packages, Pricing & Bride/Groom Sign In)
+  if (!isWeddingInviteView) {
+    return <PlatformLandingPage />;
+  }
+
+  // GUEST WEDDING INVITATION VIEW
   const [weddingData, setWeddingData] = useState<WeddingData>(DEFAULT_WEDDING_DATA);
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(true);
-  const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -48,8 +65,7 @@ export const App: React.FC = () => {
 
   // Fetch live wedding data from Backend API (supports unique ?w=slug)
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const slug = params.get('w') || params.get('slug') || '';
+    const slug = searchParams.get('w') || searchParams.get('slug') || '';
     const fetchUrl = slug ? `/api/wedding-info?w=${encodeURIComponent(slug)}` : '/api/wedding-info';
 
     fetch(fetchUrl)
@@ -154,7 +170,7 @@ export const App: React.FC = () => {
         trackTitle={weddingData.music?.title || currentTrackTitle}
       />
 
-      {/* Floating Action Buttons (Top Right) */}
+      {/* Floating Action Button (Top Right) */}
       <div className="fixed top-4 right-4 z-40 flex items-center space-x-2">
         {/* Re-open Envelope Button */}
         <button
@@ -165,17 +181,6 @@ export const App: React.FC = () => {
         >
           <Mail className="w-3.5 h-3.5 text-wedding-rose-600" />
           <span className="hidden sm:inline">Mở Lại Thiệp</span>
-        </button>
-
-        {/* Gift Box Button */}
-        <button
-          type="button"
-          onClick={() => setIsGiftModalOpen(true)}
-          className="px-4 py-2 rounded-full bg-gradient-to-r from-wedding-rose-800 to-wedding-burgundy text-white text-xs font-bold shadow-lg hover:opacity-95 flex items-center space-x-1.5 transition-all cursor-pointer border-2 border-wedding-gold/60"
-          title="Mừng cưới dâu rể"
-        >
-          <Gift className="w-3.5 h-3.5 text-amber-200" />
-          <span className="hidden sm:inline">Hộp Mừng Cưới</span>
         </button>
       </div>
 
@@ -231,11 +236,11 @@ export const App: React.FC = () => {
               Xác Nhận Tham Dự
             </button>
             <button
-              onClick={() => setIsGiftModalOpen(true)}
+              onClick={() => scrollToSection('wishes')}
               className="px-4 py-1.5 rounded-full bg-wedding-rose-50 text-wedding-rose-700 font-bold border border-wedding-rose-300 hover:bg-wedding-rose-100 transition-colors cursor-pointer flex items-center space-x-1 shadow-sm"
             >
-              <Gift className="w-3.5 h-3.5" />
-              <span>Mừng Cưới</span>
+              <Heart className="w-3.5 h-3.5" />
+              <span>Sổ Lưu Bút</span>
             </button>
           </nav>
 
@@ -284,13 +289,10 @@ export const App: React.FC = () => {
               Xác Nhận Tham Dự (RSVP)
             </button>
             <button
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                setIsGiftModalOpen(true);
-              }}
+              onClick={() => scrollToSection('wishes')}
               className="block w-full text-left py-1.5 text-wedding-rose-700 font-bold"
             >
-              Hộp Mừng Cưới (VietQR)
+              Sổ Lưu Bút & Lời Chúc
             </button>
           </div>
         )}
@@ -382,14 +384,6 @@ export const App: React.FC = () => {
           </div>
         </div>
       </footer>
-
-      {/* Gift Box Modal */}
-      <GiftBoxModal
-        isOpen={isGiftModalOpen}
-        onClose={() => setIsGiftModalOpen(false)}
-        groom={weddingData.groom}
-        bride={weddingData.bride}
-      />
     </div>
   );
 };

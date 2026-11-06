@@ -1538,3 +1538,4 @@ export const WeddingStudioPage: React.FC = () => {
     </div>
   );
 };
+

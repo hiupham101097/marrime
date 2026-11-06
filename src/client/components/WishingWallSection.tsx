@@ -100,7 +100,7 @@ export const WishingWallSection: React.FC = () => {
   };
 
   return (
-    <section className="py-24 px-4 bg-white relative">
+    <section id="wishes" className="py-24 px-4 bg-white relative">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
