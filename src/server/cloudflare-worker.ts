@@ -287,9 +287,20 @@ export default {
         }
       }
 
-      // 5. Fallback to Static Assets (For Cloudflare Workers with Assets)
+      // 5. Fallback to Static Assets (For Cloudflare Workers with Assets & SPA Routing)
       if (env && env.ASSETS && typeof env.ASSETS.fetch === 'function') {
-        return env.ASSETS.fetch(request);
+        const response = await env.ASSETS.fetch(request);
+        if (response.status === 404 && !pathname.startsWith('/api')) {
+          // Client-side SPA routing fallback to index.html (for /studio, /admin, /w/:slug, etc.)
+          const indexUrl = new URL('/', request.url);
+          const indexResponse = await env.ASSETS.fetch(new Request(indexUrl.toString(), request));
+          if (indexResponse.status === 200) {
+            return indexResponse;
+          }
+          const htmlUrl = new URL('/index.html', request.url);
+          return env.ASSETS.fetch(new Request(htmlUrl.toString(), request));
+        }
+        return response;
       }
 
       return new Response(
