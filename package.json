@@ -12,8 +12,8 @@
     "build:server": "esbuild src/server/cloudflare-worker.ts --bundle --outfile=dist/worker.js --format=esm --target=es2022",
     "start": "tsx src/server/node-server.ts",
     "preview": "vite preview",
-    "deploy": "wrangler pages deploy dist",
-    "deploy:pages": "wrangler pages deploy dist",
+    "deploy": "wrangler pages deploy dist --project-name=marrime",
+    "deploy:pages": "wrangler pages deploy dist --project-name=marrime",
     "deploy:cloudflare": "wrangler pages deploy dist --project-name=wedding-invitation"
   },
   "dependencies": {
