@@ -7,7 +7,7 @@
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "vite",
     "dev:server": "tsx watch src/server/node-server.ts",
-    "build": "npm run build:client && npm run build:server",
+    "build": "npm run build:client && npm run build:server && node scripts/postbuild.js",
     "build:client": "vite build",
     "build:server": "esbuild src/server/cloudflare-worker.ts --bundle --outfile=dist/worker.js --format=esm --target=es2022",
     "start": "tsx src/server/node-server.ts",
