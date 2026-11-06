@@ -51,6 +51,7 @@ import {
   DEFAULT_GALLERY_PHOTOS,
   SAMPLE_PHOTO_LIBRARY,
 } from '../../shared/defaultData';
+import { ImageSelector } from '../components/ImageSelector';
 
 export const WeddingStudioPage: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -658,20 +659,19 @@ export const WeddingStudioPage: React.FC = () => {
                             className="w-full px-3 py-2 rounded-lg bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-wedding-gold"
                           />
                         </div>
-                        <div>
-                          <label className="block text-stone-400 mb-1">Ảnh Đại Diện (URL)</label>
-                          <input
-                            type="text"
-                            value={formData.groom.avatar}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                groom: { ...formData.groom, avatar: e.target.value },
-                              })
-                            }
-                            className="w-full px-3 py-2 rounded-lg bg-stone-800 border border-stone-700 text-white font-mono text-[10px] focus:outline-none focus:border-wedding-gold"
-                          />
-                        </div>
+                        <ImageSelector
+                          label="Ảnh Đại Diện Chú Rể"
+                          value={formData.groom.avatar}
+                          onChange={(url) =>
+                            setFormData({
+                              ...formData,
+                              groom: { ...formData.groom, avatar: url },
+                            })
+                          }
+                          category="groom"
+                          aspectRatio="square"
+                          helperText="Chọn ảnh chú rể hoặc tải từ máy"
+                        />
                         <div className="grid grid-cols-2 gap-2">
                           <div>
                             <label className="block text-stone-400 mb-1">Bố Chú Rể</label>
@@ -784,20 +784,19 @@ export const WeddingStudioPage: React.FC = () => {
                             className="w-full px-3 py-2 rounded-lg bg-stone-800 border border-stone-700 text-white focus:outline-none focus:border-wedding-gold"
                           />
                         </div>
-                        <div>
-                          <label className="block text-stone-400 mb-1">Ảnh Đại Diện (URL)</label>
-                          <input
-                            type="text"
-                            value={formData.bride.avatar}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                bride: { ...formData.bride, avatar: e.target.value },
-                              })
-                            }
-                            className="w-full px-3 py-2 rounded-lg bg-stone-800 border border-stone-700 text-white font-mono text-[10px] focus:outline-none focus:border-wedding-gold"
-                          />
-                        </div>
+                        <ImageSelector
+                          label="Ảnh Đại Diện Cô Dâu"
+                          value={formData.bride.avatar}
+                          onChange={(url) =>
+                            setFormData({
+                              ...formData,
+                              bride: { ...formData.bride, avatar: url },
+                            })
+                          }
+                          category="bride"
+                          aspectRatio="square"
+                          helperText="Chọn ảnh cô dâu hoặc tải từ máy"
+                        />
                         <div className="grid grid-cols-2 gap-2">
                           <div>
                             <label className="block text-stone-400 mb-1">Bố Cô Dâu</label>
@@ -885,40 +884,14 @@ export const WeddingStudioPage: React.FC = () => {
                   <div className="space-y-6 animate-fadeIn">
                     {/* Hero Background */}
                     <div className="bg-stone-900/80 p-5 rounded-2xl border border-stone-800 space-y-3">
-                      <h4 className="font-serif text-sm font-bold text-white flex items-center space-x-2">
-                        <Camera className="w-4 h-4 text-wedding-gold" />
-                        <span>Ảnh Bìa Hero Section (Toàn Cảnh Đầu Trang)</span>
-                      </h4>
-                      <input
-                        type="text"
+                      <ImageSelector
+                        label="Ảnh Bìa Hero Section (Toàn Cảnh Đầu Trang)"
                         value={formData.heroImage || ''}
-                        onChange={(e) => setFormData({ ...formData, heroImage: e.target.value })}
-                        placeholder="Dán link ảnh cưới đẹp nhất tại đây..."
-                        className="w-full px-3 py-2 rounded-lg bg-stone-800 border border-stone-700 text-white font-mono text-[11px] focus:outline-none focus:border-wedding-gold"
+                        onChange={(url) => setFormData({ ...formData, heroImage: url })}
+                        category="hero"
+                        aspectRatio="video"
+                        helperText="Ảnh cưới khổ ngang đẹp nhất để đón tiếp khách mời"
                       />
-
-                      <div className="pt-2">
-                        <span className="text-[11px] text-stone-400 block mb-2">Hoặc chọn nhanh ảnh mẫu studio:</span>
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                          {SAMPLE_PHOTO_LIBRARY.heroBackgrounds.map((bg) => (
-                            <button
-                              key={bg.name}
-                              type="button"
-                              onClick={() => setFormData({ ...formData, heroImage: bg.url })}
-                              className={`p-1.5 rounded-lg border text-left cursor-pointer transition-all ${
-                                formData.heroImage === bg.url
-                                  ? 'border-wedding-gold bg-stone-800 ring-1 ring-wedding-gold'
-                                  : 'border-stone-800 hover:border-stone-700 bg-stone-900/40'
-                              }`}
-                            >
-                              <div className="h-14 rounded overflow-hidden mb-1">
-                                <img src={bg.url} alt={bg.name} className="w-full h-full object-cover" />
-                              </div>
-                              <span className="text-[10px] text-stone-300 font-bold block truncate">{bg.name}</span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
                     </div>
 
                     {/* Album Gallery */}
@@ -935,44 +908,53 @@ export const WeddingStudioPage: React.FC = () => {
                         </button>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                         {(formData.gallery || DEFAULT_GALLERY_PHOTOS).map((photo, idx) => (
-                          <div key={photo.id || idx} className="p-3 rounded-xl border border-stone-800 bg-stone-900/50 space-y-2">
-                            <div className="flex items-center space-x-2.5">
-                              <div className="w-12 h-12 rounded bg-stone-800 overflow-hidden flex-shrink-0 border border-stone-700">
-                                <img src={photo.url} alt={photo.title} className="w-full h-full object-cover" />
-                              </div>
-                              <input
-                                type="text"
-                                value={photo.title}
-                                onChange={(e) => {
-                                  const updated = [...(formData.gallery || DEFAULT_GALLERY_PHOTOS)];
-                                  updated[idx] = { ...updated[idx], title: e.target.value };
-                                  setFormData({ ...formData, gallery: updated });
-                                }}
-                                className="w-full px-2 py-1 rounded bg-stone-800 border border-stone-700 text-white font-bold text-xs"
-                              />
-                            </div>
-                            <input
-                              type="text"
+                          <div key={photo.id || idx} className="p-3.5 rounded-2xl border border-stone-800 bg-stone-900/70 space-y-3">
+                            <ImageSelector
+                              label={`Bức Ảnh #${idx + 1}`}
                               value={photo.url}
-                              onChange={(e) => {
+                              onChange={(newUrl) => {
                                 const updated = [...(formData.gallery || DEFAULT_GALLERY_PHOTOS)];
-                                updated[idx] = { ...updated[idx], url: e.target.value };
+                                updated[idx] = { ...updated[idx], url: newUrl };
                                 setFormData({ ...formData, gallery: updated });
                               }}
-                              className="w-full px-2 py-1 rounded bg-stone-800 border border-stone-700 text-white font-mono text-[10px]"
+                              category="moments"
+                              aspectRatio="video"
+                              helperText="Chọn từ máy hoặc thư viện"
                             />
-                            <input
-                              type="text"
-                              value={photo.caption}
-                              onChange={(e) => {
-                                const updated = [...(formData.gallery || DEFAULT_GALLERY_PHOTOS)];
-                                updated[idx] = { ...updated[idx], caption: e.target.value };
-                                setFormData({ ...formData, gallery: updated });
-                              }}
-                              className="w-full px-2 py-1 rounded bg-stone-800 border border-stone-700 text-stone-300 text-[11px] italic"
-                            />
+
+                            <div className="space-y-2">
+                              <div>
+                                <label className="block text-[10px] text-stone-400 mb-0.5">Tiêu đề ảnh:</label>
+                                <input
+                                  type="text"
+                                  value={photo.title}
+                                  onChange={(e) => {
+                                    const updated = [...(formData.gallery || DEFAULT_GALLERY_PHOTOS)];
+                                    updated[idx] = { ...updated[idx], title: e.target.value };
+                                    setFormData({ ...formData, gallery: updated });
+                                  }}
+                                  placeholder="Tiêu đề ảnh..."
+                                  className="w-full px-2.5 py-1.5 rounded-lg bg-stone-800 border border-stone-700 text-white font-bold text-xs"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-[10px] text-stone-400 mb-0.5">Lời nhắn / Chú thích ảnh:</label>
+                                <input
+                                  type="text"
+                                  value={photo.caption}
+                                  onChange={(e) => {
+                                    const updated = [...(formData.gallery || DEFAULT_GALLERY_PHOTOS)];
+                                    updated[idx] = { ...updated[idx], caption: e.target.value };
+                                    setFormData({ ...formData, gallery: updated });
+                                  }}
+                                  placeholder="Dòng cảm xúc..."
+                                  className="w-full px-2.5 py-1.5 rounded-lg bg-stone-800 border border-stone-700 text-stone-300 text-[11px] italic"
+                                />
+                              </div>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -1038,16 +1020,17 @@ export const WeddingStudioPage: React.FC = () => {
                             />
                           </div>
 
-                          <input
-                            type="text"
+                          <ImageSelector
+                            label="Ảnh Kỷ Niệm Khoảnh Khắc"
                             value={item.image}
-                            onChange={(e) => {
+                            onChange={(newUrl) => {
                               const updated = [...formData.timeline];
-                              updated[idx].image = e.target.value;
+                              updated[idx].image = newUrl;
                               setFormData({ ...formData, timeline: updated });
                             }}
-                            placeholder="Link ảnh kỷ niệm..."
-                            className="w-full px-2.5 py-1.5 rounded bg-stone-800 border border-stone-700 text-white font-mono text-[10px]"
+                            category="moments"
+                            aspectRatio="video"
+                            helperText="Chọn ảnh kỷ niệm hoặc tải từ máy"
                           />
 
                           <textarea

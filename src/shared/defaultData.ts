@@ -92,6 +92,32 @@ export const SAMPLE_PHOTO_LIBRARY = {
       url: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800&auto=format&fit=crop',
     },
   ],
+  galleryMoments: [
+    {
+      name: 'Ánh Nhìn Yêu Thương',
+      url: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop',
+    },
+    {
+      name: 'Nắm Chặt Tay Nhau',
+      url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200&auto=format&fit=crop',
+    },
+    {
+      name: 'Nụ Cười Chung Đôi',
+      url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop',
+    },
+    {
+      name: 'Nhẫn Cưới Hẹn Ước',
+      url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=1200&auto=format&fit=crop',
+    },
+    {
+      name: 'Hoàng Hôn Biển Vắng',
+      url: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=1200&auto=format&fit=crop',
+    },
+    {
+      name: 'Vũ Điệu Hạnh Phúc',
+      url: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=1200&auto=format&fit=crop',
+    },
+  ],
 };
 
 export const PRESET_MUSIC_TRACKS: WeddingMusicConfig[] = [
