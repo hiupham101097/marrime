@@ -127,11 +127,16 @@ export const PRESET_MUSIC_TRACKS: WeddingMusicConfig[] = [
   },
 ];
 
-export const DEFAULT_WEDDING_DATA: WeddingData = {
+// ==========================================
+// 1. ROYAL VELVET PRESET (Cung Điện Châu Âu Quý Tộc)
+// ==========================================
+export const ROYAL_VELVET_DATA: WeddingData = {
   theme: 'burgundy',
   template: 'royal',
   envelopeStyle: 'royal_velvet',
-  animationEffect: 'mixed_romance',
+  waxSealMonogram: 'T & P',
+  typographyFont: 'playfair',
+  animationEffect: 'golden_stardust',
   enableMouseTrail: true,
   heroImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop',
   gallery: DEFAULT_GALLERY_PHOTOS,
@@ -152,7 +157,6 @@ export const DEFAULT_WEDDING_DATA: WeddingData = {
       bankName: 'Vietcombank (VCB)',
       accountNumber: '1018899889',
       accountHolder: 'NGUYEN TUAN ANH',
-      qrImage: 'https://api.vietqr.io/image/970436-1018899889-print.jpg?accountName=NGUYEN%20TUAN%20ANH&amount=0',
     },
   },
   bride: {
@@ -171,7 +175,6 @@ export const DEFAULT_WEDDING_DATA: WeddingData = {
       bankName: 'Techcombank (TCB)',
       accountNumber: '19036789012345',
       accountHolder: 'TRAN MAI PHUONG',
-      qrImage: 'https://api.vietqr.io/image/970407-19036789012345-print.jpg?accountName=TRAN%20MAI%20PHUONG&amount=0',
     },
   },
   weddingDate: '2026-11-20T11:00:00+07:00',
@@ -282,6 +285,414 @@ export const DEFAULT_WEDDING_DATA: WeddingData = {
   },
 };
 
+// ==========================================
+// 2. BLUSH RIBBON PRESET (Hồng Phấn Nơ Lụa & Vườn Cổ Tích)
+// ==========================================
+export const BLUSH_RIBBON_DATA: WeddingData = {
+  theme: 'rose',
+  template: 'fairytale',
+  envelopeStyle: 'blush_ribbon',
+  waxSealMonogram: 'T & N',
+  typographyFont: 'cormorant',
+  animationEffect: 'rose_petals',
+  enableMouseTrail: true,
+  heroImage: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2000&auto=format&fit=crop',
+  gallery: [
+    {
+      id: 'br-1',
+      url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200&auto=format&fit=crop',
+      title: 'Khu Vườn Cổ Tích Mùa Xuân',
+      category: 'royal',
+      caption: 'Giữa ngàn cánh hoa hồng nở rộ, anh nhìn thấy cả bầu trời dịu dàng trong mắt em.',
+    },
+    {
+      id: 'br-2',
+      url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop',
+      title: 'Chiếc Váy Trắng & Dải Nơ Hồng',
+      category: 'moments',
+      caption: 'Nụ cười e ấp của nàng thơ bên vòm hoa mẫu đơn ngát hương.',
+    },
+    {
+      id: 'br-3',
+      url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=1200&auto=format&fit=crop',
+      title: 'Dưới Giàn Hoa Thủy Vu',
+      category: 'vows',
+      caption: 'Nguyện cùng em dạo bước qua bốn mùa hoa nở, mãi mãi chẳng rời.',
+    },
+    {
+      id: 'br-4',
+      url: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop',
+      title: 'Điệu Khiêu Vũ Ban Chiều',
+      category: 'moments',
+      caption: 'Từng bước nhảy xoay tròn theo tiếng vĩ cầm êm dịu của hoàng hôn Paris.',
+    },
+  ],
+  music: PRESET_MUSIC_TRACKS[1], // A Thousand Years
+  groom: {
+    role: 'Chú Rể',
+    name: 'Lê Minh Trí',
+    shortName: 'Minh Trí',
+    title: 'Kiến Trúc Sư Cảnh Quan',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop',
+    parents: {
+      father: 'Lê Hoàng Nam',
+      mother: 'Nguyễn Ngọc Lan',
+    },
+    hometown: 'Đà Lạt',
+    description: 'Chàng kiến trúc sư lãng mạn, yêu hoa cỏ và sự tinh tế. Với Trí, Thảo Nhi chính là nguồn cảm hứng thơ mộng nhất cho mọi công trình anh kiến tạo.',
+    bankInfo: {
+      bankName: 'MB Bank',
+      accountNumber: '0988776655',
+      accountHolder: 'LE MINH TRI',
+    },
+  },
+  bride: {
+    role: 'Cô Dâu',
+    name: 'Đặng Thảo Nhi',
+    shortName: 'Thảo Nhi',
+    title: 'Nhiếp Ảnh Gia Nghệ Thuật',
+    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800&auto=format&fit=crop',
+    parents: {
+      father: 'Đặng Quốc Dũng',
+      mother: 'Huỳnh Mai Chi',
+    },
+    hometown: 'TP. Hồ Chí Minh',
+    description: 'Một tâm hồn nghệ thuật bay bổng, yêu những gam màu pastel và những điều giản đơn dịu ngọt. Nhi tìm thấy ở Trí sự ấm áp và bình yên vô bờ.',
+    bankInfo: {
+      bankName: 'ACB',
+      accountNumber: '2468101214',
+      accountHolder: 'DANG THAO NHI',
+    },
+  },
+  weddingDate: '2026-12-12T17:30:00+07:00',
+  weddingDateFormatted: 'Thứ Bảy, 12 Tháng 12 Năm 2026',
+  events: [
+    {
+      id: 'le-thanh-hon-rose',
+      title: 'Lễ Thành Hôn & Dạ Tiệc Hoa Hồng',
+      date: '12/12/2026',
+      time: '17:30 CH',
+      dayOfWeek: 'Thứ Bảy',
+      lunarDate: 'Ngày 04 Tháng 11 Năm Bính Ngọ',
+      venueName: 'Khách Sạn 5 Sao Park Hyatt Saigon',
+      hallName: 'Sảnh Ballroom Vườn Pháp Thơ Mộng',
+      address: 'Số 2 Công Trường Lam Sơn, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh',
+      googleMapsUrl: 'https://maps.google.com/?q=Park+Hyatt+Saigon+2+Cong+Truong+Lam+Son',
+    },
+    {
+      id: 'le-vu-quy-rose',
+      title: 'Lễ Rước Dâu Truyền Thống',
+      date: '12/12/2026',
+      time: '09:00 SA',
+      dayOfWeek: 'Thứ Bảy',
+      lunarDate: 'Ngày 04 Tháng 11 Năm Bính Ngọ',
+      venueName: 'Biệt Thự Hoa Hồng Tư Gia',
+      hallName: 'Vườn Mẫu Đơn Ấm Cúng',
+      address: 'Khu Biệt Thự Thảo Điền, Thành phố Thủ Đức, TP. Hồ Chí Minh',
+      googleMapsUrl: 'https://maps.google.com/?q=Thao+Dien+Thu+Duc+Ho+Chi+Minh',
+    },
+  ],
+  timeline: [
+    {
+      id: 'milestone-br-1',
+      year: '2021',
+      dateStr: '20.03.2021',
+      title: 'Gặp Gỡ Tại Tiệm Hoa Phố Núi',
+      subtitle: 'Đà Lạt mộng mơ trong sương sớm',
+      story: 'Trí đi tìm những chậu cẩm tú cầu cho công trình mới, Nhi đang say mê bấm máy lưu giữ giọt sương trên nụ hoa. Ánh mắt chạm nhau giữa hương thơm hoa cỏ, mở ra câu chuyện tình đẹp như một khúc hoan ca.',
+      image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1000&auto=format&fit=crop',
+      tag: 'Cơ Duyên Diệu Kỳ',
+      location: 'Đà Lạt',
+    },
+    {
+      id: 'milestone-br-2',
+      year: '2024',
+      dateStr: '12.12.2024',
+      title: 'Lời Cầu Hôn Giữa Đồi Hoa Oải Hương',
+      subtitle: 'Khoảnh khắc hoàng hôn tím ngát',
+      story: 'Trí thắt dải ruy băng lụa hồng quanh hộp nhẫn kim cương và quỳ gối dưới ánh chiều tà. Nhi mỉm cười trong nước mắt hạnh phúc và khẽ gật đầu: "Yes, I will love you for a thousand years!"',
+      image: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=1000&auto=format&fit=crop',
+      tag: 'Chiếc Nhẫn Hẹn Ước',
+      location: 'Đồi Hoa Đà Lạt',
+    },
+  ],
+  loveStoryMessages: [
+    {
+      author: 'Chú Rể - Minh Trí',
+      recipient: 'Gửi Nàng Thơ Của Anh - Thảo Nhi',
+      quote: '"Em là dải lụa mềm mại nhất tô điểm cho cuộc sống bộn bề của anh trở nên rực rỡ."',
+      content: 'Cảm ơn em đã đem đến cho anh niềm tin và những nụ cười trong trẻo nhất. Anh hứa sẽ luôn chăm sóc khu vườn tình yêu của chúng ta, để mỗi ngày trôi qua đều ngát hương hạnh phúc.',
+      dateStr: '12.12.2026',
+    },
+    {
+      author: 'Cô Dâu - Thảo Nhi',
+      recipient: 'Gửi Chàng Tri Kỷ - Minh Trí',
+      quote: '"Yêu anh là điều ngọt ngào nhất em từng chọn lựa trong cuộc đời."',
+      content: 'Cảm ơn anh vì sự kiên nhẫn, bàn tay luôn siết chặt tay em qua mọi lối đi. Hãy cùng em viết tiếp những trang truyện cổ tích ngọt ngào này anh nhé!',
+      dateStr: '12.12.2026',
+    },
+  ],
+  thankYouNote: {
+    title: 'Lời Cảm Ơn Chân Thành Từ Đáy Lòng',
+    message: 'Tình yêu và sự hiện diện của quý vị là những đóa hoa thơm ngát nhất điểm tô cho ngày cưới của chúng con. Xin chân thành cảm ơn những lời chúc phúc ngọt ngào đã tiếp thêm sức mạnh cho tổ ấm nhỏ của Minh Trí & Thảo Nhi.',
+    signatures: 'Minh Trí & Thảo Nhi đồng kính tạ',
+  },
+};
+
+// ==========================================
+// 3. MODERN MINIMAL PRESET (Bắc Âu & Giấy Mỹ Thuật Viền Vàng)
+// ==========================================
+export const MODERN_MINIMAL_DATA: WeddingData = {
+  theme: 'gold',
+  template: 'modern',
+  envelopeStyle: 'modern_minimal',
+  waxSealMonogram: 'N • H',
+  typographyFont: 'montserrat',
+  animationEffect: 'golden_stardust',
+  enableMouseTrail: true,
+  heroImage: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=2000&auto=format&fit=crop',
+  gallery: [
+    {
+      id: 'mm-1',
+      url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=1200&auto=format&fit=crop',
+      title: 'Nét Cắt Kiến Trúc Tối Giản',
+      category: 'royal',
+      caption: 'Vẻ đẹp thuần khiết của tình yêu được tôn vinh qua từng đường nét tinh tế không tì vết.',
+    },
+    {
+      id: 'mm-2',
+      url: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop',
+      title: 'Khoảnh Khắc Tĩnh Lặng',
+      category: 'vows',
+      caption: 'Không ồn ào khoa trương, tình yêu của chúng tôi vững chãi như một tác phẩm nghệ thuật.',
+    },
+    {
+      id: 'mm-3',
+      url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200&auto=format&fit=crop',
+      title: 'Đường Chỉ Mạ Vàng',
+      category: 'moments',
+      caption: 'Ánh sáng phản chiếu trên mặt nhẫn tối giản biểu trưng cho sự gắn kết vĩnh cửu.',
+    },
+  ],
+  music: PRESET_MUSIC_TRACKS[3], // Until I Found You
+  groom: {
+    role: 'Chú Rể',
+    name: 'Hoàng Nhật Nam',
+    shortName: 'Nhật Nam',
+    title: 'Giám Đốc Sáng Tạo',
+    avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=800&auto=format&fit=crop',
+    parents: {
+      father: 'Hoàng Anh Tuấn',
+      mother: 'Vũ Minh Trang',
+    },
+    hometown: 'Hà Nội',
+    description: 'Chủ nghĩa hoàn hảo và tối giản trong từng suy nghĩ. Điềm đạm, sâu sắc và luôn dành cho Thanh Hằng sự trân trọng tuyệt đối.',
+    bankInfo: {
+      bankName: 'VPBank',
+      accountNumber: '9988112233',
+      accountHolder: 'HOANG NHAT NAM',
+    },
+  },
+  bride: {
+    role: 'Cô Dâu',
+    name: 'Vũ Thanh Hằng',
+    shortName: 'Thanh Hằng',
+    title: 'Biên Tập Viên Thời Trang',
+    avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800&auto=format&fit=crop',
+    parents: {
+      father: 'Vũ Đình Trọng',
+      mother: 'Trần Kim Oanh',
+    },
+    hometown: 'Hà Nội',
+    description: 'Sắc sảo, hiện đại và tràn đầy năng lượng tươi mới. Đối với Hằng, Nhật Nam chính là mảnh ghép trọn vẹn và chuẩn mực nhất.',
+    bankInfo: {
+      bankName: 'TPBank',
+      accountNumber: '03456789999',
+      accountHolder: 'VU THANH HANG',
+    },
+  },
+  weddingDate: '2027-01-18T18:00:00+07:00',
+  weddingDateFormatted: 'Thứ Hai, 18 Tháng 01 Năm 2027',
+  events: [
+    {
+      id: 'le-thanh-hon-minimal',
+      title: 'Lễ Thành Hôn & Dạ Tiệc Bắc Âu',
+      date: '18/01/2027',
+      time: '18:00 CH',
+      dayOfWeek: 'Thứ Hai',
+      lunarDate: 'Ngày 11 Tháng 12 Năm Bính Ngọ',
+      venueName: 'Capella Hanoi Hotel',
+      hallName: 'Sảnh Grand Opera & Terrace',
+      address: 'Số 11 Lê Phụng Hiểu, Phường Tràng Tiền, Quận Hoàn Kiếm, Hà Nội',
+      googleMapsUrl: 'https://maps.google.com/?q=Capella+Hanoi+11+Le+Phung+Hieu',
+    },
+  ],
+  timeline: [
+    {
+      id: 'milestone-mm-1',
+      year: '2022',
+      dateStr: '10.05.2022',
+      title: 'Cái Bắt Tay Đầu Tiên Trong Triển Lãm',
+      subtitle: 'Bảo tàng Mỹ thuật Đương đại',
+      story: 'Hai người cùng dừng lại trước một bức tranh sơn dầu đơn sắc. Cuộc trò chuyện về hình khối và ánh sáng đã kéo dài suốt cả buổi tối.',
+      image: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=1000&auto=format&fit=crop',
+      tag: 'Đồng Điệu',
+      location: 'Hà Nội',
+    },
+  ],
+  loveStoryMessages: [
+    {
+      author: 'Chú Rể - Nhật Nam',
+      recipient: 'Gửi Thanh Hằng - Người Bạn Đồng Hành',
+      quote: '"Sự đơn giản đỉnh cao chính là tìm thấy một người vừa vặn với tâm hồn mình."',
+      content: 'Cảm ơn em đã cùng anh xây đắp một phong cách sống tinh tế, nơi mỗi ngày trôi qua đều ý nghĩa và bình yên.',
+      dateStr: '18.01.2027',
+    },
+    {
+      author: 'Cô Dâu - Thanh Hằng',
+      recipient: 'Gửi Nhật Nam - Chỗ Dựa Vững Vàng',
+      quote: '"Bên anh, mọi sự phức tạp của thế giới đều trở nên nhẹ nhàng."',
+      content: 'Em tin vào sự lựa chọn của trái tim mình. Cùng nhau hoàn thiện bức tranh cuộc đời phía trước nhé anh!',
+      dateStr: '18.01.2027',
+    },
+  ],
+  thankYouNote: {
+    title: 'Lời Cảm Tạ Trang Trọng',
+    message: 'Sự hiện diện thanh lịch và những lời chúc tốt đẹp của quý khách là niềm vinh dự sâu sắc cho ngày vui của gia đình chúng tôi.',
+    signatures: 'Nhật Nam & Thanh Hằng trân trọng cảm ơn',
+  },
+};
+
+// ==========================================
+// 4. EMERALD BRASS PRESET (Xanh Lục Bảo & Con Dấu Đồng Cổ Điển)
+// ==========================================
+export const EMERALD_BRASS_DATA: WeddingData = {
+  theme: 'emerald',
+  template: 'vintage',
+  envelopeStyle: 'emerald_brass',
+  waxSealMonogram: 'H & L',
+  typographyFont: 'cormorant',
+  animationEffect: 'mixed_romance',
+  enableMouseTrail: true,
+  heroImage: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=2000&auto=format&fit=crop',
+  gallery: [
+    {
+      id: 'eb-1',
+      url: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=1200&auto=format&fit=crop',
+      title: 'Hơi Thở Vương Giả Cổ Điển',
+      category: 'royal',
+      caption: 'Sắc xanh ngọc lục bảo thâm trầm kết hợp ánh đồng thau đúc mang đến vẻ đẹp vĩnh cửu.',
+    },
+    {
+      id: 'eb-2',
+      url: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop',
+      title: 'Huy Chương Tình Yêu Vĩnh Hằng',
+      category: 'vows',
+      caption: 'Lời thề hẹn trăm năm được đóng dấu son bằng con dấu đồng gia tộc uy nghiêm.',
+    },
+  ],
+  music: PRESET_MUSIC_TRACKS[2], // Beautiful in White
+  groom: {
+    role: 'Chú Rể',
+    name: 'Đỗ Khắc Huy',
+    shortName: 'Khắc Huy',
+    title: 'Luật Sư Cao Cấp',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop',
+    parents: {
+      father: 'Đỗ Trọng Nghĩa',
+      mother: 'Phạm Thị Hoài Thu',
+    },
+    hometown: 'Huế',
+    description: 'Bản lĩnh, đĩnh đạc và mang cốt cách quý ông cổ điển. Tình yêu với Thùy Linh là lời hứa trọn đời không bao giờ phai nhạt.',
+    bankInfo: {
+      bankName: 'BIDV',
+      accountNumber: '12410001234567',
+      accountHolder: 'DO KHAC HUY',
+    },
+  },
+  bride: {
+    role: 'Cô Dâu',
+    name: 'Phạm Thùy Linh',
+    shortName: 'Thùy Linh',
+    title: 'Giảng Viên Âm Nhạc Cổ Điển',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop',
+    parents: {
+      father: 'Phạm Quang Vinh',
+      mother: 'Hoàng Bích Liên',
+    },
+    hometown: 'Hải Phòng',
+    description: 'Dịu dàng, đài các với tâm hồn yêu những giai điệu cổ điển. Bên cạnh Khắc Huy, Linh luôn cảm thấy an tâm và được chở che tuyệt đối.',
+    bankInfo: {
+      bankName: 'VietinBank',
+      accountNumber: '108866554433',
+      accountHolder: 'PHAM THUY LINH',
+    },
+  },
+  weddingDate: '2027-02-28T10:30:00+07:00',
+  weddingDateFormatted: 'Chủ Nhật, 28 Tháng 02 Năm 2027',
+  events: [
+    {
+      id: 'le-thanh-hon-emerald',
+      title: 'Lễ Thành Hôn Trang Trọng',
+      date: '28/02/2027',
+      time: '10:30 SA',
+      dayOfWeek: 'Chủ Nhật',
+      lunarDate: 'Ngày 22 Tháng Giêng Năm Đinh Mùi',
+      venueName: 'Dinh Độc Lập (Reunification Palace Gardens)',
+      hallName: 'Sảnh Khánh Tiết Cổ Điển',
+      address: '135 Nam Kỳ Khởi Nghĩa, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh',
+      googleMapsUrl: 'https://maps.google.com/?q=Reunification+Palace+135+Nam+Ky+Khoi+Nghia',
+    },
+  ],
+  timeline: [
+    {
+      id: 'milestone-eb-1',
+      year: '2023',
+      dateStr: '15.09.2023',
+      title: 'Hòa Nhạc Thính Phòng Mùa Thu',
+      subtitle: 'Nhà Hát Thành Phố',
+      story: 'Tiếng đàn dương cầm thánh thót của Thùy Linh đã làm rung động trái tim người luật sư điềm tĩnh. Sau buổi diễn, bó hoa ly trắng đầu tiên đã mở ra một mối lương duyên trời ban.',
+      image: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=1000&auto=format&fit=crop',
+      tag: 'Định Mệnh',
+      location: 'TP. Hồ Chí Minh',
+    },
+  ],
+  loveStoryMessages: [
+    {
+      author: 'Chú Rể - Khắc Huy',
+      recipient: 'Gửi Hiền Thê - Thùy Linh',
+      quote: '"Có những giá trị vượt thời gian, và tình yêu anh dành cho em chính là điều bất biến."',
+      content: 'Trân quý từng phút giây được bên em. Nguyện suốt đời che chở, yêu thương và cùng em xây đắp truyền thống gia đình mẫu mực.',
+      dateStr: '28.02.2027',
+    },
+    {
+      author: 'Cô Dâu - Thùy Linh',
+      recipient: 'Gửi Phu Quân - Khắc Huy',
+      quote: '"Hạnh phúc là khi tìm thấy một tâm hồn đồng điệu để nương tựa cả cuộc đời."',
+      content: 'Cảm ơn anh vì sự vững chãi và thấu hiểu. Em nguyện cùng anh đi qua mọi thăng trầm của năm tháng.',
+      dateStr: '28.02.2027',
+    },
+  ],
+  thankYouNote: {
+    title: 'Lời Cảm Ơn Gia Tộc & Quan Khách',
+    message: 'Chúng con xin cúi đầu cảm tạ công sinh thành dưỡng dục của hai bên cha mẹ, cùng lòng ưu ái quý báu của toàn thể quý vị khách quý đã đến chứng kiến giây phút thiêng liêng này.',
+    signatures: 'Khắc Huy & Thùy Linh bái tạ',
+  },
+};
+
+// ==========================================
+// PRESET MAP FOR 1-CLICK RESOLUTION
+// ==========================================
+export const PRESET_WEDDING_PROJECTS: Record<string, WeddingData> = {
+  royal_velvet: ROYAL_VELVET_DATA,
+  blush_ribbon: BLUSH_RIBBON_DATA,
+  modern_minimal: MODERN_MINIMAL_DATA,
+  emerald_brass: EMERALD_BRASS_DATA,
+  'tuan-anh-mai-phuong': ROYAL_VELVET_DATA,
+};
+
+export const DEFAULT_WEDDING_DATA: WeddingData = ROYAL_VELVET_DATA;
+
 export const INITIAL_WISHES: WishMessage[] = [
   {
     id: 'wish-1',
@@ -305,10 +716,9 @@ export const INITIAL_WISHES: WishMessage[] = [
     id: 'wish-3',
     name: 'Thùy Chi (Hội Bạn Thân)',
     relationRole: 'Bạn thân cô dâu',
-    content: 'Nhìn thấy Mai Phương xinh đẹp trong chiếc váy cưới lộng lẫy và nụ cười rạng rỡ của hai bạn, mình xúc động lắm. Mãi mãi ngọt ngào như ngày đầu nhé đôi bạn tuyệt vời!',
+    content: 'Nhìn thấy cô dâu xinh đẹp trong chiếc váy cưới lộng lẫy và nụ cười rạng rỡ của hai bạn, mình xúc động lắm. Mãi mãi ngọt ngào như ngày đầu nhé đôi bạn tuyệt vời!',
     createdAt: 'Hôm qua lúc 19:40',
     heartCount: 24,
     badge: 'Bạn thân',
   },
 ];
-

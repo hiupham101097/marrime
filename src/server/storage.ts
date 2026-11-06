@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { RSVPRecord, WishMessage, WeddingData } from '../shared/types';
-import { INITIAL_WISHES, DEFAULT_WEDDING_DATA } from '../shared/defaultData';
+import { INITIAL_WISHES, DEFAULT_WEDDING_DATA, PRESET_WEDDING_PROJECTS } from '../shared/defaultData';
 
 export interface StorageData {
   rsvps: RSVPRecord[];
@@ -21,6 +21,30 @@ class WeddingStorage {
       wishes: [...INITIAL_WISHES],
       weddingConfig: { ...DEFAULT_WEDDING_DATA },
       projects: {
+        'royal_velvet': {
+          slug: 'royal_velvet',
+          secretPin: '123456',
+          data: PRESET_WEDDING_PROJECTS['royal_velvet'],
+          updatedAt: new Date().toISOString(),
+        },
+        'blush_ribbon': {
+          slug: 'blush_ribbon',
+          secretPin: '123456',
+          data: PRESET_WEDDING_PROJECTS['blush_ribbon'],
+          updatedAt: new Date().toISOString(),
+        },
+        'modern_minimal': {
+          slug: 'modern_minimal',
+          secretPin: '123456',
+          data: PRESET_WEDDING_PROJECTS['modern_minimal'],
+          updatedAt: new Date().toISOString(),
+        },
+        'emerald_brass': {
+          slug: 'emerald_brass',
+          secretPin: '123456',
+          data: PRESET_WEDDING_PROJECTS['emerald_brass'],
+          updatedAt: new Date().toISOString(),
+        },
         'tuan-anh-mai-phuong': {
           slug: 'tuan-anh-mai-phuong',
           secretPin: '123456',
@@ -72,8 +96,13 @@ class WeddingStorage {
   }
 
   public getWeddingData(slug?: string): WeddingData {
-    if (slug && this.data.projects && this.data.projects[slug]) {
-      return this.data.projects[slug].data;
+    if (slug) {
+      if (this.data.projects && this.data.projects[slug]) {
+        return this.data.projects[slug].data;
+      }
+      if (PRESET_WEDDING_PROJECTS[slug]) {
+        return PRESET_WEDDING_PROJECTS[slug];
+      }
     }
     return this.data.weddingConfig;
   }

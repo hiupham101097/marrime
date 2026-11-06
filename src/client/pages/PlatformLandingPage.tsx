@@ -254,59 +254,90 @@ export const PlatformLandingPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {[
             {
+              slug: 'royal_velvet',
               name: 'Royal Velvet',
-              sub: 'Nhung Đỏ Quý Tộc',
-              color: '#75142B',
-              desc: 'Nhung đỏ burgundy sang trọng, góc viền vàng kim và con dấu sáp vàng hoàng gia.',
+              sub: 'Nhung Đỏ Quý Tộc & Baroque Vàng Kim',
+              couple: 'Tuấn Anh & Mai Phương',
+              monogram: 'T & P',
+              color: 'linear-gradient(135deg, #420A16, #6B172B)',
+              music: 'Canon in D (Harp & Piano)',
+              desc: 'Nhung đỏ burgundy quý tộc, góc viền vàng kim baroque và con dấu sáp vàng hoàng gia.',
               tag: 'Cung Đình Châu Âu',
+              sealBorder: 'border-amber-300',
+              sealColor: 'bg-gradient-to-br from-amber-200 to-amber-600 text-amber-950',
             },
             {
+              slug: 'blush_ribbon',
               name: 'Blush Ribbon',
-              sub: 'Hồng Phấn Nơ Lụa',
-              color: '#9D174D',
-              desc: 'Tông pastel ngọt ngào, dải nơ lụa thắt hoa văn mùa xuân nữ tính và thanh thoát.',
-              tag: 'Thơ Mộng Lãng Mạn',
+              sub: 'Hồng Phấn Nơ Lụa & Vườn Mẫu Đơn',
+              couple: 'Minh Trí & Thảo Nhi',
+              monogram: 'T & N',
+              color: 'linear-gradient(135deg, #FFF0F5, #F8BBD0)',
+              music: 'A Thousand Years (Violin)',
+              desc: 'Dải nơ lụa thắt hoa văn mùa xuân, huy chương ngọc trai và cánh hoa hồng rơi lãng mạn.',
+              tag: 'Nàng Thơ Cổ Tích',
+              sealBorder: 'border-pink-300',
+              sealColor: 'bg-gradient-to-br from-white to-pink-300 text-pink-900',
             },
             {
+              slug: 'modern_minimal',
               name: 'Modern Minimal',
-              sub: 'Giấy Mỹ Thuật Viền Vàng',
-              color: '#E6CF9B',
-              desc: 'Mặt giấy ivory vân nổi dập chìm, đường chỉ mạ vàng tinh xảo theo phong cách Bắc Âu.',
+              sub: 'Giấy Mỹ Thuật & Viền Chỉ Vàng',
+              couple: 'Nhật Nam & Thanh Hằng',
+              monogram: 'N • H',
+              color: 'linear-gradient(135deg, #FAF8F5, #EFEAE1)',
+              music: 'Until I Found You (Strings)',
+              desc: 'Giấy mỹ thuật ivory dập nổi, đường chỉ mạ vàng sắc sảo theo phong cách Scandinavian.',
               tag: 'Tối Giản Tinh Tế',
+              sealBorder: 'border-amber-400',
+              sealColor: 'bg-stone-900 text-amber-300',
             },
             {
+              slug: 'emerald_brass',
               name: 'Emerald Brass',
-              sub: 'Ngọc Lục Bảo & Con Dấu Đồng',
-              color: '#064E3B',
-              desc: 'Xanh lục bảo vương giả kết hợp phụ kiện con dấu đồng cổ điển phong cách quý tộc.',
+              sub: 'Xanh Lục Bảo & Con Dấu Đồng Cổ',
+              couple: 'Khắc Huy & Thùy Linh',
+              monogram: 'H & L',
+              color: 'linear-gradient(135deg, #04241A, #093527)',
+              music: 'Beautiful in White (Guitar)',
+              desc: 'Xanh lục bảo vương giả, phụ kiện góc kim loại đồng thau đúc và con dấu huân chương gia tộc.',
               tag: 'Vương Giả Cổ Điển',
+              sealBorder: 'border-amber-500',
+              sealColor: 'bg-gradient-to-br from-amber-400 to-amber-800 text-amber-950',
             },
           ].map((item) => (
             <div
-              key={item.name}
+              key={item.slug}
               className="p-5 rounded-2xl bg-stone-900 border border-stone-800 space-y-3 flex flex-col justify-between hover:border-wedding-gold/50 transition-all group"
             >
               <div>
-                <div className="h-32 rounded-xl mb-3 flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: item.color }}>
-                  <div className="w-12 h-12 rounded-full border-2 border-wedding-gold/70 bg-black/20 flex items-center justify-center text-wedding-gold-light font-serif font-bold text-xs shadow-md">
-                    A&P
+                <div
+                  className="h-32 rounded-xl mb-3 flex items-center justify-center relative overflow-hidden shadow-inner border border-stone-800"
+                  style={{ background: item.color }}
+                >
+                  <div
+                    className={`w-12 h-12 rounded-full border-2 ${item.sealBorder} ${item.sealColor} flex items-center justify-center font-serif font-bold text-xs shadow-md`}
+                  >
+                    {item.monogram}
                   </div>
-                  <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded text-[9px] bg-black/50 text-white font-semibold">
+                  <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded text-[9px] bg-black/60 text-white font-semibold">
                     {item.tag}
                   </span>
                 </div>
                 <h4 className="font-serif text-sm font-bold text-white">{item.name}</h4>
                 <p className="text-[11px] text-wedding-gold font-semibold">{item.sub}</p>
+                <p className="text-[10px] text-stone-400 mt-1">Dâu Rể: <strong className="text-stone-300">{item.couple}</strong></p>
+                <p className="text-[10px] text-stone-500">Nhạc nền: {item.music}</p>
                 <p className="text-[11px] text-stone-400 mt-2 leading-relaxed">{item.desc}</p>
               </div>
 
               <a
-                href="/?w=tuan-anh-mai-phuong"
+                href={`/?w=${item.slug}`}
                 target="_blank"
                 rel="noreferrer"
                 className="pt-3 border-t border-stone-800 text-[11px] text-wedding-gold font-bold hover:underline flex items-center justify-between"
               >
-                <span>Xem trải nghiệm mẫu</span>
+                <span>Xem trải nghiệm mẫu độc bản</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </a>
             </div>

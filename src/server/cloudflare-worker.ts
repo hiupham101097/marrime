@@ -1,9 +1,33 @@
-import { DEFAULT_WEDDING_DATA, INITIAL_WISHES } from '../shared/defaultData';
+import { DEFAULT_WEDDING_DATA, INITIAL_WISHES, PRESET_WEDDING_PROJECTS } from '../shared/defaultData';
 import { RSVPRecord, WishMessage } from '../shared/types';
 
 // In-memory worker cache for Cloudflare edge execution
 let edgeWeddingData: any = { ...DEFAULT_WEDDING_DATA };
 const edgeProjects: Record<string, any> = {
+  'royal_velvet': {
+    slug: 'royal_velvet',
+    secretPin: '123456',
+    data: PRESET_WEDDING_PROJECTS['royal_velvet'],
+    updatedAt: new Date().toISOString(),
+  },
+  'blush_ribbon': {
+    slug: 'blush_ribbon',
+    secretPin: '123456',
+    data: PRESET_WEDDING_PROJECTS['blush_ribbon'],
+    updatedAt: new Date().toISOString(),
+  },
+  'modern_minimal': {
+    slug: 'modern_minimal',
+    secretPin: '123456',
+    data: PRESET_WEDDING_PROJECTS['modern_minimal'],
+    updatedAt: new Date().toISOString(),
+  },
+  'emerald_brass': {
+    slug: 'emerald_brass',
+    secretPin: '123456',
+    data: PRESET_WEDDING_PROJECTS['emerald_brass'],
+    updatedAt: new Date().toISOString(),
+  },
   'tuan-anh-mai-phuong': {
     slug: 'tuan-anh-mai-phuong',
     secretPin: '123456',
@@ -47,7 +71,7 @@ export default {
       // 2. Wedding Data (Supports query ?w=slug)
       if (pathname === '/api/wedding-info') {
         const querySlug = searchParams.get('w') || searchParams.get('slug') || 'default';
-        const project = edgeProjects[querySlug] || edgeProjects['tuan-anh-mai-phuong'];
+        const project = edgeProjects[querySlug] || (PRESET_WEDDING_PROJECTS[querySlug] ? { data: PRESET_WEDDING_PROJECTS[querySlug] } : null) || edgeProjects['tuan-anh-mai-phuong'];
         return new Response(
           JSON.stringify({
             success: true,
@@ -96,12 +120,12 @@ export default {
       // 4. Get Wedding by Slug
       if (pathname.startsWith('/api/weddings/')) {
         const targetSlug = pathname.replace('/api/weddings/', '').trim();
-        const project = edgeProjects[targetSlug] || edgeProjects['tuan-anh-mai-phuong'];
+        const project = edgeProjects[targetSlug] || (PRESET_WEDDING_PROJECTS[targetSlug] ? { slug: targetSlug, data: PRESET_WEDDING_PROJECTS[targetSlug] } : null) || edgeProjects['tuan-anh-mai-phuong'];
         if (project) {
           return new Response(
             JSON.stringify({
               success: true,
-              slug: project.slug,
+              slug: project.slug || targetSlug,
               data: project.data,
             }),
             { headers: corsHeaders }

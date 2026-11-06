@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles } from 'lucide-react';
-import { DEFAULT_WEDDING_DATA } from '../shared/defaultData';
+import { DEFAULT_WEDDING_DATA, PRESET_WEDDING_PROJECTS } from '../shared/defaultData';
 import { WeddingData, GuestRole } from '../shared/types';
 import { useGuestInfo } from './hooks/useGuestInfo';
 import { useWeddingAudio } from './hooks/useWeddingAudio';
@@ -54,7 +54,12 @@ export const App: React.FC = () => {
   }
 
   // GUEST WEDDING INVITATION VIEW
-  const [weddingData, setWeddingData] = useState<WeddingData>(DEFAULT_WEDDING_DATA);
+  const requestedSlug = searchParams.get('w') || searchParams.get('slug') || '';
+  const initialWeddingData = (requestedSlug && PRESET_WEDDING_PROJECTS[requestedSlug])
+    ? PRESET_WEDDING_PROJECTS[requestedSlug]
+    : DEFAULT_WEDDING_DATA;
+
+  const [weddingData, setWeddingData] = useState<WeddingData>(initialWeddingData);
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);

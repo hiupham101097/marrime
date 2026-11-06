@@ -63,7 +63,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           alt="Wedding Ceremony"
           className="w-full h-full object-cover object-center filter brightness-[0.85] contrast-[1.1]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-stone-950/75 via-[#4a1020]/50 to-wedding-cream" />
+        <div
+          className={`absolute inset-0 ${
+            template === 'fairytale'
+              ? 'bg-gradient-to-b from-stone-950/75 via-[#831843]/45 to-pink-50/90'
+              : template === 'modern'
+              ? 'bg-gradient-to-b from-stone-950/80 via-stone-900/60 to-[#FAF8F5]'
+              : template === 'vintage'
+              ? 'bg-gradient-to-b from-stone-950/80 via-[#064E3B]/60 to-[#FAF5E9]'
+              : 'bg-gradient-to-b from-stone-950/75 via-[#4a1020]/50 to-wedding-cream'
+          }`}
+        />
       </div>
 
       {/* Floating Sparkles & Soft Lights */}
@@ -103,13 +113,35 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
         {/* Couple Main Titles */}
         <div className="space-y-2 mb-4">
-          <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white drop-shadow-lg">
+          <h1
+            className={`${
+              template === 'modern'
+                ? 'font-sans font-light tracking-[0.05em] uppercase'
+                : template === 'fairytale'
+                ? 'font-serif italic font-normal tracking-wide'
+                : 'font-serif font-bold tracking-tight'
+            } text-4xl sm:text-6xl md:text-7xl text-white drop-shadow-lg`}
+          >
             {groomName}
           </h1>
-          <div className="font-handwriting text-4xl sm:text-5xl md:text-6xl text-wedding-gold-light my-2">
-            &
+          <div
+            className={`${
+              template === 'modern'
+                ? 'font-sans text-xl sm:text-2xl text-amber-300 font-light uppercase tracking-[0.3em] my-1'
+                : 'font-handwriting text-4xl sm:text-5xl md:text-6xl text-wedding-gold-light my-2'
+            }`}
+          >
+            {template === 'modern' ? 'and' : '&'}
           </div>
-          <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white drop-shadow-lg">
+          <h1
+            className={`${
+              template === 'modern'
+                ? 'font-sans font-light tracking-[0.05em] uppercase'
+                : template === 'fairytale'
+                ? 'font-serif italic font-normal tracking-wide'
+                : 'font-serif font-bold tracking-tight'
+            } text-4xl sm:text-6xl md:text-7xl text-white drop-shadow-lg`}
+          >
             {brideName}
           </h1>
         </div>
@@ -119,8 +151,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           "Hôn nhân là dấu mốc thiêng liêng nhất của một đời người — Nơi tình yêu được đơm hoa kết trái trong niềm hãnh diện, chúc phúc của hai bên gia đình và người thân."
         </p>
 
-        {/* Wedding Date Pill with Metallic Gold Border */}
-        <div className="inline-flex items-center space-x-2.5 bg-gradient-to-r from-wedding-burgundy/90 via-[#4A1020]/90 to-wedding-burgundy/90 backdrop-blur-md px-6 py-3 rounded-full border-2 border-wedding-gold/60 text-xs sm:text-sm text-wedding-gold-light font-bold tracking-wider mb-10 shadow-luxury">
+        {/* Wedding Date Pill with Metallic Border */}
+        <div
+          className={`inline-flex items-center space-x-2.5 backdrop-blur-md px-6 py-3 rounded-full border-2 text-xs sm:text-sm font-bold tracking-wider mb-10 shadow-luxury ${
+            template === 'fairytale'
+              ? 'bg-gradient-to-r from-pink-900/90 via-rose-950/90 to-pink-900/90 border-pink-300/80 text-pink-100'
+              : template === 'modern'
+              ? 'bg-gradient-to-r from-stone-900/90 via-stone-800/90 to-stone-900/90 border-amber-400/80 text-amber-100 font-sans'
+              : template === 'vintage'
+              ? 'bg-gradient-to-r from-[#063b2c]/90 via-[#04241A]/90 to-[#063b2c]/90 border-amber-400/80 text-amber-100 font-serif'
+              : 'bg-gradient-to-r from-wedding-burgundy/90 via-[#4A1020]/90 to-wedding-burgundy/90 border-wedding-gold/60 text-wedding-gold-light'
+          }`}
+        >
           <Calendar className="w-4 h-4 text-wedding-gold" />
           <span>{weddingDateFormatted}</span>
         </div>
@@ -152,14 +194,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <button
             type="button"
             onClick={onExploreClick}
-            className="px-7 py-3.5 rounded-full bg-white text-wedding-burgundy font-bold text-xs sm:text-sm shadow-xl hover:bg-wedding-cream transition-all transform hover:-translate-y-1 cursor-pointer border border-wedding-gold/40"
+            className="px-7 py-3.5 rounded-full bg-white text-stone-900 font-bold text-xs sm:text-sm shadow-xl hover:bg-stone-50 transition-all transform hover:-translate-y-1 cursor-pointer border border-stone-300"
           >
             Khám Phá Hành Trình
           </button>
           <button
             type="button"
             onClick={onRsvpClick}
-            className="px-7 py-3.5 rounded-full bg-gradient-to-r from-wedding-rose-700 to-wedding-burgundy text-white font-bold text-xs sm:text-sm border-2 border-wedding-gold/60 backdrop-blur-md shadow-xl transition-all transform hover:-translate-y-1 hover:shadow-glow cursor-pointer"
+            className={`px-7 py-3.5 rounded-full text-white font-bold text-xs sm:text-sm border-2 backdrop-blur-md shadow-xl transition-all transform hover:-translate-y-1 cursor-pointer ${
+              template === 'fairytale'
+                ? 'bg-gradient-to-r from-pink-600 to-rose-700 border-pink-300 hover:shadow-pink-500/30'
+                : template === 'modern'
+                ? 'bg-stone-900 hover:bg-stone-800 border-amber-300/80 hover:shadow-amber-500/20 font-sans tracking-wider uppercase'
+                : template === 'vintage'
+                ? 'bg-gradient-to-r from-[#064E3B] to-[#022C22] border-amber-400 hover:shadow-emerald-950/40'
+                : 'bg-gradient-to-r from-wedding-rose-700 to-wedding-burgundy border-wedding-gold/60 hover:shadow-glow'
+            }`}
           >
             Xác Nhận Tham Dự
           </button>

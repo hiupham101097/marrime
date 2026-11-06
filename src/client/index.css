@@ -130,26 +130,50 @@
 }
 
 
-/* Color Theme Overrides for Admin Selection */
+/* Color Theme Overrides for Admin Selection & Presets */
 .theme-rose .bg-wedding-burgundy {
   background-color: #9D174D !important;
 }
 .theme-rose .text-wedding-burgundy {
   color: #9D174D !important;
 }
+.theme-rose .border-wedding-burgundy {
+  border-color: #DB2777 !important;
+}
+.theme-rose .from-wedding-burgundy {
+  --tw-gradient-from: #9D174D var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(157 23 77 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.theme-rose .to-\[\#4A1020\] {
+  --tw-gradient-to: #831843 var(--tw-gradient-to-position) !important;
+}
+.theme-rose .bg-wedding-rose-50 {
+  background-color: #FFF1F2 !important;
+}
+.theme-rose .text-wedding-rose-800 {
+  color: #9D174D !important;
+}
 
 .theme-gold .bg-wedding-burgundy {
-  background-color: #855B14 !important;
+  background-color: #1C1917 !important;
 }
 .theme-gold .text-wedding-burgundy {
-  color: #855B14 !important;
+  color: #1C1917 !important;
 }
-
-.theme-navy .bg-wedding-burgundy {
-  background-color: #0F172A !important;
+.theme-gold .border-wedding-burgundy {
+  border-color: #AA771C !important;
 }
-.theme-navy .text-wedding-burgundy {
-  color: #0F172A !important;
+.theme-gold .from-wedding-burgundy {
+  --tw-gradient-from: #1C1917 var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(28 25 23 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.theme-gold .to-\[\#4A1020\] {
+  --tw-gradient-to: #292524 var(--tw-gradient-to-position) !important;
+}
+.theme-gold .bg-wedding-rose-50 {
+  background-color: #F8F5EE !important;
 }
 
 .theme-emerald .bg-wedding-burgundy {
@@ -157,6 +181,30 @@
 }
 .theme-emerald .text-wedding-burgundy {
   color: #064E3B !important;
+}
+.theme-emerald .border-wedding-burgundy {
+  border-color: #047857 !important;
+}
+.theme-emerald .from-wedding-burgundy {
+  --tw-gradient-from: #063B2C var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(6 59 44 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.theme-emerald .to-\[\#4A1020\] {
+  --tw-gradient-to: #021F17 var(--tw-gradient-to-position) !important;
+}
+.theme-emerald .bg-wedding-rose-50 {
+  background-color: #ECFDF5 !important;
+}
+.theme-emerald .text-wedding-rose-800 {
+  color: #065F46 !important;
+}
+
+.theme-navy .bg-wedding-burgundy {
+  background-color: #0F172A !important;
+}
+.theme-navy .text-wedding-burgundy {
+  color: #0F172A !important;
 }
 
 .theme-lavender .bg-wedding-burgundy {
@@ -176,7 +224,7 @@
 
 .template-vintage {
   /* Vintage Romance */
-  filter: sepia(0.06);
+  filter: sepia(0.04);
 }
 
 .template-modern {
