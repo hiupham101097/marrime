@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   X,
   Lock,
@@ -10,12 +10,15 @@ import {
   Heart,
   Building2,
   Check,
-  AlertCircle,
-  Eye,
   Settings,
-  Users,
+  Music,
+  Mail,
+  Play,
+  Pause,
+  Volume2,
 } from 'lucide-react';
-import { WeddingData, WeddingTheme, WeddingTemplate } from '../../shared/types';
+import { WeddingData, WeddingTheme, WeddingTemplate, EnvelopeStyle } from '../../shared/types';
+import { PRESET_MUSIC_TRACKS } from '../../shared/defaultData';
 
 interface AdminPanelModalProps {
   isOpen: boolean;
@@ -33,10 +36,14 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pin, setPin] = useState('');
   const [pinError, setPinError] = useState('');
-  const [activeTab, setActiveTab] = useState<'couple' | 'event' | 'theme' | 'rsvp'>('couple');
+  const [activeTab, setActiveTab] = useState<'couple' | 'event' | 'envelope' | 'music'>('couple');
   const [formData, setFormData] = useState<WeddingData>({ ...currentData });
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState('');
+
+  // Music preview audio element
+  const [previewPlayingId, setPreviewPlayingId] = useState<string | null>(null);
+  const previewAudioRef = useRef<HTMLAudioElement | null>(null);
 
   if (!isOpen) return null;
 
@@ -46,7 +53,34 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
       setIsAuthenticated(true);
       setPinError('');
     } else {
-      setPinError('Mã PIN không đúng! (Mặc định: 123456)');
+      setPinError('Mã PIN không đúng! (Mã mặc định: 123456)');
+    }
+  };
+
+  const handleTogglePreview = (url?: string, trackId?: string) => {
+    if (!url) return;
+
+    if (previewPlayingId === trackId) {
+      if (previewAudioRef.current) previewAudioRef.current.pause();
+      setPreviewPlayingId(null);
+      return;
+    }
+
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause();
+    }
+
+    try {
+      previewAudioRef.current = new Audio(url);
+      previewAudioRef.current.play().then(() => {
+        setPreviewPlayingId(trackId || 'preview');
+      }).catch(() => {});
+
+      previewAudioRef.current.onended = () => {
+        setPreviewPlayingId(null);
+      };
+    } catch {
+      // Audio fallback
     }
   };
 
@@ -54,6 +88,11 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
     e.preventDefault();
     setIsSaving(true);
     setSaveMessage('');
+
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause();
+      setPreviewPlayingId(null);
+    }
 
     try {
       const res = await fetch('/api/admin/wedding-config', {
@@ -84,7 +123,7 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-950/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-950/85 backdrop-blur-md animate-fadeIn">
       <div className="bg-[#FFFDF9] rounded-3xl w-full max-w-4xl max-h-[92vh] border-2 border-wedding-gold/50 shadow-2xl flex flex-col overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-wedding-burgundy to-[#3A0A17] text-white p-5 px-6 flex items-center justify-between border-b border-wedding-gold/30">
@@ -95,13 +134,16 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                 Bảng Quản Trị Website Cưới
               </h3>
               <p className="text-[11px] text-amber-200/80">
-                Tùy chỉnh thông tin dâu rể, thời gian, sảnh tiệc, tông màu & template
+                Tùy chỉnh phong cách thiệp cưới, nhạc nền, thông tin dâu rể, sảnh cưới & màu sắc
               </p>
             </div>
           </div>
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => {
+              if (previewAudioRef.current) previewAudioRef.current.pause();
+              onClose();
+            }}
             className="p-1.5 rounded-full hover:bg-white/10 text-white/80 hover:text-white transition-colors cursor-pointer"
             aria-label="Đóng"
           >
@@ -174,15 +216,28 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
 
               <button
                 type="button"
-                onClick={() => setActiveTab('theme')}
+                onClick={() => setActiveTab('envelope')}
                 className={`flex items-center space-x-2 px-5 py-3 border-b-2 transition-colors cursor-pointer shrink-0 ${
-                  activeTab === 'theme'
+                  activeTab === 'envelope'
                     ? 'border-wedding-burgundy text-wedding-burgundy bg-white'
                     : 'border-transparent hover:text-stone-900'
                 }`}
               >
-                <Palette className="w-4 h-4 text-wedding-gold" />
-                <span>Form Màu & Template</span>
+                <Mail className="w-4 h-4 text-wedding-gold" />
+                <span>Phong Cách Thiệp & Form Màu</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('music')}
+                className={`flex items-center space-x-2 px-5 py-3 border-b-2 transition-colors cursor-pointer shrink-0 ${
+                  activeTab === 'music'
+                    ? 'border-wedding-burgundy text-wedding-burgundy bg-white'
+                    : 'border-transparent hover:text-stone-900'
+                }`}
+              >
+                <Music className="w-4 h-4 text-wedding-gold" />
+                <span>Đổi Nhạc Nền</span>
               </button>
             </div>
 
@@ -219,17 +274,18 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
 
                       <div>
                         <label className="block text-[11px] font-semibold text-stone-600 uppercase mb-1">
-                          Nghề nghiệp / Chức danh
+                          Tên gọi ngắn gọn (Short name)
                         </label>
                         <input
                           type="text"
-                          value={formData.groom.title}
+                          value={formData.groom.shortName || ''}
                           onChange={(e) =>
                             setFormData({
                               ...formData,
-                              groom: { ...formData.groom, title: e.target.value },
+                              groom: { ...formData.groom, shortName: e.target.value },
                             })
                           }
+                          placeholder="Tuấn Anh"
                           className="w-full px-3.5 py-2 text-xs bg-stone-50 border border-stone-300 rounded-lg focus:ring-2 focus:ring-wedding-rose-400 focus:outline-none"
                         />
                       </div>
@@ -361,17 +417,18 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
 
                       <div>
                         <label className="block text-[11px] font-semibold text-stone-600 uppercase mb-1">
-                          Nghề nghiệp / Chức danh
+                          Tên gọi ngắn gọn (Short name)
                         </label>
                         <input
                           type="text"
-                          value={formData.bride.title}
+                          value={formData.bride.shortName || ''}
                           onChange={(e) =>
                             setFormData({
                               ...formData,
-                              bride: { ...formData.bride, title: e.target.value },
+                              bride: { ...formData.bride, shortName: e.target.value },
                             })
                           }
+                          placeholder="Mai Phương"
                           className="w-full px-3.5 py-2 text-xs bg-stone-50 border border-stone-300 rounded-lg focus:ring-2 focus:ring-wedding-rose-400 focus:outline-none"
                         />
                       </div>
@@ -594,71 +651,125 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                 </div>
               )}
 
-              {/* TAB 3: FORM MÀU & TEMPLATE */}
-              {activeTab === 'theme' && (
+              {/* TAB 3: PHONG CÁCH THIỆP & FORM MÀU */}
+              {activeTab === 'envelope' && (
                 <div className="space-y-8 animate-fadeIn">
-                  {/* Bảng Màu (Themes) */}
+                  {/* Phong Cách Thiệp Cưới Mở Đầu (Envelope Style) */}
+                  <div className="bg-white p-5 sm:p-6 rounded-2xl border border-wedding-gold/30 shadow-sm space-y-4">
+                    <div className="flex items-center space-x-2 font-serif text-lg font-bold text-wedding-burgundy border-b border-stone-100 pb-2">
+                      <Mail className="w-4 h-4 text-wedding-gold" />
+                      <span>Lựa Chọn Phong Cách Thiệp Cưới (Bì Thư Mở Đầu)</span>
+                    </div>
+                    <p className="text-xs text-stone-500 font-light">
+                      Chọn kiểu dáng phong bì và con dấu sáp xuất hiện đầu tiên khi khách mời mở website.
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                      {[
+                        {
+                          id: 'royal_velvet' as EnvelopeStyle,
+                          name: 'Nhung Đỏ Hoàng Gia (Royal Velvet)',
+                          desc: 'Chất liệu nhung đỏ thẫm kiêu sa, góc hoa văn cổ điển và con dấu sáp đỏ dập nổi chữ lồng A&P.',
+                          badge: 'bg-[#5B1E31] text-amber-200 border-amber-300/40',
+                        },
+                        {
+                          id: 'blush_ribbon' as EnvelopeStyle,
+                          name: 'Ruy Băng Lụa & Hồng Phấn (Blush Ribbon)',
+                          desc: 'Sắc hồng pastel ngọt ngào với dải ruy băng lụa thắt nơ mềm mại, con dấu hồng kim dịu dàng.',
+                          badge: 'bg-[#FCE7F0] text-wedding-rose-800 border-wedding-rose-300',
+                        },
+                        {
+                          id: 'modern_minimal' as EnvelopeStyle,
+                          name: 'Tối Giản Ép Kim (Modern Minimal)',
+                          desc: 'Giấy mỹ thuật trắng kem cao cấp, viền đôi ép kim mạ vàng tinh tế, phong cách đương đại.',
+                          badge: 'bg-[#FFFDF9] text-stone-800 border-wedding-gold',
+                        },
+                        {
+                          id: 'emerald_brass' as EnvelopeStyle,
+                          name: 'Ngọc Lục Bảo & Dấu Đồng (Emerald Brass)',
+                          desc: 'Sắc xanh ngọc lục bảo quý tộc kết hợp con dấu sáp vàng đồng hoàng gia uy nghi.',
+                          badge: 'bg-[#064E3B] text-amber-100 border-amber-400',
+                        },
+                      ].map((env) => (
+                        <div
+                          key={env.id}
+                          onClick={() => setFormData({ ...formData, envelopeStyle: env.id })}
+                          className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-start space-x-3 ${
+                            formData.envelopeStyle === env.id
+                              ? 'border-wedding-burgundy bg-wedding-rose-50/70 shadow-md ring-2 ring-wedding-gold/40'
+                              : 'border-stone-200 hover:border-stone-400 bg-stone-50/50'
+                          }`}
+                        >
+                          <div
+                            className={`w-9 h-9 rounded-full border shadow-sm shrink-0 flex items-center justify-center font-bold text-xs ${env.badge}`}
+                          >
+                            {formData.envelopeStyle === env.id ? <Check className="w-4 h-4" /> : '✉'}
+                          </div>
+                          <div>
+                            <h5 className="font-bold text-xs text-stone-900">{env.name}</h5>
+                            <p className="text-[11px] text-stone-600 mt-1 font-light leading-relaxed">
+                              {env.desc}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Form Màu (Color Theme) */}
                   <div className="bg-white p-5 sm:p-6 rounded-2xl border border-wedding-gold/30 shadow-sm space-y-4">
                     <div className="flex items-center space-x-2 font-serif text-lg font-bold text-wedding-burgundy border-b border-stone-100 pb-2">
                       <Palette className="w-4 h-4 text-wedding-gold" />
-                      <span>Thiết Lập Form Màu (Color Theme)</span>
+                      <span>Form Màu Chủ Đạo Của Toàn Website</span>
                     </div>
-                    <p className="text-xs text-stone-500 font-light">
-                      Chọn tông màu chủ đạo cho toàn bộ website cưới. Quan khách khi truy cập sẽ xem trang web với màu sắc bạn đã chọn mà không thể tự thay đổi.
-                    </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 pt-2">
                       {[
                         {
                           id: 'burgundy' as WeddingTheme,
                           name: 'Royal Burgundy',
-                          desc: 'Đỏ rượu vang hoàng gia & nhũ vàng',
+                          desc: 'Đỏ rượu vang & nhũ vàng hoàng gia',
                           color: '#5B1E31',
-                          accent: '#C5A059',
                         },
                         {
                           id: 'rose' as WeddingTheme,
                           name: 'Romantic Rose Gold',
-                          desc: 'Hồng phấn pastel & hoa hồng',
+                          desc: 'Hồng phấn pastel & cánh hoa hồng',
                           color: '#BE185D',
-                          accent: '#F472B6',
                         },
                         {
                           id: 'gold' as WeddingTheme,
                           name: 'Luxury Champagne Gold',
                           desc: 'Vàng ánh kim & kem hoàng tộc',
                           color: '#99732B',
-                          accent: '#E6CF9B',
                         },
                         {
                           id: 'navy' as WeddingTheme,
                           name: 'Classic Royal Navy',
                           desc: 'Xanh navy quý phái & bạc kim',
                           color: '#0F172A',
-                          accent: '#38BDF8',
                         },
                         {
                           id: 'emerald' as WeddingTheme,
                           name: 'Emerald Elegance',
-                          desc: 'Xanh ngọc lục bảo & vàng kim',
+                          desc: 'Xanh ngọc lục bảo quý tộc',
                           color: '#064E3B',
-                          accent: '#34D399',
                         },
                       ].map((t) => (
                         <div
                           key={t.id}
                           onClick={() => setFormData({ ...formData, theme: t.id })}
-                          className={`p-4 rounded-xl border-2 transition-all cursor-pointer flex items-center space-x-3 ${
+                          className={`p-3.5 rounded-xl border-2 transition-all cursor-pointer flex items-center space-x-3 ${
                             formData.theme === t.id
                               ? 'border-wedding-burgundy bg-wedding-rose-50/60 shadow-md ring-2 ring-wedding-gold/40'
                               : 'border-stone-200 hover:border-stone-400 bg-stone-50/50'
                           }`}
                         >
                           <div
-                            className="w-10 h-10 rounded-full shadow-inner shrink-0 flex items-center justify-center text-white"
+                            className="w-9 h-9 rounded-full shadow-inner shrink-0 flex items-center justify-center text-white"
                             style={{ backgroundColor: t.color }}
                           >
-                            {formData.theme === t.id && <Check className="w-5 h-5" />}
+                            {formData.theme === t.id && <Check className="w-4 h-4" />}
                           </div>
                           <div>
                             <h5 className="font-semibold text-xs text-stone-900">{t.name}</h5>
@@ -668,54 +779,112 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                       ))}
                     </div>
                   </div>
+                </div>
+              )}
 
-                  {/* Template Phong Cách */}
+              {/* TAB 4: ĐỔI NHẠC NỀN ĐÁM CƯỚI */}
+              {activeTab === 'music' && (
+                <div className="space-y-6 animate-fadeIn">
                   <div className="bg-white p-5 sm:p-6 rounded-2xl border border-wedding-gold/30 shadow-sm space-y-4">
                     <div className="flex items-center space-x-2 font-serif text-lg font-bold text-wedding-burgundy border-b border-stone-100 pb-2">
-                      <Layout className="w-4 h-4 text-wedding-gold" />
-                      <span>Thiết Lập Phong Cách Template</span>
+                      <Music className="w-4 h-4 text-wedding-gold" />
+                      <span>Chọn Bản Nhạc Nền Tuyển Chọn</span>
+                    </div>
+                    <p className="text-xs text-stone-500 font-light">
+                      Chọn bài nhạc cưới lãng mạn phát tự động khi khách mở thiệp. Bạn có thể bấm nút <Volume2 className="w-3.5 h-3.5 inline mx-0.5 text-wedding-burgundy" /> để nghe thử trực tiếp.
+                    </p>
+
+                    <div className="space-y-3 pt-2">
+                      {PRESET_MUSIC_TRACKS.map((track) => {
+                        const isSelected = formData.music.trackId === track.trackId;
+                        const isPreviewPlaying = previewPlayingId === track.trackId;
+
+                        return (
+                          <div
+                            key={track.trackId}
+                            onClick={() =>
+                              setFormData({
+                                ...formData,
+                                music: {
+                                  ...track,
+                                  url: track.trackId === 'custom' ? formData.music.url || '' : track.url,
+                                },
+                              })
+                            }
+                            className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between ${
+                              isSelected
+                                ? 'border-wedding-burgundy bg-wedding-rose-50/70 shadow-md ring-2 ring-wedding-gold/40'
+                                : 'border-stone-200 hover:border-stone-400 bg-stone-50/50'
+                            }`}
+                          >
+                            <div className="flex items-center space-x-3">
+                              <div
+                                className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
+                                  isSelected
+                                    ? 'bg-wedding-burgundy text-wedding-gold-light'
+                                    : 'bg-stone-200 text-stone-600'
+                                }`}
+                              >
+                                {isSelected ? <Check className="w-4 h-4" /> : <Music className="w-4 h-4" />}
+                              </div>
+                              <div>
+                                <h5 className="font-bold text-xs text-stone-900">{track.title}</h5>
+                                <p className="text-[11px] text-stone-500">{track.artist}</p>
+                              </div>
+                            </div>
+
+                            {/* Preview Audio Play/Pause Button */}
+                            {track.url && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleTogglePreview(track.url, track.trackId);
+                                }}
+                                className={`p-2 rounded-full border transition-all cursor-pointer ${
+                                  isPreviewPlaying
+                                    ? 'bg-wedding-rose-600 text-white border-wedding-rose-600 shadow'
+                                    : 'bg-white hover:bg-stone-100 text-stone-700 border-stone-300'
+                                }`}
+                                title={isPreviewPlaying ? 'Dừng nghe thử' : 'Nghe thử'}
+                              >
+                                {isPreviewPlaying ? (
+                                  <Pause className="w-3.5 h-3.5" />
+                                ) : (
+                                  <Play className="w-3.5 h-3.5 fill-current" />
+                                )}
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                      {[
-                        {
-                          id: 'royal' as WeddingTemplate,
-                          name: 'Royal Heritage (Hoàng Gia)',
-                          desc: 'Phong bì nhung đính dấu sáp, viền vàng dập nổi & hào quang cặp nhẫn',
-                        },
-                        {
-                          id: 'modern' as WeddingTemplate,
-                          name: 'Modern Romance (Lãng Mạn Hiện Đại)',
-                          desc: 'Giao diện mượt mà, album ảnh điện ảnh & bảng màu tinh gọn',
-                        },
-                        {
-                          id: 'classic' as WeddingTemplate,
-                          name: 'Classic Grace (Cổ Điển Thanh Lịch)',
-                          desc: 'Hoa văn cung đình truyền thống, nét thư pháp tao nhã',
-                        },
-                      ].map((tpl) => (
-                        <div
-                          key={tpl.id}
-                          onClick={() => setFormData({ ...formData, template: tpl.id })}
-                          className={`p-4 rounded-xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
-                            formData.template === tpl.id
-                              ? 'border-wedding-burgundy bg-wedding-rose-50/60 shadow-md ring-2 ring-wedding-gold/40'
-                              : 'border-stone-200 hover:border-stone-400 bg-stone-50/50'
-                          }`}
-                        >
-                          <div>
-                            <div className="flex items-center justify-between mb-1.5">
-                              <h5 className="font-semibold text-xs text-stone-900">{tpl.name}</h5>
-                              {formData.template === tpl.id && (
-                                <Check className="w-4 h-4 text-wedding-burgundy" />
-                              )}
-                            </div>
-                            <p className="text-[11px] text-stone-600 font-light leading-relaxed">
-                              {tpl.desc}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
+                    {/* Custom MP3 Audio URL Input */}
+                    <div className="pt-4 border-t border-stone-100 space-y-2">
+                      <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider">
+                        Đường dẫn link MP3 tự tải lên (Nếu muốn dùng bài hát khác):
+                      </label>
+                      <input
+                        type="url"
+                        value={formData.music.url || ''}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            music: {
+                              trackId: 'custom',
+                              title: formData.music.title || 'Nhạc cưới theo yêu cầu',
+                              artist: 'Tự tải lên',
+                              url: e.target.value,
+                            },
+                          })
+                        }
+                        placeholder="https://example.com/my-wedding-song.mp3"
+                        className="w-full px-4 py-2.5 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-wedding-rose-400 focus:outline-none text-stone-800"
+                      />
+                      <p className="text-[11px] text-stone-400 italic">
+                        * Mẹo: Bạn có thể dán link tệp âm thanh trực tiếp (.mp3 / .wav) từ máy chủ lưu trữ hoặc các trang nhạc đám mây.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -735,7 +904,10 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                 <div className="flex items-center space-x-3">
                   <button
                     type="button"
-                    onClick={onClose}
+                    onClick={() => {
+                      if (previewAudioRef.current) previewAudioRef.current.pause();
+                      onClose();
+                    }}
                     className="px-5 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
                   >
                     Đóng

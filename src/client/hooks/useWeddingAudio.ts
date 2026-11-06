@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
+import { WeddingMusicConfig } from '../../shared/types';
 
-export function useWeddingAudio() {
+export function useWeddingAudio(musicConfig?: WeddingMusicConfig) {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const intervalRef = useRef<number | null>(null);
   const currentNoteIndexRef = useRef<number>(0);
+  const htmlAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // Romantic wedding progression frequencies (Canon in D / Wedding Melody)
   const melodyNotes = [
@@ -148,7 +150,27 @@ export function useWeddingAudio() {
     }
   };
 
+  // Start music playback (Supports MP3 stream or Synth fallback)
   const startMusic = async () => {
+    const hasExternalUrl = Boolean(musicConfig?.url && musicConfig.url.trim().length > 5);
+
+    if (hasExternalUrl) {
+      try {
+        if (!htmlAudioRef.current || htmlAudioRef.current.src !== musicConfig!.url) {
+          if (htmlAudioRef.current) htmlAudioRef.current.pause();
+          htmlAudioRef.current = new Audio(musicConfig!.url);
+          htmlAudioRef.current.loop = true;
+        }
+        htmlAudioRef.current.muted = isMuted;
+        await htmlAudioRef.current.play();
+        setIsPlaying(true);
+        return;
+      } catch {
+        // Fallback to synth if external audio fails or blocked
+      }
+    }
+
+    // Synth fallback
     try {
       await ensureAudioContext();
       setIsPlaying(true);
@@ -167,6 +189,9 @@ export function useWeddingAudio() {
 
   const pauseMusic = () => {
     setIsPlaying(false);
+    if (htmlAudioRef.current) {
+      htmlAudioRef.current.pause();
+    }
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -181,8 +206,28 @@ export function useWeddingAudio() {
     }
   };
 
+  const toggleMute = () => {
+    const nextMuted = !isMuted;
+    setIsMuted(nextMuted);
+    if (htmlAudioRef.current) {
+      htmlAudioRef.current.muted = nextMuted;
+    }
+  };
+
+  // Reload audio when music config changes
+  useEffect(() => {
+    if (isPlaying) {
+      pauseMusic();
+      startMusic();
+    }
+  }, [musicConfig?.url, musicConfig?.trackId]);
+
   useEffect(() => {
     return () => {
+      if (htmlAudioRef.current) {
+        htmlAudioRef.current.pause();
+        htmlAudioRef.current = null;
+      }
       if (intervalRef.current) clearInterval(intervalRef.current);
       if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
         audioCtxRef.current.close().catch(() => {});
@@ -194,9 +239,11 @@ export function useWeddingAudio() {
     isPlaying,
     isMuted,
     setIsMuted,
+    toggleMute,
     startMusic,
     pauseMusic,
     toggleMusic,
     playEnvelopeOpeningSound,
+    currentTrackTitle: musicConfig?.title || 'Canon in D (Acoustic Piano & Harp)',
   };
 }

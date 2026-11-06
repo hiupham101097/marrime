@@ -1,8 +1,43 @@
-import { WeddingData, WishMessage } from './types';
+import { WeddingData, WishMessage, WeddingMusicConfig } from './types';
+
+export const PRESET_MUSIC_TRACKS: WeddingMusicConfig[] = [
+  {
+    trackId: 'canon_in_d',
+    title: 'Canon in D (Acoustic Piano & Harp Hòa Tấu)',
+    artist: 'Johann Pachelbel',
+    url: '', // Uses built-in synthesized harp & acoustic piano
+  },
+  {
+    trackId: 'a_thousand_years',
+    title: 'A Thousand Years (Violin & Piano Hòa Tấu)',
+    artist: 'The Piano Guys / Christina Perri',
+    url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-wedding-love-112199.mp3',
+  },
+  {
+    trackId: 'beautiful_in_white',
+    title: 'Beautiful In White (Acoustic Guitar & Piano)',
+    artist: 'Shane Filan',
+    url: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=wedding-melody-acoustic-10255.mp3',
+  },
+  {
+    trackId: 'until_i_found_you',
+    title: 'Until I Found You (Dreamy Romantic Strings)',
+    artist: 'Stephen Sanchez',
+    url: 'https://cdn.pixabay.com/download/audio/2023/02/28/audio_550e55711b.mp3?filename=gentle-wedding-acoustic-140885.mp3',
+  },
+  {
+    trackId: 'custom',
+    title: 'Nhạc MP3 Tùy Chỉnh Của Dâu Rể',
+    artist: 'Tự Tải Lên / Tự Nhập Link',
+    url: '',
+  },
+];
 
 export const DEFAULT_WEDDING_DATA: WeddingData = {
   theme: 'burgundy',
   template: 'royal',
+  envelopeStyle: 'royal_velvet',
+  music: PRESET_MUSIC_TRACKS[0],
   groom: {
     role: 'Chú Rể',
     name: 'Nguyễn Tuấn Anh',

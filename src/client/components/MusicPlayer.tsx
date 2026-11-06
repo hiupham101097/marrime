@@ -6,6 +6,7 @@ interface MusicPlayerProps {
   isMuted: boolean;
   onTogglePlay: () => void;
   onToggleMute: () => void;
+  trackTitle?: string;
 }
 
 export const MusicPlayer: React.FC<MusicPlayerProps> = ({
@@ -13,9 +14,10 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
   isMuted,
   onTogglePlay,
   onToggleMute,
+  trackTitle = 'Canon in D (Acoustic)',
 }) => {
   return (
-    <div className="fixed bottom-4 left-4 z-40 flex items-center bg-white/90 backdrop-blur-md border border-wedding-gold/40 shadow-luxury rounded-full p-1.5 pr-4 space-x-3 transition-all hover:shadow-glow">
+    <div className="fixed bottom-4 left-4 z-40 flex items-center bg-white/95 backdrop-blur-md border-2 border-wedding-gold/50 shadow-luxury rounded-full p-1.5 pr-4 space-x-3 transition-all hover:shadow-glow">
       {/* Vinyl Disc Animation */}
       <button
         type="button"
@@ -31,11 +33,11 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
       </button>
 
       {/* Info & Equalizer */}
-      <div className="hidden sm:flex flex-col text-left">
-        <span className="text-[11px] font-semibold text-stone-800 tracking-tight leading-none">
-          Canon in D (Acoustic)
+      <div className="hidden sm:flex flex-col text-left max-w-[170px] overflow-hidden">
+        <span className="text-[11px] font-bold text-stone-800 tracking-tight leading-none truncate" title={trackTitle}>
+          {trackTitle}
         </span>
-        <span className="text-[9px] text-wedding-rose-600 font-medium leading-tight mt-0.5">
+        <span className="text-[9px] text-wedding-rose-600 font-semibold leading-tight mt-0.5">
           {isPlaying ? 'Đang phát nhạc cưới' : 'Nhấp để bật nhạc'}
         </span>
       </div>
@@ -72,4 +74,3 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     </div>
   );
 };
-

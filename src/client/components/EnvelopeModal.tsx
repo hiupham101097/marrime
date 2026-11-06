@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
-import { Heart, Sparkles, Crown } from 'lucide-react';
-import { GuestInfo } from '../../shared/types';
+import { Heart, Sparkles, Crown, Feather, Flower2 } from 'lucide-react';
+import { GuestInfo, EnvelopeStyle } from '../../shared/types';
 import { ROLE_CONFIG } from '../hooks/useGuestInfo';
 
 interface EnvelopeModalProps {
@@ -12,6 +12,7 @@ interface EnvelopeModalProps {
   brideName: string;
   weddingDateFormatted: string;
   playOpenSound?: () => void;
+  envelopeStyle?: EnvelopeStyle;
 }
 
 export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
@@ -22,6 +23,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   brideName,
   weddingDateFormatted,
   playOpenSound,
+  envelopeStyle = 'royal_velvet',
 }) => {
   const [isOpening, setIsOpening] = useState(false);
 
@@ -36,7 +38,6 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
       playOpenSound();
     }
 
-    // Festive royal fireworks & heart confetti
     try {
       // Golden star burst
       confetti({
@@ -84,21 +85,76 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
 
   if (!isOpen) return null;
 
+  // Style configurations for the 4 envelope designs
+  const getStyleConfigs = () => {
+    switch (envelopeStyle) {
+      case 'blush_ribbon':
+        return {
+          wrapperBg: 'bg-gradient-to-br from-[#FCE7F0] via-[#FAD9DF] to-[#F5B8C4]',
+          borderColor: 'border-wedding-rose-400/80',
+          sealBg: 'radial-gradient(circle at 35% 35%, #F472B6 0%, #DB2777 55%, #9D174D 100%)',
+          ribbonVisible: true,
+          badgeColor: 'text-wedding-rose-800 bg-white/70 border-wedding-rose-300',
+          titleColor: 'text-wedding-rose-900',
+          btnBg: 'bg-gradient-to-r from-wedding-rose-700 to-wedding-rose-500',
+        };
+      case 'modern_minimal':
+        return {
+          wrapperBg: 'bg-gradient-to-br from-[#FAF8F5] via-[#FFFDF9] to-[#F4ECE1]',
+          borderColor: 'border-wedding-gold/60',
+          sealBg: 'radial-gradient(circle at 35% 35%, #D4AF37 0%, #AA771C 60%, #5E3D0A 100%)',
+          ribbonVisible: false,
+          badgeColor: 'text-wedding-gold-dark bg-wedding-cream border-wedding-gold/40',
+          titleColor: 'text-stone-900',
+          btnBg: 'bg-gradient-to-r from-stone-900 via-stone-800 to-stone-900',
+        };
+      case 'emerald_brass':
+        return {
+          wrapperBg: 'bg-gradient-to-br from-[#064E3B] via-[#022C22] to-[#041D17]',
+          borderColor: 'border-amber-400/70',
+          sealBg: 'radial-gradient(circle at 35% 35%, #F59E0B 0%, #D97706 50%, #92400E 100%)',
+          ribbonVisible: false,
+          badgeColor: 'text-emerald-900 bg-emerald-50 border-emerald-300',
+          titleColor: 'text-emerald-950',
+          btnBg: 'bg-gradient-to-r from-[#064E3B] via-[#047857] to-[#064E3B]',
+        };
+      default: // 'royal_velvet'
+        return {
+          wrapperBg: 'bg-gradient-to-br from-[#4A1020] via-[#5B1E31] to-[#340914]',
+          borderColor: 'border-wedding-gold/70',
+          sealBg: 'radial-gradient(circle at 35% 35%, #DE5B78 0%, #B82A4C 45%, #75142B 80%, #4A0B1B 100%)',
+          ribbonVisible: false,
+          badgeColor: 'text-wedding-gold-dark bg-wedding-cream border-wedding-gold/40',
+          titleColor: 'text-wedding-burgundy',
+          btnBg: 'bg-gradient-to-r from-wedding-rose-800 via-wedding-rose-700 to-wedding-burgundy',
+        };
+    }
+  };
+
+  const styleConfig = getStyleConfigs();
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/85 backdrop-blur-md transition-all duration-700 animate-fadeIn">
       {/* Background ambient lighting */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-wedding-rose-600/25 rounded-full blur-[100px] animate-pulse-subtle" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-amber-500/20 rounded-full blur-[100px] animate-pulse-subtle" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-wedding-rose-600/20 rounded-full blur-[100px] animate-pulse-subtle" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-amber-500/15 rounded-full blur-[100px] animate-pulse-subtle" />
       </div>
 
       <div className="relative w-full max-w-xl mx-auto">
-        {/* Royal Velvet Envelope Wrapper */}
+        {/* Envelope Outer Wrapper */}
         <div
-          className={`relative bg-gradient-to-br from-[#4A1020] via-[#5B1E31] to-[#340914] rounded-3xl shadow-2xl p-2 sm:p-3 transition-transform duration-700 ornate-box gold-glow ${
+          className={`relative ${styleConfig.wrapperBg} rounded-3xl shadow-2xl p-2 sm:p-3 transition-transform duration-700 border-2 ${styleConfig.borderColor} gold-glow ${
             isOpening ? 'scale-105' : 'hover:scale-[1.01]'
           }`}
         >
+          {/* Silk Ribbon Cross Band (If Blush Ribbon style) */}
+          {styleConfig.ribbonVisible && (
+            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-8 bg-wedding-rose-300/80 border-y border-white/50 pointer-events-none z-20 flex items-center justify-center ribbon-wave">
+              <span className="w-6 h-6 rounded-full bg-white/90 border border-wedding-rose-300 shadow-sm" />
+            </div>
+          )}
+
           {/* Golden Vintage Corner Ornaments */}
           <div className="absolute top-3 left-3 w-8 h-8 border-t-2 border-l-2 border-wedding-gold/70 rounded-tl-lg pointer-events-none" />
           <div className="absolute top-3 right-3 w-8 h-8 border-t-2 border-r-2 border-wedding-gold/70 rounded-tr-lg pointer-events-none" />
@@ -126,7 +182,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
             <p className="relative z-10 text-[11px] uppercase tracking-[0.3em] text-wedding-gold-dark font-semibold mb-1">
               TRÂN TRỌNG BÁO HỶ • THIỆP MỜI TRÂN QUÝ
             </p>
-            <h1 className="relative z-10 font-serif text-2xl sm:text-3xl text-wedding-burgundy font-normal tracking-wide">
+            <h1 className={`relative z-10 font-serif text-2xl sm:text-3xl ${styleConfig.titleColor} font-normal tracking-wide`}>
               Wedding Invitation
             </h1>
 
@@ -167,10 +223,13 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                 type="button"
                 onClick={handleOpen}
                 disabled={isOpening}
-                className="group relative flex items-center justify-center space-x-3.5 px-8 py-3.5 bg-gradient-to-r from-wedding-rose-800 via-wedding-rose-700 to-wedding-burgundy text-white rounded-full shadow-2xl hover:shadow-glow hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-wedding-gold/60 cursor-pointer"
+                className={`group relative flex items-center justify-center space-x-3.5 px-8 py-3.5 ${styleConfig.btnBg} text-white rounded-full shadow-2xl hover:shadow-glow hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-wedding-gold/60 cursor-pointer`}
               >
                 {/* 3D Wax seal emblem */}
-                <span className="w-9 h-9 rounded-full wax-seal flex items-center justify-center text-xs font-serif font-black text-amber-100 shadow-md border border-amber-300/60 ring-2 ring-amber-400/20">
+                <span
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-serif font-black text-amber-100 shadow-md border border-amber-300/60 ring-2 ring-amber-400/20"
+                  style={{ background: styleConfig.sealBg }}
+                >
                   A&P
                 </span>
                 <span className="font-semibold tracking-wide text-sm sm:text-base text-amber-50">

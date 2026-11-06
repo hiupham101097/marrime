@@ -70,10 +70,20 @@ export interface WeddingEventSchedule {
 
 export type WeddingTheme = 'burgundy' | 'rose' | 'gold' | 'navy' | 'emerald';
 export type WeddingTemplate = 'royal' | 'modern' | 'classic';
+export type EnvelopeStyle = 'royal_velvet' | 'blush_ribbon' | 'modern_minimal' | 'emerald_brass';
+
+export interface WeddingMusicConfig {
+  trackId: string;
+  title: string;
+  artist: string;
+  url?: string;
+}
 
 export interface WeddingData {
   theme: WeddingTheme;
   template: WeddingTemplate;
+  envelopeStyle: EnvelopeStyle;
+  music: WeddingMusicConfig;
   groom: CoupleMember;
   bride: CoupleMember;
   weddingDate: string; // ISO string for countdown

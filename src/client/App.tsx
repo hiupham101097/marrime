@@ -32,8 +32,8 @@ export const App: React.FC = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const { guest } = useGuestInfo();
-  const { isPlaying, isMuted, setIsMuted, startMusic, toggleMusic, playEnvelopeOpeningSound } =
-    useWeddingAudio();
+  const { isPlaying, isMuted, toggleMute, startMusic, toggleMusic, playEnvelopeOpeningSound, currentTrackTitle } =
+    useWeddingAudio(weddingData.music);
 
   // Fetch live wedding data from Backend API
   useEffect(() => {
@@ -109,6 +109,7 @@ export const App: React.FC = () => {
         brideName={weddingData.bride.name}
         weddingDateFormatted={weddingData.weddingDateFormatted}
         playOpenSound={playEnvelopeOpeningSound}
+        envelopeStyle={weddingData.envelopeStyle}
       />
 
       {/* Floating Rose Petals & Golden Stardust & Mouse Trail Canvas */}
@@ -119,7 +120,8 @@ export const App: React.FC = () => {
         isPlaying={isPlaying}
         isMuted={isMuted}
         onTogglePlay={toggleMusic}
-        onToggleMute={() => setIsMuted(!isMuted)}
+        onToggleMute={toggleMute}
+        trackTitle={weddingData.music?.title || currentTrackTitle}
       />
 
       {/* Floating Action Buttons (Top Right) */}
