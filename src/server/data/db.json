@@ -1,0 +1,52 @@
+{
+  "rsvps": [
+    {
+      "guestName": "Anh Nam",
+      "role": "anh",
+      "attending": "yes",
+      "attendeesCount": 2,
+      "phone": "0901234567",
+      "message": "Ch�c hai em tram nam vi�n m�n!",
+      "id": "rsvp-1793935856025-l9q6u",
+      "createdAt": "2026-11-06T03:30:56.025Z"
+    }
+  ],
+  "wishes": [
+    {
+      "name": "Anh Nam",
+      "relationRole": "Anh/Chị",
+      "content": "Ch�c hai em tram nam vi�n m�n!",
+      "badge": "Xác nhận tham dự",
+      "id": "wish-1793935856026-w0lfo",
+      "createdAt": "Vừa xong",
+      "heartCount": 1
+    },
+    {
+      "id": "wish-1",
+      "name": "Bác Quang & Bác Lan",
+      "relationRole": "Đại diện gia đình",
+      "content": "Chúc hai cháu trăm năm hạnh phúc, răng long đầu bạc! Chúc cho mái ấm nhỏ luôn đầy ắp tình yêu thương, thuận hòa và sớm đón tin vui nhé.",
+      "createdAt": "Hôm nay lúc 09:30",
+      "heartCount": 18,
+      "badge": "Gia đình"
+    },
+    {
+      "id": "wish-2",
+      "name": "Anh Hoàng (Team Tech)",
+      "relationRole": "Đồng nghiệp",
+      "content": "Chúc mừng người anh em chí cốt đã chính thức có bến đỗ an toàn! Chúc hai vợ chồng luôn đồng hành, cùng nhau chinh phục mọi ước mơ nhé!",
+      "createdAt": "Hôm qua lúc 21:15",
+      "heartCount": 12,
+      "badge": "Đồng nghiệp"
+    },
+    {
+      "id": "wish-3",
+      "name": "Thùy Chi (Hội Bạn Thân)",
+      "relationRole": "Bạn thân cô dâu",
+      "content": "Nhìn thấy Mai Phương xinh đẹp trong chiếc váy cưới lộng lẫy và nụ cười rạng rỡ của hai bạn, mình xúc động lắm. Mãi mãi ngọt ngào như ngày đầu nhé đôi bạn tuyệt vời!",
+      "createdAt": "Hôm qua lúc 19:40",
+      "heartCount": 24,
+      "badge": "Bạn thân"
+    }
+  ]
+}

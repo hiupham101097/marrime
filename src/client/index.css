@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #292524;
+    background-color: #FAF8F5;
+  }
+}
+
+/* Custom luxury scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF8F5;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #E6CF9B, #C5A059);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #C5A059, #99732B);
+}
+
+/* Luxury Royal Gold Gradients & Foils */
+.gold-foil {
+  background: linear-gradient(
+    135deg,
+    #cf9537 0%,
+    #fbf5b7 25%,
+    #daa520 50%,
+    #fff3a8 75%,
+    #aa771c 100%
+  );
+  background-size: 200% auto;
+  animation: shine 4s linear infinite;
+}
+
+.gold-border {
+  border-image: linear-gradient(to bottom right, #fbf5b7, #c5a059, #8c6b23, #fbf5b7) 1;
+}
+
+.gold-glow {
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.35), inset 0 0 15px rgba(255, 243, 168, 0.2);
+}
+
+/* Luxury Paper Texture with Embossing */
+.paper-luxury {
+  background-color: #FFFDF9;
+  background-image: 
+    radial-gradient(#F4ECE1 0.8px, transparent 0.8px),
+    radial-gradient(#FAF3E8 0.8px, #FFFDF9 0.8px);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+}
+
+/* Wax seal 3D emblem */
+.wax-seal {
+  background: radial-gradient(circle at 35% 35%, #DE5B78 0%, #B82A4C 45%, #75142B 80%, #4A0B1B 100%);
+  box-shadow: 
+    0 8px 25px rgba(91, 30, 49, 0.45),
+    inset 0 3px 6px rgba(255, 255, 255, 0.4),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Golden text gradient */
+.text-gold-luxury {
+  background: linear-gradient(135deg, #A2682A 0%, #D8A051 25%, #FFF0AA 50%, #D8A051 75%, #8B541E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Golden shimmer effect on cards */
+@keyframes shimmerGold {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-gold-effect {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(243, 229, 171, 0.35) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerGold 5s infinite;
+}
+
+/* Double Ornate Border */
+.ornate-box {
+  position: relative;
+  border: 1px solid rgba(197, 160, 89, 0.4);
+}
+.ornate-box::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(197, 160, 89, 0.2);
+  pointer-events: none;
+}
+
+/* Interlocking Rings Halo Pulse */
+@keyframes ringPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(222, 91, 120, 0.6)) drop-shadow(0 0 20px rgba(197, 160, 89, 0.4));
+  }
+  50% {
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 18px rgba(222, 91, 120, 0.8)) drop-shadow(0 0 30px rgba(197, 160, 89, 0.6));
+  }
+}
+
+.rings-halo {
+  animation: ringPulse 3s ease-in-out infinite;
+}
+
+/* Silk ribbon flutter animation */
+@keyframes ribbonWave {
+  0%, 100% { transform: rotate(0deg) skew(0deg); }
+  50% { transform: rotate(1.5deg) skew(1deg); }
+}
+
+.ribbon-wave {
+  animation: ribbonWave 4s ease-in-out infinite;
+}
