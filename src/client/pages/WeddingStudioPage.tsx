@@ -37,6 +37,9 @@ import {
   Gift,
   ShieldCheck,
   SlidersHorizontal,
+  Coffee,
+  KeyRound,
+  Key,
 } from 'lucide-react';
 import {
   WeddingData,
@@ -58,13 +61,22 @@ import {
   SAMPLE_PHOTO_LIBRARY,
   DEFAULT_SECTIONS_CONFIG,
   DEFAULT_DONATE_CONFIG,
+  AUTHOR_DONATE_CONFIG,
+  PRESET_WEDDING_PROJECTS,
 } from '../../shared/defaultData';
 import { ImageSelector } from '../components/ImageSelector';
 
 export const WeddingStudioPage: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [pin, setPin] = useState('');
-  const [pinError, setPinError] = useState('');
+  // Free & open access: No login gate needed!
+  const [editingPin, setEditingPin] = useState('');
+  const [copiedPin, setCopiedPin] = useState(false);
+  const [copiedAuthorBank, setCopiedAuthorBank] = useState(false);
+
+  // Lookup existing wedding project modal state
+  const [isLookupModalOpen, setIsLookupModalOpen] = useState(false);
+  const [lookupCodeInput, setLookupCodeInput] = useState('');
+  const [lookupError, setLookupError] = useState('');
+  const [isLookingUp, setIsLookingUp] = useState(false);
 
   // Active studio tab
   const [activeTab, setActiveTab] = useState<
@@ -107,20 +119,53 @@ export const WeddingStudioPage: React.FC = () => {
   const [copiedGuestLink, setCopiedGuestLink] = useState(false);
   const [copiedZaloText, setCopiedZaloText] = useState(false);
 
-  // Load existing wedding data on mount
+  // Load wedding data or template preset on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const slugParam = params.get('w') || 'tuan-anh-mai-phuong';
-    setWeddingSlug(slugParam);
+    const templateParam = params.get('template') as WeddingTemplate;
+    const slugParam = params.get('w') || params.get('slug');
+    const codeParam = params.get('code') || params.get('pin');
 
-    fetch(`/api/wedding-info?w=${slugParam}`)
-      .then((res) => res.json())
-      .then((res) => {
-        if (res && res.success && res.data) {
-          setFormData(res.data);
-        }
+    // 1. If user entered with a template (e.g. from Landing Page)
+    if (templateParam) {
+      if (templateParam === 'fairytale' && PRESET_WEDDING_PROJECTS['blush_ribbon']) {
+        setFormData(PRESET_WEDDING_PROJECTS['blush_ribbon']);
+      } else if (templateParam === 'modern' && PRESET_WEDDING_PROJECTS['modern_minimal']) {
+        setFormData(PRESET_WEDDING_PROJECTS['modern_minimal']);
+      } else if (templateParam === 'vintage' && PRESET_WEDDING_PROJECTS['emerald_brass']) {
+        setFormData(PRESET_WEDDING_PROJECTS['emerald_brass']);
+      } else if (templateParam === 'royal' && PRESET_WEDDING_PROJECTS['royal_velvet']) {
+        setFormData(PRESET_WEDDING_PROJECTS['royal_velvet']);
+      }
+    }
+
+    // 2. If user entered with a code / pin to edit
+    if (codeParam) {
+      fetch('/api/weddings/lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: codeParam.trim() }),
       })
-      .catch(() => {});
+        .then((res) => res.json())
+        .then((json) => {
+          if (json && json.success && json.data) {
+            setWeddingSlug(json.slug);
+            setFormData(json.data);
+            if (json.secretPin) setEditingPin(json.secretPin);
+          }
+        })
+        .catch(() => {});
+    } else if (slugParam) {
+      setWeddingSlug(slugParam);
+      fetch(`/api/wedding-info?w=${encodeURIComponent(slugParam)}`)
+        .then((res) => res.json())
+        .then((res) => {
+          if (res && res.success && res.data) {
+            setFormData(res.data);
+          }
+        })
+        .catch(() => {});
+    }
 
     // Fetch RSVP list
     fetch('/api/rsvp')
@@ -133,13 +178,33 @@ export const WeddingStudioPage: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Lookup existing card by code / slug
+  const handleLookupCode = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pin === '123456') {
-      setIsAuthenticated(true);
-      setPinError('');
-    } else {
-      setPinError('Mã PIN không đúng! (Mã mặc định dành cho Dâu Rể: 123456)');
+    if (!lookupCodeInput.trim()) return;
+
+    setIsLookingUp(true);
+    setLookupError('');
+    try {
+      const res = await fetch('/api/weddings/lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: lookupCodeInput.trim() }),
+      });
+      const json = await res.json();
+      if (res.ok && json.success && json.data) {
+        setWeddingSlug(json.slug);
+        setFormData(json.data);
+        setEditingPin(json.secretPin || '');
+        setIsLookupModalOpen(false);
+        setPreviewKey((k) => k + 1);
+      } else {
+        setLookupError(json.message || 'Không tìm thấy thiệp cưới tương ứng với mã này.');
+      }
+    } catch {
+      setLookupError('Lỗi kết nối máy chủ. Vui lòng thử lại!');
+    } finally {
+      setIsLookingUp(false);
     }
   };
 
@@ -169,13 +234,30 @@ export const WeddingStudioPage: React.FC = () => {
     setIsPublishing(true);
     setPublishMessage('');
 
+    // Generate or keep clean slug
+    const cleanGroom = formData.groom.shortName || formData.groom.name;
+    const cleanBride = formData.bride.shortName || formData.bride.name;
+    const computedSlug =
+      weddingSlug && weddingSlug !== 'tuan-anh-mai-phuong'
+        ? weddingSlug
+        : `${cleanGroom}-${cleanBride}`
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9_-]/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-|-$/g, '') || 'wedding-' + Date.now();
+
+    // Generate easy-to-remember pin if not set yet
+    const pinToUse = editingPin || 'MAR-' + Math.floor(1000 + Math.random() * 9000);
+
     try {
       const res = await fetch('/api/weddings/publish', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          slug: weddingSlug,
-          secretPin: pin || '123456',
+          slug: computedSlug,
+          secretPin: pinToUse,
           config: formData,
         }),
       });
@@ -183,15 +265,23 @@ export const WeddingStudioPage: React.FC = () => {
       const json = await res.json();
       if (res.ok && json.success) {
         if (json.slug) setWeddingSlug(json.slug);
-        setPublishMessage('Đã lưu vào cơ sở dữ liệu và xuất bản thành công!');
+        const finalPin = json.secretPin || pinToUse;
+        setEditingPin(finalPin);
+        setPublishMessage('Đã lưu thiệp cưới thành công!');
         setIsPublishModalOpen(true);
         setPreviewKey((k) => k + 1);
+
+        try {
+          localStorage.setItem('marrime_saved_slug', json.slug || computedSlug);
+          localStorage.setItem('marrime_saved_pin', finalPin);
+        } catch {}
       } else {
         setPublishMessage(json.message || 'Lỗi khi xuất bản.');
         setIsPublishModalOpen(true);
       }
     } catch {
-      setPublishMessage('Đã lưu cấu hình vào bộ nhớ trình duyệt!');
+      setEditingPin(pinToUse);
+      setPublishMessage('Đã lưu thiệp cưới vào bộ nhớ trình duyệt!');
       setIsPublishModalOpen(true);
     } finally {
       setIsPublishing(false);
@@ -258,132 +348,97 @@ export const WeddingStudioPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-stone-900 text-stone-100 flex flex-col font-sans">
-      {/* 1. AUTHENTICATION LOCK SCREEN */}
-      {!isAuthenticated ? (
-        <div className="flex-1 flex items-center justify-center p-4">
-          <div className="bg-[#1C1917] border-2 border-wedding-gold/40 rounded-3xl p-8 sm:p-12 max-w-md w-full text-center space-y-6 shadow-2xl">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-wedding-burgundy to-[#4A1020] border-2 border-wedding-gold/60 text-wedding-gold-light flex items-center justify-center font-serif text-xl font-bold mx-auto shadow-luxury">
+      {/* THE DEDICATED MARRIME STUDIO WORKSPACE (OPEN & FREE ACCESS) */}
+      <div className="flex-1 flex flex-col h-screen overflow-hidden">
+        {/* Top Global Studio Navigation Bar */}
+        <header className="h-16 bg-stone-950 border-b border-stone-800 px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-30">
+          {/* Left: Brand & Wedding Project Slug */}
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-wedding-burgundy to-[#4A1020] text-wedding-gold-light border border-wedding-gold/60 flex items-center justify-center font-serif text-xs font-bold shadow-sm">
               A&P
             </div>
             <div>
-              <span className="text-[11px] font-bold tracking-[0.25em] text-wedding-gold uppercase block mb-1">
-                MARRIME WEDDING STUDIO
-              </span>
-              <h2 className="font-serif text-2xl font-bold text-white">
-                Không Gian Sáng Tạo Dành Cho Dâu & Rể
-              </h2>
-              <p className="text-xs text-stone-400 mt-2 leading-relaxed">
-                Trang này được cấp riêng cho hai bạn để tự tay thiết kế phong cách, màu sắc, hình ảnh và tạo link gửi đến từng vị khách quý.
-              </p>
-            </div>
-
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div>
-                <input
-                  type="password"
-                  value={pin}
-                  onChange={(e) => setPin(e.target.value)}
-                  placeholder="Nhập mã PIN riêng (Mặc định: 123456)"
-                  className="w-full text-center px-4 py-3.5 rounded-xl border border-stone-700 bg-stone-800 text-white font-mono text-lg tracking-widest focus:outline-none focus:border-wedding-gold shadow-inner"
-                  autoFocus
-                />
-                {pinError && <p className="text-xs text-rose-400 mt-2">{pinError}</p>}
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-wedding-rose-700 to-wedding-burgundy text-white font-bold text-sm shadow-luxury hover:opacity-95 transition-all cursor-pointer border border-wedding-gold/60 flex items-center justify-center space-x-2"
-              >
-                <Sparkles className="w-4 h-4 text-amber-200" />
-                <span>Mở Cửa Studio Cưới</span>
-              </button>
-            </form>
-
-            <div className="pt-4 border-t border-stone-800 text-[11px] text-stone-500">
-              <a href="/" className="hover:text-stone-300 transition-colors inline-flex items-center space-x-1">
-                <ArrowLeft className="w-3 h-3" />
-                <span>Quay lại trang thiệp cưới khách mời</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      ) : (
-        /* 2. THE DEDICATED MARRIME STUDIO WORKSPACE */
-        <div className="flex-1 flex flex-col h-screen overflow-hidden">
-          {/* Top Global Studio Navigation Bar */}
-          <header className="h-16 bg-stone-950 border-b border-stone-800 px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-30">
-            {/* Left: Brand & Wedding Project Slug */}
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-wedding-burgundy to-[#4A1020] text-wedding-gold-light border border-wedding-gold/60 flex items-center justify-center font-serif text-xs font-bold shadow-sm">
-                A&P
-              </div>
-              <div>
-                <div className="flex items-center space-x-2">
-                  <span className="font-bold text-xs sm:text-sm text-white tracking-wide font-serif">
-                    Marrime Studio • {formData.groom.shortName || 'Chú Rể'} & {formData.bride.shortName || 'Cô Dâu'}
-                  </span>
-                  <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-[10px] text-emerald-400 font-bold">
-                    Dự Án Riêng Của Dâu Rể
-                  </span>
-                </div>
-                <span className="text-[10px] text-stone-400 font-mono hidden sm:block">
-                  slug: {weddingSlug}
+              <div className="flex items-center space-x-2">
+                <span className="font-bold text-xs sm:text-sm text-white tracking-wide font-serif">
+                  Marrime Studio • {formData.groom.shortName || 'Chú Rể'} & {formData.bride.shortName || 'Cô Dâu'}
+                </span>
+                <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-[10px] text-emerald-400 font-bold">
+                  Tự Do Sáng Tạo
                 </span>
               </div>
+              <span className="text-[10px] text-stone-400 font-mono hidden sm:block">
+                slug: {weddingSlug} {editingPin ? `• Mã sửa: ${editingPin}` : ''}
+              </span>
             </div>
+          </div>
 
-            {/* Center: Device Simulator Toggle */}
-            <div className="hidden md:flex items-center bg-stone-900 border border-stone-700 rounded-xl p-1 space-x-1">
-              <button
-                type="button"
-                onClick={() => setPreviewDevice('mobile')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-all cursor-pointer ${
-                  previewDevice === 'mobile'
-                    ? 'bg-wedding-burgundy text-white shadow-sm'
-                    : 'text-stone-400 hover:text-white'
-                }`}
-              >
-                <Smartphone className="w-3.5 h-3.5" />
-                <span>Mô Phỏng Điện Thoại</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setPreviewDevice('desktop')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-all cursor-pointer ${
-                  previewDevice === 'desktop'
-                    ? 'bg-wedding-burgundy text-white shadow-sm'
-                    : 'text-stone-400 hover:text-white'
-                }`}
-              >
-                <Monitor className="w-3.5 h-3.5" />
-                <span>Màn Hình Lớn</span>
-              </button>
-            </div>
+          {/* Center: Device Simulator Toggle */}
+          <div className="hidden md:flex items-center bg-stone-900 border border-stone-700 rounded-xl p-1 space-x-1">
+            <button
+              type="button"
+              onClick={() => setPreviewDevice('mobile')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-all cursor-pointer ${
+                previewDevice === 'mobile'
+                  ? 'bg-wedding-burgundy text-white shadow-sm'
+                  : 'text-stone-400 hover:text-white'
+              }`}
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+              <span>Mô Phỏng Điện Thoại</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setPreviewDevice('desktop')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-all cursor-pointer ${
+                previewDevice === 'desktop'
+                  ? 'bg-wedding-burgundy text-white shadow-sm'
+                  : 'text-stone-400 hover:text-white'
+              }`}
+            >
+              <Monitor className="w-3.5 h-3.5" />
+              <span>Màn Hình Lớn</span>
+            </button>
+          </div>
 
-            {/* Right Action Buttons */}
-            <div className="flex items-center space-x-2.5">
-              <a
-                href={`/?w=${weddingSlug}`}
-                target="_blank"
-                rel="noreferrer"
-                className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-stone-700 bg-stone-900 text-xs font-semibold text-stone-300 hover:text-white hover:border-stone-500 transition-colors"
-                title="Mở xem thử trang web thực tế của khách"
-              >
-                <Eye className="w-3.5 h-3.5 text-stone-400" />
-                <span>Xem Trang Khách</span>
-              </a>
+          {/* Right Action Buttons */}
+          <div className="flex items-center space-x-2.5">
+            <button
+              type="button"
+              onClick={() => {
+                setLookupCodeInput('');
+                setLookupError('');
+                setIsLookupModalOpen(true);
+              }}
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-wedding-gold/40 bg-stone-900 text-xs font-semibold text-wedding-gold hover:text-white hover:bg-stone-800 transition-colors cursor-pointer"
+              title="Nhập mã bí mật để chỉnh sửa thiệp đã tạo trước đó"
+            >
+              <KeyRound className="w-3.5 h-3.5 text-wedding-gold" />
+              <span className="hidden sm:inline">Nhập Mã Sửa Thiệp Cũ</span>
+              <span className="sm:hidden">Sửa Cũ</span>
+            </button>
 
-              <button
-                type="button"
-                onClick={handlePublish}
-                disabled={isPublishing}
-                className="px-4 sm:px-5 py-2 rounded-xl bg-gradient-to-r from-wedding-rose-800 to-wedding-burgundy text-white font-bold text-xs shadow-luxury hover:opacity-95 transition-all cursor-pointer border border-wedding-gold/60 flex items-center space-x-2"
-              >
-                <Share2 className="w-4 h-4 text-amber-200" />
-                <span>{isPublishing ? 'Đang Lưu...' : 'Xuất Bản & Lấy Link Mời'}</span>
-              </button>
-            </div>
-          </header>
+            <a
+              href={`/?w=${weddingSlug}`}
+              target="_blank"
+              rel="noreferrer"
+              className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-stone-700 bg-stone-900 text-xs font-semibold text-stone-300 hover:text-white hover:border-stone-500 transition-colors"
+              title="Mở xem thử trang web thực tế của khách"
+            >
+              <Eye className="w-3.5 h-3.5 text-stone-400" />
+              <span>Xem Trang Khách</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={handlePublish}
+              disabled={isPublishing}
+              className="px-4 sm:px-5 py-2 rounded-xl bg-gradient-to-r from-wedding-rose-800 to-wedding-burgundy text-white font-bold text-xs shadow-luxury hover:opacity-95 transition-all cursor-pointer border border-wedding-gold/60 flex items-center space-x-2"
+            >
+              <Share2 className="w-4 h-4 text-amber-200" />
+              <span>{isPublishing ? 'Đang Lưu...' : 'Lưu & Nhận Mã Chỉnh Sửa'}</span>
+            </button>
+          </div>
+        </header>
 
           {/* Main Studio Body: Split Screen */}
           <div className="flex-1 flex overflow-hidden">
@@ -1931,15 +1986,48 @@ export const WeddingStudioPage: React.FC = () => {
                   <div className="w-12 h-12 rounded-full bg-emerald-950 border border-emerald-500/50 text-emerald-400 flex items-center justify-center mx-auto shadow-md">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
-                  <h3 className="font-serif text-xl font-bold text-white">
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
                     Xuất Bản Thiệp Cưới Thành Công!
                   </h3>
                   <p className="text-xs text-stone-400">
-                    Dữ liệu đã được lưu an toàn. Dưới đây là các đường link để dâu rể gửi tới quan khách.
+                    Thiệp cưới của hai bạn đã được lưu an toàn. Dưới đây là mã quản trị để sửa thiệp lần sau và các link gửi quan khách.
                   </p>
                 </div>
 
-                {/* General Link for Facebook / Group Zalo */}
+                {/* 1. SECRET EDIT CODE (MÃ BÍ MẬT QUẢN TRỊ) */}
+                <div className="bg-gradient-to-r from-stone-900 via-stone-850 to-stone-900 p-4 rounded-2xl border-2 border-wedding-gold/60 shadow-lg text-xs space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1.5 text-wedding-gold font-bold">
+                      <KeyRound className="w-4 h-4 text-wedding-gold" />
+                      <span>MÃ BÍ MẬT QUẢN TRỊ (LƯU LẠI ĐỂ SỬA THIỆP LẦN TỚI)</span>
+                    </div>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-600/50 font-bold">
+                      Bí Mật Của Dâu Rể
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2 pt-1">
+                    <div className="flex-1 px-4 py-2.5 rounded-xl bg-black border border-stone-700 text-wedding-gold font-mono text-base font-bold tracking-widest text-center shadow-inner">
+                      {editingPin || 'MAR-1234'}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(editingPin || 'MAR-1234');
+                        setCopiedPin(true);
+                        setTimeout(() => setCopiedPin(false), 2500);
+                      }}
+                      className="px-4 py-2.5 rounded-xl bg-wedding-burgundy text-white font-bold text-xs flex items-center space-x-1 cursor-pointer hover:opacity-90 transition-opacity"
+                    >
+                      {copiedPin ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                      <span>{copiedPin ? 'Đã Chép Mã!' : 'Sao Chép'}</span>
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-stone-400 font-light leading-relaxed">
+                    💡 Hãy lưu lại mã này. Lần tới khi quay lại <code className="text-wedding-gold font-mono">/studio</code>, bạn chỉ cần bấm <strong>"Nhập Mã Sửa Thiệp Cũ"</strong> và điền mã này là có thể chỉnh sửa ảnh, đổi ngày giờ hoặc xem khách phản hồi RSVP.
+                  </p>
+                </div>
+
+                {/* 2. General Link for Facebook / Group Zalo */}
                 <div className="bg-stone-900/90 p-4 rounded-2xl border border-stone-800 space-y-2 text-xs">
                   <span className="font-bold text-wedding-gold block">
                     1. Link Thiệp Cưới Chung (Dùng đăng Facebook, Zalo nhóm, mã QR)
@@ -1966,7 +2054,7 @@ export const WeddingStudioPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 2. Tool Tạo Link Thiệp Riêng Cho Từng Vị Khách */}
+                {/* 3. Tool Tạo Link Thiệp Riêng Cho Từng Vị Khách */}
                 <div className="bg-stone-900/90 p-4 rounded-2xl border border-stone-800 space-y-3 text-xs">
                   <span className="font-bold text-wedding-gold block">
                     2. Công Cụ Tạo Thiệp Riêng Cho Từng Vị Khách (Kính Mời Đích Danh)
@@ -2024,21 +2112,126 @@ export const WeddingStudioPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="pt-2 text-center">
+                {/* 4. DONATE TÙY TÂM ỦNG HỘ TÁC GIẢ (MÃ QR CỦA TÁC GIẢ) */}
+                <div className="bg-gradient-to-b from-[#1E1B18] to-stone-900 p-5 rounded-2xl border border-wedding-gold/40 space-y-3.5 text-xs text-stone-200">
+                  <div className="flex items-center space-x-2 text-wedding-gold font-bold">
+                    <Coffee className="w-4 h-4 text-amber-400" />
+                    <span>TẶNG TÁC GIẢ LY CÀ PHÊ CHÚC PHÚC (DONATE TÙY TÂM)</span>
+                  </div>
+
+                  <p className="text-[11px] text-stone-300 leading-relaxed font-light">
+                    Marrime là nền tảng tạo thiệp cưới miễn phí dành cho các cặp đôi. Nếu hai bạn thấy sản phẩm này đẹp và hữu ích, hãy gửi tặng một ly cà phê nhỏ để ủng hộ tác giả duy trì máy chủ. <strong>Ủng hộ hoàn toàn tùy tâm, không gửi cũng không sao cả</strong>, thiệp cưới của hai bạn vẫn hoạt động vĩnh viễn và hoàn toàn miễn phí!
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row items-center gap-4 bg-stone-950/80 p-3.5 rounded-xl border border-stone-800">
+                    <div className="w-32 h-32 sm:w-36 sm:h-36 bg-white p-2 rounded-xl shadow shrink-0">
+                      <img
+                        src={AUTHOR_DONATE_CONFIG.qrImageUrl}
+                        alt="Mã QR Donate Tác Giả"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+
+                    <div className="flex-1 space-y-1.5 text-left w-full">
+                      <span className="text-[10px] text-stone-400 uppercase font-mono block">Tài khoản tác giả:</span>
+                      <div className="font-serif text-sm font-bold text-white">{AUTHOR_DONATE_CONFIG.bankName}</div>
+                      <div className="flex items-center space-x-2 pt-0.5">
+                        <span className="font-mono text-base font-bold text-wedding-gold tracking-wider">
+                          {AUTHOR_DONATE_CONFIG.accountNumber}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(AUTHOR_DONATE_CONFIG.accountNumber);
+                            setCopiedAuthorBank(true);
+                            setTimeout(() => setCopiedAuthorBank(false), 2000);
+                          }}
+                          className="px-2 py-0.5 rounded bg-stone-800 text-[10px] text-stone-300 hover:text-white cursor-pointer"
+                        >
+                          {copiedAuthorBank ? '✓ Đã chép' : 'Chép STK'}
+                        </button>
+                      </div>
+                      <div className="text-xs text-stone-300 font-semibold">{AUTHOR_DONATE_CONFIG.accountHolder}</div>
+                      <span className="text-[10px] text-amber-300/80 italic block pt-1">
+                        "Chúc hai bạn trăm năm hạnh phúc, răng long đầu bạc!"
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Actions */}
+                <div className="flex flex-col sm:flex-row gap-2.5 pt-2">
+                  <a
+                    href={generalShareUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-wedding-rose-700 to-wedding-burgundy text-white font-bold text-xs shadow-luxury hover:opacity-95 text-center flex items-center justify-center space-x-1.5 cursor-pointer"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Hoàn Tất & Mở Xem Thiệp Khách</span>
+                  </a>
                   <button
                     type="button"
                     onClick={() => setIsPublishModalOpen(false)}
-                    className="px-6 py-2 rounded-xl bg-stone-800 text-stone-300 hover:text-white font-semibold text-xs cursor-pointer"
+                    className="px-6 py-3 rounded-xl bg-stone-800 text-stone-300 hover:text-white font-semibold text-xs cursor-pointer transition-colors"
                   >
-                    Đóng Bảng Này
+                    Đóng Bảng
                   </button>
                 </div>
               </div>
             </div>
           )}
+
+          {/* 4. LOOKUP EXISTING WEDDING PROJECT MODAL */}
+          {isLookupModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn">
+              <div className="bg-[#1C1917] border-2 border-wedding-gold/60 rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 shadow-2xl relative">
+                <button
+                  type="button"
+                  onClick={() => setIsLookupModalOpen(false)}
+                  className="absolute top-5 right-5 text-stone-400 hover:text-white p-1 cursor-pointer"
+                >
+                  ✕
+                </button>
+
+                <div className="text-center space-y-2">
+                  <div className="w-12 h-12 rounded-full bg-wedding-burgundy/20 border border-wedding-gold/60 text-wedding-gold flex items-center justify-center mx-auto shadow-md">
+                    <KeyRound className="w-6 h-6 text-wedding-gold" />
+                  </div>
+                  <h3 className="font-serif text-xl font-bold text-white">
+                    Nhập Mã Chỉnh Sửa Thiệp Cưới
+                  </h3>
+                  <p className="text-xs text-stone-400">
+                    Nhập Mã Bí Mật (VD: MAR-6825) hoặc tên đường dẫn slug bạn đã nhận khi lưu thiệp lần trước.
+                  </p>
+                </div>
+
+                <form onSubmit={handleLookupCode} className="space-y-4">
+                  <div>
+                    <input
+                      type="text"
+                      value={lookupCodeInput}
+                      onChange={(e) => setLookupCodeInput(e.target.value)}
+                      placeholder="Nhập mã bí mật hoặc tên slug..."
+                      className="w-full text-center px-4 py-3 rounded-xl border border-stone-700 bg-stone-800 text-white font-mono text-sm tracking-wider focus:outline-none focus:border-wedding-gold"
+                      autoFocus
+                    />
+                    {lookupError && <p className="text-xs text-rose-400 mt-2 text-center">{lookupError}</p>}
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isLookingUp}
+                    className="w-full py-3 rounded-xl bg-gradient-to-r from-wedding-rose-700 to-wedding-burgundy text-white font-bold text-xs shadow-luxury hover:opacity-95 transition-all cursor-pointer border border-wedding-gold/60 flex items-center justify-center space-x-2"
+                  >
+                    {isLookingUp ? <span>Đang Tải Dữ Liệu...</span> : <span>Mở Lại Thiệp Cưới Để Chỉnh Sửa</span>}
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
   );
 };
 

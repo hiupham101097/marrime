@@ -40,14 +40,36 @@ app.post('/api/weddings/publish', (req: Request, res: Response) => {
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '') || 'wedding-' + Date.now();
 
-  const published = storage.publishProject(cleanSlug, secretPin || '123456', config);
+  const generatedPin = 'MAR-' + Math.floor(1000 + Math.random() * 9000);
+  const finalPin = secretPin || generatedPin;
+  const published = storage.publishProject(cleanSlug, finalPin, config);
   res.json({
     success: true,
     message: 'Xuất bản thiệp cưới thành công!',
     slug: cleanSlug,
+    secretPin: finalPin,
     shareUrl: `/?w=${cleanSlug}`,
     data: published.data,
   });
+});
+
+app.post('/api/weddings/lookup', (req: Request, res: Response) => {
+  const { code } = req.body;
+  if (!code) {
+    res.status(400).json({ success: false, message: 'Vui lòng nhập mã thiệp hoặc mã PIN.' });
+    return;
+  }
+  const project = storage.getProject(String(code).trim());
+  if (project) {
+    res.json({
+      success: true,
+      slug: project.slug,
+      secretPin: project.secretPin,
+      data: project.data,
+    });
+  } else {
+    res.status(404).json({ success: false, message: 'Không tìm thấy thiệp cưới tương ứng với mã này.' });
+  }
 });
 
 app.get('/api/weddings/:slug', (req: Request, res: Response) => {

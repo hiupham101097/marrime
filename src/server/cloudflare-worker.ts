@@ -94,7 +94,8 @@ export default {
           .replace(/-+/g, '-')
           .replace(/^-|-$/g, '') || 'wedding-' + Date.now();
 
-        const secretPin = body.secretPin || '123456';
+        const generatedPin = 'MAR-' + Math.floor(1000 + Math.random() * 9000);
+        const secretPin = body.secretPin || generatedPin;
         const config = body.config || edgeWeddingData;
 
         edgeProjects[slug] = {
@@ -110,11 +111,49 @@ export default {
             success: true,
             message: 'Xuất bản thiệp cưới thành công!',
             slug,
+            secretPin,
             shareUrl: `https://${url.host}/?w=${slug}`,
             data: config,
           }),
           { headers: corsHeaders }
         );
+      }
+
+      // 4. Lookup / Verify secret PIN or slug for editing
+      if (pathname === '/api/weddings/lookup' && request.method === 'POST') {
+        const body: any = await request.json();
+        const inputCode = (body.code || '').trim();
+        const lowerCode = inputCode.toLowerCase();
+
+        let found: any = Object.values(edgeProjects).find(
+          (p: any) =>
+            (p.slug && p.slug.toLowerCase() === lowerCode) ||
+            (p.secretPin && p.secretPin.toLowerCase() === lowerCode)
+        );
+
+        if (!found && PRESET_WEDDING_PROJECTS[lowerCode]) {
+          found = { slug: lowerCode, secretPin: '123456', data: PRESET_WEDDING_PROJECTS[lowerCode] };
+        }
+
+        if (found) {
+          return new Response(
+            JSON.stringify({
+              success: true,
+              slug: found.slug,
+              secretPin: found.secretPin,
+              data: found.data,
+            }),
+            { headers: corsHeaders }
+          );
+        } else {
+          return new Response(
+            JSON.stringify({
+              success: false,
+              message: 'Không tìm thấy thiệp cưới tương ứng với mã này. Vui lòng kiểm tra lại!',
+            }),
+            { status: 404, headers: corsHeaders }
+          );
+        }
       }
 
       // 4. Get Wedding by Slug
