@@ -217,21 +217,193 @@
   border-color: #5B21B6 !important;
 }
 
+/* 5. Crimson Gold (Hỷ Sự Áo Dài Truyền Thống) */
+.theme-crimson-gold .bg-wedding-burgundy {
+  background-color: #8B111A !important;
+}
+.theme-crimson-gold .text-wedding-burgundy {
+  color: #8B111A !important;
+}
+.theme-crimson-gold .border-wedding-burgundy {
+  border-color: #B91C1C !important;
+}
+.theme-crimson-gold .from-wedding-burgundy {
+  --tw-gradient-from: #8B111A var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(139 17 26 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.theme-crimson-gold .to-\[\#4A1020\] {
+  --tw-gradient-to: #5B060D var(--tw-gradient-to-position) !important;
+}
+.theme-crimson-gold .bg-wedding-cream {
+  background-color: #FFFBF0 !important;
+}
+
+/* 6. Indochine Moss (Đông Dương Hoài Niệm) */
+.theme-indochine-moss .bg-wedding-burgundy {
+  background-color: #1B382B !important;
+}
+.theme-indochine-moss .text-wedding-burgundy {
+  color: #1B382B !important;
+}
+.theme-indochine-moss .border-wedding-burgundy {
+  border-color: #14281E !important;
+}
+.theme-indochine-moss .from-wedding-burgundy {
+  --tw-gradient-from: #1B382B var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(27 56 43 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.theme-indochine-moss .to-\[\#4A1020\] {
+  --tw-gradient-to: #0F1F17 var(--tw-gradient-to-position) !important;
+}
+.theme-indochine-moss .bg-wedding-cream {
+  background-color: #F5F0E6 !important;
+}
+
+/* 7. Rustic Sage (Sân Vườn & Tự Nhiên) */
+.theme-rustic-sage .bg-wedding-burgundy {
+  background-color: #4A5D4E !important;
+}
+.theme-rustic-sage .text-wedding-burgundy {
+  color: #4A5D4E !important;
+}
+.theme-rustic-sage .border-wedding-burgundy {
+  border-color: #38473B !important;
+}
+.theme-rustic-sage .from-wedding-burgundy {
+  --tw-gradient-from: #4A5D4E var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(74 93 78 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.theme-rustic-sage .to-\[\#4A1020\] {
+  --tw-gradient-to: #2C382F var(--tw-gradient-to-position) !important;
+}
+.theme-rustic-sage .bg-wedding-cream {
+  background-color: #FDFBF7 !important;
+}
+
+/* 8. Editorial Mono (Tạp Chí Thời Trang High-Fashion) */
+.theme-editorial-mono .bg-wedding-burgundy {
+  background-color: #121212 !important;
+}
+.theme-editorial-mono .text-wedding-burgundy {
+  color: #121212 !important;
+}
+.theme-editorial-mono .border-wedding-burgundy {
+  border-color: #262626 !important;
+}
+.theme-editorial-mono .from-wedding-burgundy {
+  --tw-gradient-from: #121212 var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(18 18 18 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.theme-editorial-mono .to-\[\#4A1020\] {
+  --tw-gradient-to: #000000 var(--tw-gradient-to-position) !important;
+}
+.theme-editorial-mono .bg-wedding-cream {
+  background-color: #FAFAFA !important;
+}
+
+/* 9. Korean Peach (Hàn Quốc Pastel Mộng Mơ) */
+.theme-korean-peach .bg-wedding-burgundy {
+  background-color: #DB2777 !important;
+}
+.theme-korean-peach .text-wedding-burgundy {
+  color: #BE185D !important;
+}
+.theme-korean-peach .border-wedding-burgundy {
+  border-color: #F472B6 !important;
+}
+.theme-korean-peach .from-wedding-burgundy {
+  --tw-gradient-from: #F472B6 var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(244 114 182 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.theme-korean-peach .to-\[\#4A1020\] {
+  --tw-gradient-to: #FB7185 var(--tw-gradient-to-position) !important;
+}
+.theme-korean-peach .bg-wedding-cream {
+  background-color: #FFF5F5 !important;
+}
+
+/* 10. Midnight Star (Dạ Tiệc Ánh Trăng & Ngàn Sao) */
+.theme-midnight-star .bg-wedding-burgundy {
+  background-color: #090D1A !important;
+}
+.theme-midnight-star .text-wedding-burgundy {
+  color: #090D1A !important;
+}
+.theme-midnight-star .border-wedding-burgundy {
+  border-color: #1E293B !important;
+}
+.theme-midnight-star .from-wedding-burgundy {
+  --tw-gradient-from: #090D1A var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(9 13 26 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.theme-midnight-star .to-\[\#4A1020\] {
+  --tw-gradient-to: #030712 var(--tw-gradient-to-position) !important;
+}
+.theme-midnight-star .bg-wedding-cream {
+  background-color: #0F172A !important;
+  color: #F1F5F9 !important;
+}
+
 /* Template Conceptual Styles */
 .template-royal {
-  /* Royal Palace Luxury */
+  /* Royal Palace Luxury: Rich baroque accents, gold foils */
+  --template-accent: #DFB76C;
 }
 
 .template-vintage {
-  /* Vintage Romance */
+  /* Vintage Romance: Antique sepia, brass flourishes */
   filter: sepia(0.04);
+  --template-accent: #C5A059;
 }
 
 .template-modern {
-  /* Modern Minimalist */
+  /* Modern Minimalist: Sleek architecture, golden ratio lines */
   letter-spacing: 0.015em;
+  --template-accent: #3C3633;
 }
 
 .template-fairytale {
-  /* Fairytale Botanical Garden */
+  /* Fairytale Botanical Garden: Floating romance */
+  --template-accent: #F472B6;
+}
+
+.template-traditional {
+  /* Traditional Vietnamese Double Happiness (囍) & Imperial Silk */
+  --template-accent: #D4AF37;
+}
+.template-traditional .font-serif {
+  letter-spacing: 0.02em;
+}
+
+.template-indochine {
+  /* Indochine Heritage: French Colonial tiled aesthetics, moss sepia */
+  --template-accent: #C5A059;
+  letter-spacing: 0.01em;
+}
+
+.template-rustic {
+  /* Rustic Bohemian: Earthy sage and terracotta botanical */
+  --template-accent: #4A5D4E;
+}
+
+.template-editorial {
+  /* Editorial Vogue: Stark monochrome, high-contrast headline serif */
+  --template-accent: #121212;
+  letter-spacing: -0.01em;
+}
+
+.template-korean {
+  /* Korean Pastel: Pillowy soft curves, dreamy blush drop shadows */
+  --template-accent: #F472B6;
+}
+
+.template-celestial {
+  /* Celestial Midnight: Constellations, moon glow, starry backdrop */
+  --template-accent: #CBD5E1;
 }

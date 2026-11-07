@@ -612,6 +612,178 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
             </div>
           </div>
         )}
+
+        {/* ===================================================================
+            STYLE 5: TRADITIONAL SILK (Gấm Đỏ Song Hỷ 囍 & Hoàng Kim Cung Đình)
+           =================================================================== */}
+        {(envelopeStyle === 'traditional_silk' || envelopeStyle === 'indochine_kraft' || envelopeStyle === 'rustic_twine') && (
+          <div
+            className={`relative bg-gradient-to-br from-[#8B111A] via-[#A81B26] to-[#5B060D] rounded-3xl shadow-2xl p-2.5 sm:p-3.5 transition-transform duration-700 border-2 border-[#D4AF37] gold-glow ${
+              isOpening ? 'scale-105' : 'hover:scale-[1.01]'
+            }`}
+          >
+            {/* Vietnamese Traditional Cloud & Floral Corners */}
+            <div className="absolute top-3 left-3 w-10 h-10 pointer-events-none text-[#D4AF37]">
+              <svg viewBox="0 0 40 40" fill="currentColor">
+                <path d="M0,0 L0,24 C4,16 16,4 24,0 Z" />
+                <circle cx="8" cy="8" r="2.5" fill="#FFF3A8" />
+              </svg>
+            </div>
+            <div className="absolute top-3 right-3 w-10 h-10 pointer-events-none text-[#D4AF37] scale-x-[-1]">
+              <svg viewBox="0 0 40 40" fill="currentColor">
+                <path d="M0,0 L0,24 C4,16 16,4 24,0 Z" />
+                <circle cx="8" cy="8" r="2.5" fill="#FFF3A8" />
+              </svg>
+            </div>
+            <div className="absolute bottom-3 left-3 w-10 h-10 pointer-events-none text-[#D4AF37] scale-y-[-1]">
+              <svg viewBox="0 0 40 40" fill="currentColor">
+                <path d="M0,0 L0,24 C4,16 16,4 24,0 Z" />
+                <circle cx="8" cy="8" r="2.5" fill="#FFF3A8" />
+              </svg>
+            </div>
+            <div className="absolute bottom-3 right-3 w-10 h-10 pointer-events-none text-[#D4AF37] scale-[-1]">
+              <svg viewBox="0 0 40 40" fill="currentColor">
+                <path d="M0,0 L0,24 C4,16 16,4 24,0 Z" />
+                <circle cx="8" cy="8" r="2.5" fill="#FFF3A8" />
+              </svg>
+            </div>
+
+            {/* Inner Paper Card */}
+            <div
+              className={`bg-[#FFFDF7] rounded-2xl p-6 sm:p-10 text-center border-2 border-[#D4AF37]/60 shadow-inner relative overflow-hidden transition-all duration-1000 ${
+                isOpening ? '-translate-y-10 opacity-95 shadow-2xl' : 'translate-y-0'
+              }`}
+            >
+              <div className="relative z-10 flex items-center justify-center space-x-3 mb-2">
+                <span className="h-px w-14 bg-gradient-to-r from-transparent to-[#D4AF37]" />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-b from-[#8B111A] to-[#5B060D] border-2 border-[#D4AF37] flex items-center justify-center text-[#D4AF37] font-serif font-bold text-lg shadow-sm">
+                  囍
+                </div>
+                <span className="h-px w-14 bg-gradient-to-l from-transparent to-[#D4AF37]" />
+              </div>
+
+              <p className="relative z-10 text-[11px] uppercase tracking-[0.3em] text-[#8B111A] font-bold mb-1">
+                TRÂN TRỌNG BÁO HỶ • THIỆP MỜI THÀNH HÔN
+              </p>
+              <h1 className="relative z-10 font-serif text-2xl sm:text-3xl text-[#8B111A] font-bold tracking-wide">
+                Lễ Thành Hôn
+              </h1>
+
+              {/* Couple Names */}
+              <div className="relative z-10 my-5 py-4 border-y border-[#D4AF37]/40">
+                <div className="font-serif text-2xl sm:text-3xl text-stone-900 font-bold tracking-tight">
+                  {groomName}
+                </div>
+                <div className="font-handwriting text-3xl sm:text-4xl text-[#8B111A] my-1">
+                  sánh duyên cùng
+                </div>
+                <div className="font-serif text-2xl sm:text-3xl text-stone-900 font-bold tracking-tight">
+                  {brideName}
+                </div>
+              </div>
+
+              <p className="relative z-10 text-xs sm:text-sm text-stone-700 font-light mb-6">
+                Kính mời: <strong className="text-[#8B111A] font-bold text-base">{salutation}</strong>
+                <br />
+                Đến chung vui cùng hai bên gia đình trong ngày hạnh phúc viên mãn
+              </p>
+
+              {/* Button with Double Happiness Seal */}
+              <div className="relative z-10 flex flex-col items-center">
+                <button
+                  type="button"
+                  onClick={handleOpen}
+                  disabled={isOpening}
+                  className="group relative flex items-center justify-center space-x-3.5 px-8 py-3.5 bg-gradient-to-r from-[#8B111A] via-[#A81B26] to-[#5B060D] text-white rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-[#D4AF37] cursor-pointer"
+                >
+                  <span className="w-9 h-9 rounded-full flex items-center justify-center text-base font-serif font-black text-[#5B060D] bg-gradient-to-br from-[#FFF3A8] to-[#D4AF37] shadow-md border border-amber-200">
+                    囍
+                  </span>
+                  <span className="font-serif tracking-wide text-sm sm:text-base text-amber-100 font-bold">
+                    {isOpening ? 'Đang Mở Thiệp Chúc Phúc...' : 'Chạm Mở Dấu Ấn Song Hỷ (囍)'}
+                  </span>
+                  <Sparkles className="w-4 h-4 text-amber-300" />
+                </button>
+                <p className="text-[11px] text-[#8B111A] mt-3 font-serif italic">
+                  Hỷ Sự Truyền Thống • Song Hỷ Lâm Môn
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ===================================================================
+            STYLE 6: CELESTIAL MIDNIGHT & EDITORIAL (Dạ Tiệc Ánh Trăng & Ngàn Sao)
+           =================================================================== */}
+        {(envelopeStyle === 'celestial_midnight' || envelopeStyle === 'editorial_vellum' || envelopeStyle === 'korean_chiffon') && (
+          <div
+            className={`relative bg-gradient-to-br from-[#090D1A] via-[#1E293B] to-[#030712] rounded-3xl shadow-2xl p-2.5 sm:p-3.5 transition-transform duration-700 border-2 border-slate-300/80 ${
+              isOpening ? 'scale-105' : 'hover:scale-[1.01]'
+            }`}
+          >
+            {/* Inner Paper Card */}
+            <div
+              className={`bg-[#0F172A] rounded-2xl p-6 sm:p-10 text-center border border-slate-700 shadow-inner relative overflow-hidden transition-all duration-1000 ${
+                isOpening ? '-translate-y-10 opacity-95 shadow-2xl' : 'translate-y-0'
+              }`}
+            >
+              <div className="relative z-10 flex items-center justify-center space-x-3 mb-2">
+                <span className="h-px w-14 bg-gradient-to-r from-transparent to-amber-200" />
+                <div className="w-10 h-10 rounded-full bg-slate-900 border border-slate-500 flex items-center justify-center text-amber-200 text-xl shadow-sm">
+                  🌙
+                </div>
+                <span className="h-px w-14 bg-gradient-to-l from-transparent to-amber-200" />
+              </div>
+
+              <p className="relative z-10 text-[11px] uppercase tracking-[0.3em] text-amber-200 font-bold mb-1">
+                WRITTEN IN THE STARS • WEDDING INVITATION
+              </p>
+              <h1 className="relative z-10 font-serif text-2xl sm:text-3xl text-white font-normal tracking-wide">
+                Moonlight Gala
+              </h1>
+
+              {/* Couple Names */}
+              <div className="relative z-10 my-5 py-4 border-y border-slate-800">
+                <div className="font-serif text-2xl sm:text-3xl text-slate-100 font-bold tracking-tight">
+                  {groomName}
+                </div>
+                <div className="font-handwriting text-3xl sm:text-4xl text-amber-200 my-1">
+                  &
+                </div>
+                <div className="font-serif text-2xl sm:text-3xl text-slate-100 font-bold tracking-tight">
+                  {brideName}
+                </div>
+              </div>
+
+              <p className="relative z-10 text-xs sm:text-sm text-slate-300 font-light mb-6">
+                Trân trọng kính mời: <strong className="text-amber-200 font-bold text-base">{salutation}</strong>
+                <br />
+                Đến chung vui cùng chúng tôi trong dạ tiệc dưới ánh trăng và ngàn sao
+              </p>
+
+              {/* Button */}
+              <div className="relative z-10 flex flex-col items-center">
+                <button
+                  type="button"
+                  onClick={handleOpen}
+                  disabled={isOpening}
+                  className="group relative flex items-center justify-center space-x-3.5 px-8 py-3.5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-slate-400 cursor-pointer"
+                >
+                  <span className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-serif font-black text-slate-950 bg-gradient-to-br from-slate-100 to-slate-300 shadow-md">
+                    {displayMonogram}
+                  </span>
+                  <span className="font-serif tracking-wide text-sm sm:text-base text-slate-100 font-bold">
+                    {isOpening ? 'Đang Mở Bầu Trời Sao...' : 'Chạm Mở Thiệp Ánh Trăng'}
+                  </span>
+                  <Sparkles className="w-4 h-4 text-amber-300" />
+                </button>
+                <p className="text-[11px] text-slate-400 mt-3 font-serif italic">
+                  Dạ Tiệc Ánh Trăng • Ngàn Sao Hội Tụ
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

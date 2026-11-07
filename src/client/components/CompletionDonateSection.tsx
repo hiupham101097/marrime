@@ -73,6 +73,18 @@ export const CompletionDonateSection: React.FC<CompletionDonateSectionProps> = (
   // Distinct Style Wrappers based on template
   const getTemplateContainerStyle = () => {
     switch (template) {
+      case 'traditional':
+        return 'bg-gradient-to-b from-[#FFFBF0] to-white border-2 border-[#D4AF37] shadow-xl rounded-3xl relative gold-glow';
+      case 'indochine':
+        return 'bg-[#F5F0E6] border-2 border-[#C5A059] shadow-xl rounded-3xl relative';
+      case 'rustic':
+        return 'bg-[#FDFBF7] border-2 border-[#4A5D4E]/50 shadow-lg rounded-3xl';
+      case 'editorial':
+        return 'bg-white border-2 border-black shadow-lg rounded-none';
+      case 'korean':
+        return 'bg-gradient-to-b from-[#FFF5F5] to-white border-2 border-pink-200 shadow-xl rounded-3xl';
+      case 'celestial':
+        return 'bg-[#0F172A] border-2 border-slate-600 text-slate-100 shadow-2xl rounded-3xl';
       case 'fairytale':
         return 'bg-gradient-to-b from-[#FFF0F5] to-[#FFFDF9] border-2 border-pink-200/80 shadow-xl rounded-3xl';
       case 'modern':
@@ -87,11 +99,21 @@ export const CompletionDonateSection: React.FC<CompletionDonateSectionProps> = (
 
   const getTemplateHeaderIcon = () => {
     switch (template) {
+      case 'traditional':
+        return <span className="font-serif font-bold text-[#8B111A] text-lg">囍</span>;
+      case 'celestial':
+        return <span className="text-amber-200 text-lg">🌙</span>;
+      case 'rustic':
+        return <span className="text-emerald-700 text-lg">🌿</span>;
+      case 'editorial':
+        return <CreditCard className="w-5 h-5 text-black" />;
       case 'fairytale':
+      case 'korean':
         return <Heart className="w-5 h-5 text-wedding-rose-500 fill-wedding-rose-400" />;
       case 'modern':
         return <CreditCard className="w-5 h-5 text-stone-700" />;
       case 'vintage':
+      case 'indochine':
         return <Sparkles className="w-5 h-5 text-[#855B14]" />;
       case 'royal':
       default:

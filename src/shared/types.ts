@@ -68,18 +68,61 @@ export interface WeddingEventSchedule {
   googleMapsUrl: string;
 }
 
-export type WeddingTheme = 'burgundy' | 'rose' | 'gold' | 'navy' | 'emerald' | 'lavender';
-export type WeddingTemplate = 'royal' | 'vintage' | 'modern' | 'fairytale';
-export type EnvelopeStyle = 'royal_velvet' | 'blush_ribbon' | 'modern_minimal' | 'emerald_brass';
+export type WeddingTheme =
+  | 'burgundy'
+  | 'rose'
+  | 'gold'
+  | 'navy'
+  | 'emerald'
+  | 'lavender'
+  | 'crimson_gold'
+  | 'indochine_moss'
+  | 'rustic_sage'
+  | 'editorial_mono'
+  | 'korean_peach'
+  | 'midnight_star';
+
+export type WeddingTemplate =
+  | 'royal'
+  | 'vintage'
+  | 'modern'
+  | 'fairytale'
+  | 'traditional'
+  | 'indochine'
+  | 'rustic'
+  | 'editorial'
+  | 'korean'
+  | 'celestial';
+
+export type EnvelopeStyle =
+  | 'royal_velvet'
+  | 'blush_ribbon'
+  | 'modern_minimal'
+  | 'emerald_brass'
+  | 'traditional_silk'
+  | 'indochine_kraft'
+  | 'rustic_twine'
+  | 'editorial_vellum'
+  | 'korean_chiffon'
+  | 'celestial_midnight';
+
 export type AnimationEffect =
   | 'mixed_romance'
   | 'rose_petals'
   | 'golden_stardust'
   | 'glowing_hearts'
   | 'winter_snow'
+  | 'traditional_lanterns'
+  | 'botanical_leaves'
   | 'none';
 
-export type TypographyFont = 'playfair' | 'cormorant' | 'inter_serif' | 'montserrat';
+export type TypographyFont =
+  | 'playfair'
+  | 'cormorant'
+  | 'inter_serif'
+  | 'montserrat'
+  | 'editorial_sans'
+  | 'traditional_calligraphy';
 
 export interface GalleryPhotoItem {
   id: string;

@@ -14,6 +14,92 @@ export const CoupleSection: React.FC<CoupleSectionProps> = ({
   template = 'royal',
 }) => {
   // =========================================================================
+  // VARIANT 0: TRADITIONAL VIETNAMESE (Song Hỷ 囍 • Áo Dài • Loan Phụng Hòa Minh)
+  // =========================================================================
+  if (template === 'traditional') {
+    return (
+      <section className="py-24 px-4 max-w-6xl mx-auto relative">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="inline-flex items-center space-x-2 text-[#8B111A] text-xs uppercase tracking-[0.25em] font-bold mb-3">
+            <span className="text-[#D4AF37] font-serif text-lg">囍</span>
+            <span>HAI HỌ THÔNG GIA • LOAN PHỤNG HÒA MINH</span>
+            <span className="text-[#D4AF37] font-serif text-lg">囍</span>
+          </div>
+          <h2 className="font-serif text-3xl sm:text-5xl text-[#8B111A] font-bold">
+            Tân Lang & Tân Nương
+          </h2>
+          <p className="text-stone-600 text-sm sm:text-base mt-3 font-light italic">
+            "Duyên thắm tình nồng, trăm năm hòa hợp, đầu bạc răng long"
+          </p>
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mx-auto mt-4" />
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-10 lg:gap-14">
+          {/* Chú rể Traditional */}
+          <div className="bg-[#FFFDF7] rounded-3xl p-8 border-2 border-[#D4AF37] shadow-xl relative gold-glow">
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <div className="relative shrink-0">
+                <div className="w-40 h-44 rounded-2xl overflow-hidden shadow-lg border-4 border-white ring-2 ring-[#D4AF37]">
+                  <img src={groom.avatar} alt={groom.name} className="w-full h-full object-cover" />
+                </div>
+                <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-[#8B111A] text-[#FFFBF0] text-[11px] font-bold rounded-full shadow border border-[#D4AF37] whitespace-nowrap">
+                  Tân Lang • Chú Rể
+                </span>
+              </div>
+
+              <div className="text-center sm:text-left flex-1">
+                <span className="text-[11px] font-bold text-[#8B111A] uppercase tracking-wider block">Đại Diện Nhà Trai</span>
+                <h3 className="font-serif text-2xl font-bold text-stone-900 mt-0.5">{groom.name}</h3>
+                <p className="text-xs text-stone-500 mt-1">{groom.title}</p>
+                <div className="mt-3 text-xs text-stone-600 space-y-1 border-t border-[#D4AF37]/30 pt-3">
+                  <p>Quê quán: <strong className="text-stone-800">{groom.hometown}</strong></p>
+                  <p className="text-[11px] text-stone-500">Trưởng nam của ông: <strong>{groom.parents.father}</strong> & bà: <strong>{groom.parents.mother}</strong></p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 bg-[#8B111A]/5 p-4 rounded-2xl border border-[#D4AF37]/40 relative text-xs sm:text-sm text-stone-700 italic">
+              <span className="text-[#8B111A] font-serif font-bold text-base mr-1">“</span>
+              {groom.description}
+              <span className="text-[#8B111A] font-serif font-bold text-base ml-1">”</span>
+            </div>
+          </div>
+
+          {/* Cô dâu Traditional */}
+          <div className="bg-[#FFFDF7] rounded-3xl p-8 border-2 border-[#D4AF37] shadow-xl relative gold-glow">
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <div className="relative shrink-0">
+                <div className="w-40 h-44 rounded-2xl overflow-hidden shadow-lg border-4 border-white ring-2 ring-[#D4AF37]">
+                  <img src={bride.avatar} alt={bride.name} className="w-full h-full object-cover" />
+                </div>
+                <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-[#8B111A] text-[#FFFBF0] text-[11px] font-bold rounded-full shadow border border-[#D4AF37] whitespace-nowrap">
+                  Tân Nương • Cô Dâu
+                </span>
+              </div>
+
+              <div className="text-center sm:text-left flex-1">
+                <span className="text-[11px] font-bold text-[#8B111A] uppercase tracking-wider block">Đại Diện Nhà Gái</span>
+                <h3 className="font-serif text-2xl font-bold text-stone-900 mt-0.5">{bride.name}</h3>
+                <p className="text-xs text-stone-500 mt-1">{bride.title}</p>
+                <div className="mt-3 text-xs text-stone-600 space-y-1 border-t border-[#D4AF37]/30 pt-3">
+                  <p>Quê quán: <strong className="text-stone-800">{bride.hometown}</strong></p>
+                  <p className="text-[11px] text-stone-500">Ái nữ của ông: <strong>{bride.parents.father}</strong> & bà: <strong>{bride.parents.mother}</strong></p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 bg-[#8B111A]/5 p-4 rounded-2xl border border-[#D4AF37]/40 relative text-xs sm:text-sm text-stone-700 italic">
+              <span className="text-[#8B111A] font-serif font-bold text-base mr-1">“</span>
+              {bride.description}
+              <span className="text-[#8B111A] font-serif font-bold text-base ml-1">”</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // =========================================================================
   // VARIANT 1: FAIRYTALE (Vườn Hoa Cổ Tích - Scrapbook Polaroid & Ribbon)
   // =========================================================================
   if (template === 'fairytale') {

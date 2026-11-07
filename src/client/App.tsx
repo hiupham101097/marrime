@@ -87,6 +87,15 @@ export const App: React.FC = () => {
       .catch(() => {
         // Fallback to DEFAULT_WEDDING_DATA
       });
+
+    // Listen for real-time live preview updates from Studio parent frame
+    const handleLivePreviewMsg = (e: MessageEvent) => {
+      if (e.data && e.data.type === 'MARRIME_LIVE_PREVIEW' && e.data.payload) {
+        setWeddingData(e.data.payload);
+      }
+    };
+    window.addEventListener('message', handleLivePreviewMsg);
+    return () => window.removeEventListener('message', handleLivePreviewMsg);
   }, []);
 
   // Handle scroll to top button visibility
@@ -138,6 +147,24 @@ export const App: React.FC = () => {
         break;
       case 'lavender':
         themeClass = 'theme-lavender';
+        break;
+      case 'crimson_gold':
+        themeClass = 'theme-crimson-gold';
+        break;
+      case 'indochine_moss':
+        themeClass = 'theme-indochine-moss';
+        break;
+      case 'rustic_sage':
+        themeClass = 'theme-rustic-sage';
+        break;
+      case 'editorial_mono':
+        themeClass = 'theme-editorial-mono';
+        break;
+      case 'korean_peach':
+        themeClass = 'theme-korean-peach';
+        break;
+      case 'midnight_star':
+        themeClass = 'theme-midnight-star';
         break;
       default:
         themeClass = 'theme-burgundy';

@@ -63,6 +63,7 @@ import {
   DEFAULT_DONATE_CONFIG,
   AUTHOR_DONATE_CONFIG,
   PRESET_WEDDING_PROJECTS,
+  MASTER_TEMPLATE_CATALOG,
 } from '../../shared/defaultData';
 import { ImageSelector } from '../components/ImageSelector';
 
@@ -127,16 +128,8 @@ export const WeddingStudioPage: React.FC = () => {
     const codeParam = params.get('code') || params.get('pin');
 
     // 1. If user entered with a template (e.g. from Landing Page)
-    if (templateParam) {
-      if (templateParam === 'fairytale' && PRESET_WEDDING_PROJECTS['blush_ribbon']) {
-        setFormData(PRESET_WEDDING_PROJECTS['blush_ribbon']);
-      } else if (templateParam === 'modern' && PRESET_WEDDING_PROJECTS['modern_minimal']) {
-        setFormData(PRESET_WEDDING_PROJECTS['modern_minimal']);
-      } else if (templateParam === 'vintage' && PRESET_WEDDING_PROJECTS['emerald_brass']) {
-        setFormData(PRESET_WEDDING_PROJECTS['emerald_brass']);
-      } else if (templateParam === 'royal' && PRESET_WEDDING_PROJECTS['royal_velvet']) {
-        setFormData(PRESET_WEDDING_PROJECTS['royal_velvet']);
-      }
+    if (templateParam && PRESET_WEDDING_PROJECTS[templateParam]) {
+      setFormData(PRESET_WEDDING_PROJECTS[templateParam]);
     }
 
     // 2. If user entered with a code / pin to edit
@@ -177,6 +170,17 @@ export const WeddingStudioPage: React.FC = () => {
       })
       .catch(() => {});
   }, []);
+
+  // Real-time live preview sync with the simulator iframe
+  useEffect(() => {
+    const iframe = document.querySelector('iframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage(
+        { type: 'MARRIME_LIVE_PREVIEW', payload: formData },
+        '*'
+      );
+    }
+  }, [formData]);
 
   // Lookup existing card by code / slug
   const handleLookupCode = async (e: React.FormEvent) => {
@@ -447,18 +451,18 @@ export const WeddingStudioPage: React.FC = () => {
               {/* Studio Tabs Navigation */}
               <div className="flex border-b border-stone-800 bg-stone-950/80 px-3 overflow-x-auto no-scrollbar flex-shrink-0">
                 {[
-                  { id: 'style', name: 'Concept & Màu', icon: Palette },
-                  { id: 'builder', name: 'Bố Cục & Tự Thiết Kế', icon: Layers },
-                  { id: 'donate', name: 'Mừng Cưới Tùy Tâm', icon: Gift },
-                  { id: 'envelope', name: 'Phong Bì & Dấu Sáp', icon: Mail },
+                  { id: 'style', name: '10 Mẫu & Màu', icon: Palette },
                   { id: 'couple', name: 'Dâu & Rể', icon: User },
-                  { id: 'photos', name: 'Ảnh & Bìa Hero', icon: Camera },
-                  { id: 'timeline', name: 'Chặng Đường', icon: Heart },
-                  { id: 'events', name: 'Lịch & Sảnh', icon: Clock },
-                  { id: 'vows', name: 'Hẹn Ước & Tri Ân', icon: Sparkles },
-                  { id: 'animation', name: 'Hoạt Ảnh Bay', icon: Wand2 },
-                  { id: 'music', name: 'Đổi Nhạc Nền', icon: Music },
-                  { id: 'rsvp', name: 'Sổ Khách RSVP', icon: Users },
+                  { id: 'events', name: 'Lịch & Sảnh Tiệc', icon: Clock },
+                  { id: 'photos', name: 'Album Ảnh', icon: Camera },
+                  { id: 'envelope', name: 'Phong Bì & Sáp', icon: Mail },
+                  { id: 'music', name: 'Nhạc Nền', icon: Music },
+                  { id: 'builder', name: 'Bố Cục Khối', icon: Layers },
+                  { id: 'timeline', name: 'Kỷ Niệm', icon: Heart },
+                  { id: 'vows', name: 'Hẹn Ước', icon: Sparkles },
+                  { id: 'donate', name: 'Mừng Cưới', icon: Gift },
+                  { id: 'animation', name: 'Hiệu Ứng Bay', icon: Wand2 },
+                  { id: 'rsvp', name: 'Khách RSVP', icon: Users },
                 ].map((tab) => {
                   const Icon = tab.icon;
                   const isActive = activeTab === tab.id;
@@ -487,66 +491,87 @@ export const WeddingStudioPage: React.FC = () => {
                   <div className="space-y-6 animate-fadeIn">
                     {/* Template Concept */}
                     <div className="bg-stone-900/80 p-5 rounded-2xl border border-stone-800 space-y-3">
-                      <h4 className="font-serif text-sm font-bold text-white flex items-center space-x-2">
-                        <Layout className="w-4 h-4 text-wedding-gold" />
-                        <span>1. Phong Cách Kiến Trúc Tiệc Cưới</span>
-                      </h4>
-                      <div className="grid grid-cols-2 gap-3">
-                        {[
-                          {
-                            id: 'royal',
-                            name: 'Hoàng Gia Quý Tộc',
-                            desc: 'Vương miện vàng kim, phong cách cung đình châu Âu tráng lệ.',
-                            icon: '👑',
-                          },
-                          {
-                            id: 'vintage',
-                            name: 'Lãng Mạn Cổ Điển',
-                            desc: 'Ren mềm mại, màu giấy hoài niệm ấm áp, đậm chất thi vị.',
-                            icon: '🕊️',
-                          },
-                          {
-                            id: 'modern',
-                            name: 'Tối Giản Hiện Đại',
-                            desc: 'Đường nét thanh mảnh, bố cục tối giản tinh tế trường phái Bắc Âu.',
-                            icon: '💎',
-                          },
-                          {
-                            id: 'fairytale',
-                            name: 'Vườn Hoa Cổ Tích',
-                            desc: 'Dây leo hoa lá mộng mơ, trong trẻo hòa quyện cùng thiên nhiên.',
-                            icon: '🌸',
-                          },
-                        ].map((tpl) => (
-                          <button
-                            key={tpl.id}
-                            type="button"
-                            onClick={() =>
-                              setFormData({ ...formData, template: tpl.id as WeddingTemplate })
-                            }
-                            className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                              formData.template === tpl.id
-                                ? 'border-wedding-gold bg-stone-800 ring-2 ring-wedding-gold/40 shadow-md'
-                                : 'border-stone-800 hover:border-stone-700 bg-stone-900/50'
-                            }`}
-                          >
-                            <div>
-                              <div className="text-2xl mb-1">{tpl.icon}</div>
-                              <span className="font-serif text-xs font-bold text-white block">
-                                {tpl.name}
-                              </span>
-                              <span className="text-[10px] text-stone-400 mt-0.5 block leading-relaxed">
-                                {tpl.desc}
-                              </span>
-                            </div>
-                            {formData.template === tpl.id && (
-                              <div className="mt-2.5 flex items-center text-[10px] font-bold text-wedding-gold">
-                                <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
-                                <span>Đang áp dụng</span>
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-serif text-sm font-bold text-white flex items-center space-x-2">
+                          <Layout className="w-4 h-4 text-wedding-gold" />
+                          <span>1. Bộ Sưu Tập 10 Phong Cách Cưới Độc Bản</span>
+                        </h4>
+                        <span className="text-[10px] text-stone-400">
+                          Đang chọn: <strong className="text-wedding-gold">{formData.template}</strong>
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        {MASTER_TEMPLATE_CATALOG.map((tpl) => {
+                          const isCurrent = formData.template === tpl.id;
+                          return (
+                            <button
+                              key={tpl.id}
+                              type="button"
+                              onClick={() => {
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  template: tpl.id,
+                                  theme: tpl.recommendedTheme,
+                                  envelopeStyle: tpl.envelopeStyle,
+                                }));
+                              }}
+                              className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between relative overflow-hidden group ${
+                                isCurrent
+                                  ? 'border-wedding-gold bg-stone-850 ring-2 ring-wedding-gold/40 shadow-xl'
+                                  : 'border-stone-800 hover:border-stone-700 bg-stone-900/60'
+                              }`}
+                            >
+                              <div className="flex items-start space-x-3">
+                                <div className="w-10 h-10 rounded-xl bg-stone-950 flex items-center justify-center text-xl shrink-0 border border-stone-700 shadow-sm">
+                                  {tpl.icon}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center space-x-1.5">
+                                    <span className="font-serif text-xs font-bold text-white truncate">
+                                      {tpl.name}
+                                    </span>
+                                    {tpl.badge && (
+                                      <span className="px-1.5 py-0.2 rounded text-[9px] bg-wedding-burgundy/80 text-amber-200 border border-wedding-gold/40 shrink-0">
+                                        {tpl.badge}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <span className="text-[10px] text-wedding-gold font-semibold block mt-0.5">
+                                    {tpl.subtitle}
+                                  </span>
+                                  <span className="text-[10px] text-stone-400 mt-1 block leading-relaxed line-clamp-2">
+                                    {tpl.description}
+                                  </span>
+                                </div>
                               </div>
-                            )}
-                          </button>
-                        ))}
+
+                              <div className="mt-3 pt-2 border-t border-stone-800/80 flex items-center justify-between">
+                                {/* Color Dots */}
+                                <div className="flex items-center space-x-1">
+                                  {tpl.colors.map((c, i) => (
+                                    <span
+                                      key={i}
+                                      className="w-2.5 h-2.5 rounded-full border border-white/30 inline-block"
+                                      style={{ backgroundColor: c }}
+                                    />
+                                  ))}
+                                </div>
+
+                                {isCurrent ? (
+                                  <div className="flex items-center text-[10px] font-bold text-wedding-gold">
+                                    <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
+                                    <span>Đang áp dụng</span>
+                                  </div>
+                                ) : (
+                                  <span className="text-[10px] text-stone-400 group-hover:text-white transition-colors">
+                                    Chọn mẫu này →
+                                  </span>
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
 
@@ -558,6 +583,12 @@ export const WeddingStudioPage: React.FC = () => {
                       </h4>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {[
+                          { id: 'crimson_gold', name: 'Đỏ Son Hoàng Gia', bg: '#8B111A', desc: 'Hỷ sự truyền thống Song Hỷ 囍' },
+                          { id: 'indochine_moss', name: 'Xanh Rêu Đông Dương', bg: '#1B382B', desc: 'Di sản hoài niệm cổ điển' },
+                          { id: 'rustic_sage', name: 'Xanh Lá Xô Thơm Sage', bg: '#4A5D4E', desc: 'Rustic sân vườn thiên nhiên' },
+                          { id: 'editorial_mono', name: 'Đen Trắng Editorial', bg: '#121212', desc: 'Tạp chí thời trang tối giản' },
+                          { id: 'korean_peach', name: 'Hồng Đào Sữa Pastel', bg: '#DB2777', desc: 'Hàn Quốc thơ mộng dịu dàng' },
+                          { id: 'midnight_star', name: 'Xanh Đêm Dạ Tiệc Sao', bg: '#090D1A', desc: 'Ánh trăng và ngàn sao lấp lánh' },
                           { id: 'burgundy', name: 'Đỏ Rượu Vang', bg: '#75142B', desc: 'Quý tộc nồng nàn' },
                           { id: 'rose', name: 'Hồng Phấn Rose', bg: '#9D174D', desc: 'Ngọt ngào mộng mơ' },
                           { id: 'gold', name: 'Hoàng Kim 5 Sao', bg: '#855B14', desc: 'Vương giả rực rỡ' },
@@ -604,7 +635,19 @@ export const WeddingStudioPage: React.FC = () => {
                           <Layers className="w-4 h-4 text-wedding-gold" />
                           <span>
                             Kiến Trúc Đang Áp Dụng:{' '}
-                            {formData.template === 'fairytale'
+                            {formData.template === 'traditional'
+                              ? 'Hỷ Sự Áo Dài Truyền Thống (Song Hỷ 囍 & Gấm Đỏ Hoàng Tộc)'
+                              : formData.template === 'indochine'
+                              ? 'Đông Dương Di Sản (Gạch Bông & Xanh Rêu Hoài Niệm)'
+                              : formData.template === 'rustic'
+                              ? 'Rustic Bohemian (Sân Vườn & Lá Xô Thơm Sage)'
+                              : formData.template === 'editorial'
+                              ? 'Editorial Vogue (Tạp Chí Thời Trang High-Fashion)'
+                              : formData.template === 'korean'
+                              ? 'Hàn Quốc Pastel (Hồng Đào Sữa & Voan Lụa)'
+                              : formData.template === 'celestial'
+                              ? 'Dạ Tiệc Ánh Trăng (Bầu Trời Ngàn Sao & Trăng Khuyết)'
+                              : formData.template === 'fairytale'
                               ? 'Vườn Hoa Cổ Tích (Scrapbook Polaroid)'
                               : formData.template === 'modern'
                               ? 'Tạp Chí Thời Trang (Editorial 50/50 Minimalist)'
@@ -1061,10 +1104,46 @@ export const WeddingStudioPage: React.FC = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         {[
                           {
+                            id: 'traditional_silk',
+                            name: 'Traditional Silk (Gấm Đỏ Song Hỷ 囍)',
+                            desc: 'Phong bao lì xì cưới gấm đỏ cung đình, con dấu Song Hỷ dát vàng và hoa văn rồng phượng may mắn.',
+                            color: '#8B111A',
+                          },
+                          {
                             id: 'royal_velvet',
                             name: 'Royal Velvet (Nhung Đỏ Quý Tộc)',
                             desc: 'Nhung đỏ burgundy sang trọng, viền hoa văn vàng kim góc nhọn và con dấu sáp vàng hoàng gia.',
                             color: '#75142B',
+                          },
+                          {
+                            id: 'indochine_kraft',
+                            name: 'Indochine Kraft (Phong Bì Tem Thư Đông Dương)',
+                            desc: 'Giấy dó kraft thủ công, tem thư hoài niệm và họa tiết gạch bông Sài Gòn xưa.',
+                            color: '#C5A059',
+                          },
+                          {
+                            id: 'rustic_twine',
+                            name: 'Rustic Twine (Giấy Mộc Dây Gai & Cành Lá)',
+                            desc: 'Bìa giấy kraft thô mộc buộc dây gai bohemian và cành lá oliu thiên nhiên.',
+                            color: '#4A5D4E',
+                          },
+                          {
+                            id: 'editorial_vellum',
+                            name: 'Editorial Vellum (Bìa Mờ Tối Giản Chic)',
+                            desc: 'Mặt giấy trong suốt frosted vellum, typography tối giản và dấu sáp titan.',
+                            color: '#121212',
+                          },
+                          {
+                            id: 'korean_chiffon',
+                            name: 'Korean Chiffon (Hồng Đào Pastel & Ruy Băng)',
+                            desc: 'Bìa màu kem hồng đào bo tròn mềm mại kết hợp dải ruy băng voan lụa nhẹ tênh.',
+                            color: '#F472B6',
+                          },
+                          {
+                            id: 'celestial_midnight',
+                            name: 'Celestial Midnight (Nhung Đêm Ngàn Sao)',
+                            desc: 'Bìa xanh bóng đêm thẳm sâu, nhũ bạc lấp lánh và con dấu vầng trăng khuyết.',
+                            color: '#090D1A',
                           },
                           {
                             id: 'blush_ribbon',
@@ -1080,7 +1159,7 @@ export const WeddingStudioPage: React.FC = () => {
                           },
                           {
                             id: 'emerald_brass',
-                            name: 'Emerald Brass (Xanh Ngọc Lục Bảo & Con Dấu Đồng)',
+                            name: 'Emerald Brass (Xanh Lục Bảo & Con Dấu Đồng)',
                             desc: 'Màu xanh lục bảo vương giả kết hợp phụ kiện con dấu đồng cổ điển châu Âu.',
                             color: '#064E3B',
                           },
