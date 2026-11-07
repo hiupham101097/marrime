@@ -316,3 +316,4 @@ export const CompletionDonateSection: React.FC<CompletionDonateSectionProps> = (
     </section>
   );
 };
+
