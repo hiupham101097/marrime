@@ -96,6 +96,28 @@ export interface WeddingMusicConfig {
   url?: string;
 }
 
+export interface WeddingSectionsConfig {
+  showGuestCard: boolean;
+  showCouple: boolean;
+  showGallery: boolean;
+  showTimeline: boolean;
+  showLoveMessages: boolean;
+  showDresscode: boolean;
+  showEvents: boolean;
+  showRSVP: boolean;
+  showWishes: boolean;
+  showDonateBox: boolean;
+}
+
+export interface WeddingDonateConfig {
+  enabled: boolean;
+  title: string;
+  subtitle: string;
+  revealMode: 'on_completion_only' | 'show_always' | 'button_trigger';
+  showQr: boolean;
+  thankYouMessage: string;
+}
+
 export interface WeddingData {
   theme: WeddingTheme;
   template: WeddingTemplate;
@@ -119,6 +141,8 @@ export interface WeddingData {
     message: string;
     signatures: string;
   };
+  sectionsConfig?: WeddingSectionsConfig;
+  donateConfig?: WeddingDonateConfig;
 }
 
 export interface PublishedWeddingProject {

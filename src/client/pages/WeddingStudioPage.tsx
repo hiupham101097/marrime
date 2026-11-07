@@ -33,6 +33,10 @@ import {
   Eye,
   ArrowLeft,
   Users,
+  Layers,
+  Gift,
+  ShieldCheck,
+  SlidersHorizontal,
 } from 'lucide-react';
 import {
   WeddingData,
@@ -44,12 +48,16 @@ import {
   TimelineMilestone,
   WeddingEventSchedule,
   RSVPRecord,
+  WeddingSectionsConfig,
+  WeddingDonateConfig,
 } from '../../shared/types';
 import {
   DEFAULT_WEDDING_DATA,
   PRESET_MUSIC_TRACKS,
   DEFAULT_GALLERY_PHOTOS,
   SAMPLE_PHOTO_LIBRARY,
+  DEFAULT_SECTIONS_CONFIG,
+  DEFAULT_DONATE_CONFIG,
 } from '../../shared/defaultData';
 import { ImageSelector } from '../components/ImageSelector';
 
@@ -61,6 +69,8 @@ export const WeddingStudioPage: React.FC = () => {
   // Active studio tab
   const [activeTab, setActiveTab] = useState<
     | 'style'
+    | 'builder'
+    | 'donate'
     | 'envelope'
     | 'couple'
     | 'photos'
@@ -74,6 +84,7 @@ export const WeddingStudioPage: React.FC = () => {
 
   // Preview device mode: mobile or desktop
   const [previewDevice, setPreviewDevice] = useState<'mobile' | 'desktop'>('mobile');
+  const [previewKey, setPreviewKey] = useState(0);
 
   // Wedding form data
   const [weddingSlug, setWeddingSlug] = useState('tuan-anh-mai-phuong');
@@ -174,6 +185,7 @@ export const WeddingStudioPage: React.FC = () => {
         if (json.slug) setWeddingSlug(json.slug);
         setPublishMessage('Đã lưu vào cơ sở dữ liệu và xuất bản thành công!');
         setIsPublishModalOpen(true);
+        setPreviewKey((k) => k + 1);
       } else {
         setPublishMessage(json.message || 'Lỗi khi xuất bản.');
         setIsPublishModalOpen(true);
@@ -381,6 +393,8 @@ export const WeddingStudioPage: React.FC = () => {
               <div className="flex border-b border-stone-800 bg-stone-950/80 px-3 overflow-x-auto no-scrollbar flex-shrink-0">
                 {[
                   { id: 'style', name: 'Concept & Màu', icon: Palette },
+                  { id: 'builder', name: 'Bố Cục & Tự Thiết Kế', icon: Layers },
+                  { id: 'donate', name: 'Mừng Cưới Tùy Tâm', icon: Gift },
                   { id: 'envelope', name: 'Phong Bì & Dấu Sáp', icon: Mail },
                   { id: 'couple', name: 'Dâu & Rể', icon: User },
                   { id: 'photos', name: 'Ảnh & Bìa Hero', icon: Camera },
@@ -520,6 +534,461 @@ export const WeddingStudioPage: React.FC = () => {
                             <span className="text-[9px] text-stone-400 mt-0.5 block">{c.desc}</span>
                           </button>
                         ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB: BUILDER - BỐ CỤC & TỰ THIẾT KẾ MỞ */}
+                {activeTab === 'builder' && (
+                  <div className="space-y-6 animate-fadeIn">
+                    {/* Current Template Architecture Overview */}
+                    <div className="bg-stone-900/80 p-5 rounded-2xl border border-stone-800 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-serif text-sm font-bold text-white flex items-center space-x-2">
+                          <Layers className="w-4 h-4 text-wedding-gold" />
+                          <span>
+                            Kiến Trúc Đang Áp Dụng:{' '}
+                            {formData.template === 'fairytale'
+                              ? 'Vườn Hoa Cổ Tích (Scrapbook Polaroid)'
+                              : formData.template === 'modern'
+                              ? 'Tạp Chí Thời Trang (Editorial 50/50 Minimalist)'
+                              : formData.template === 'vintage'
+                              ? 'Nhật Ký Di Sản (Cameo Oval & Tem Bưu Chính)'
+                              : 'Hoàng Gia Quý Tộc (Vương Miện & Viền Vàng Đúc)'}
+                          </span>
+                        </h4>
+                        <span className="text-[10px] px-2.5 py-1 rounded bg-stone-800 text-stone-300 font-mono">
+                          {formData.template}
+                        </span>
+                      </div>
+                      <p className="text-xs text-stone-400 leading-relaxed">
+                        Bốn phong cách sở hữu 4 hệ thống bố cục, khung hình, hiệu ứng và ngôn ngữ thị giác hoàn toàn riêng biệt. Bạn có thể tự do bật/tắt bất kỳ phân hệ nào bên dưới để thiệp cưới mang dấu ấn cá nhân trọn vẹn nhất.
+                      </p>
+                    </div>
+
+                    {/* Section Toggles Grid */}
+                    <div className="bg-stone-900/80 p-5 rounded-2xl border border-stone-800 space-y-4">
+                      <div className="flex items-center justify-between border-b border-stone-800 pb-3">
+                        <div>
+                          <h4 className="font-serif text-sm font-bold text-white flex items-center space-x-2">
+                            <SlidersHorizontal className="w-4 h-4 text-emerald-400" />
+                            <span>Tự Do Bật / Tắt Các Phân Hệ Trên Thiệp Cưới</span>
+                          </h4>
+                          <span className="text-[10px] text-stone-400">
+                            Tùy biến nội dung thiệp theo mong muốn riêng của Dâu & Rể
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        {[
+                          {
+                            key: 'showGuestCard' as const,
+                            title: '1. Thư Mời Đích Danh Quan Khách',
+                            desc: 'Hiển thị thiệp mời cá nhân hóa cho từng khách kèm tên và lời xưng hô',
+                            icon: '💌',
+                          },
+                          {
+                            key: 'showCouple' as const,
+                            title: '2. Chân Dung Dâu & Rể',
+                            desc: 'Giới thiệu hai gia đình thông gia, thông điệp tính cách và chân dung cô dâu chú rể',
+                            icon: '👰🤵',
+                          },
+                          {
+                            key: 'showGallery' as const,
+                            title: '3. Album Ảnh Cưới (Photo Gallery)',
+                            desc: 'Bộ sưu tập ảnh cưới sắc nét với bố cục thay đổi theo từng phong cách',
+                            icon: '📸',
+                          },
+                          {
+                            key: 'showTimeline' as const,
+                            title: '4. Chặng Đường Tình Yêu (Milestones)',
+                            desc: 'Từng cột mốc từ ngày đầu gặp gỡ, chiếc nhẫn cầu hôn đến ngưỡng cửa hôn nhân',
+                            icon: '⏳',
+                          },
+                          {
+                            key: 'showLoveMessages' as const,
+                            title: '5. Lời Hẹn Ước & Tri Ân',
+                            desc: 'Những dòng tâm sự son sắt dâu rể gửi gắm đến người bạn đời',
+                            icon: '💍',
+                          },
+                          {
+                            key: 'showDresscode' as const,
+                            title: '6. Trang Phục Gợi Ý & Lễ Nghi (Dresscode)',
+                            desc: 'Bảng màu trang phục đề xuất và lưu ý trang trọng cho tiệc cưới',
+                            icon: '👔',
+                          },
+                          {
+                            key: 'showEvents' as const,
+                            title: '7. Lịch Trình & Sảnh Tiệc Google Maps',
+                            desc: 'Thời gian, địa điểm, bản đồ dẫn đường và tính năng lưu vào Google Calendar',
+                            icon: '📍',
+                          },
+                          {
+                            key: 'showRSVP' as const,
+                            title: '8. Hộp Xác Nhận Tham Dự (RSVP)',
+                            desc: 'Thu thập thông tin khách tham dự, số lượng người đi cùng và chế độ ăn uống',
+                            icon: '📋',
+                          },
+                          {
+                            key: 'showWishes' as const,
+                            title: '9. Sổ Lưu Bút Chúc Phúc Trực Tuyến',
+                            desc: 'Khách mời gửi lời chúc ngọt ngào và thả tim theo thời gian thực',
+                            icon: '✨',
+                          },
+                          {
+                            key: 'showDonateBox' as const,
+                            title: '10. Hộp Mừng Cưới & Chúc Phúc Tùy Tâm',
+                            desc: 'Chỉ xuất hiện sau khi khách hoàn thành lời chúc/RSVP hoặc bấm nút tùy tâm',
+                            icon: '🎁',
+                          },
+                        ].map((item) => {
+                          const currentSections = formData.sectionsConfig || DEFAULT_SECTIONS_CONFIG;
+                          const isEnabled = currentSections[item.key] !== false;
+
+                          return (
+                            <div
+                              key={item.key}
+                              className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 transition-all ${
+                                isEnabled
+                                  ? 'border-emerald-500/40 bg-emerald-950/20'
+                                  : 'border-stone-800 bg-stone-900/30 opacity-60'
+                              }`}
+                            >
+                              <div className="flex items-start space-x-3">
+                                <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
+                                <div>
+                                  <span className="font-serif text-xs font-bold text-white block">
+                                    {item.title}
+                                  </span>
+                                  <span className="text-[10px] text-stone-400 block leading-relaxed mt-0.5">
+                                    {item.desc}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const updated = { ...currentSections, [item.key]: !isEnabled };
+                                  setFormData({ ...formData, sectionsConfig: updated });
+                                }}
+                                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 ${
+                                  isEnabled
+                                    ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm'
+                                    : 'bg-stone-800 hover:bg-stone-700 text-stone-400'
+                                }`}
+                              >
+                                {isEnabled ? 'Đang Bật' : 'Đã Tắt'}
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB: DONATE - MỪNG CƯỚI TÙY TÂM */}
+                {activeTab === 'donate' && (
+                  <div className="space-y-6 animate-fadeIn">
+                    {/* Master Switch */}
+                    <div className="bg-stone-900/80 p-5 rounded-2xl border border-stone-800 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-serif text-sm font-bold text-white flex items-center space-x-2">
+                          <Gift className="w-4 h-4 text-wedding-gold" />
+                          <span>Hộp Mừng Cưới & Chúc Phúc Tùy Tâm</span>
+                        </h4>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const current = formData.donateConfig || DEFAULT_DONATE_CONFIG;
+                            setFormData({
+                              ...formData,
+                              donateConfig: { ...current, enabled: !current.enabled },
+                            });
+                          }}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                            formData.donateConfig?.enabled !== false
+                              ? 'bg-emerald-600 text-white'
+                              : 'bg-stone-800 text-stone-400'
+                          }`}
+                        >
+                          {formData.donateConfig?.enabled !== false ? 'Đang Hoạt Động' : 'Đã Tắt'}
+                        </button>
+                      </div>
+                      <p className="text-xs text-stone-400 leading-relaxed">
+                        Phân hệ tinh tế dành cho bạn bè, người thân ở xa không thể về dự tiệc muốn gửi món quà chúc phúc. Được thiết kế tôn trọng sự tự nguyện của quan khách.
+                      </p>
+                    </div>
+
+                    {/* Reveal Trigger Mode */}
+                    <div className="bg-stone-900/80 p-5 rounded-2xl border border-stone-800 space-y-3">
+                      <h4 className="font-serif text-sm font-bold text-white flex items-center space-x-2">
+                        <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                        <span>1. Cơ Chế Hiển Thị (Tránh gây phản cảm & nghi ngờ lừa đảo)</span>
+                      </h4>
+                      <div className="space-y-2.5">
+                        {[
+                          {
+                            id: 'on_completion_only',
+                            name: 'Chỉ hiện sau khi khách đã gửi lời chúc / RSVP (Khuyên dùng)',
+                            desc: 'Khách gửi lời chúc lên sổ lưu bút hoặc xác nhận tham dự xong thì thiệp mới nhẹ nhàng mở ra món quà chúc phúc. Cực kỳ lịch sự và văn minh.',
+                            badge: 'Tinh tế nhất',
+                          },
+                          {
+                            id: 'button_trigger',
+                            name: 'Hiện nút bấm trang nhã ở cuối thiệp để khách tự bấm',
+                            desc: 'Nút "Gửi Món Quà Chúc Phúc Tùy Tâm" xuất hiện kín đáo ở cuối thiệp, chỉ bung ra khi khách chủ động bấm vào.',
+                            badge: 'Trang nhã',
+                          },
+                          {
+                            id: 'show_always',
+                            name: 'Luôn hiển thị như một phân hệ cố định ở chân thiệp',
+                            desc: 'Hiển thị công khai thông tin tài khoản ở phân hệ cuối cùng của thiệp.',
+                            badge: 'Công khai',
+                          },
+                        ].map((mode) => {
+                          const currentMode = formData.donateConfig?.revealMode || 'on_completion_only';
+                          const isSelected = currentMode === mode.id;
+
+                          return (
+                            <button
+                              key={mode.id}
+                              type="button"
+                              onClick={() => {
+                                const current = formData.donateConfig || DEFAULT_DONATE_CONFIG;
+                                setFormData({
+                                  ...formData,
+                                  donateConfig: { ...current, revealMode: mode.id as any },
+                                });
+                              }}
+                              className={`w-full p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                                isSelected
+                                  ? 'border-emerald-500 bg-emerald-950/30 ring-1 ring-emerald-500'
+                                  : 'border-stone-800 hover:border-stone-700 bg-stone-900/40'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="font-serif text-xs font-bold text-white">{mode.name}</span>
+                                <span className="text-[10px] px-2 py-0.5 rounded bg-stone-800 text-stone-300 font-mono">
+                                  {mode.badge}
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-stone-400 leading-relaxed">{mode.desc}</p>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* QR Security Option */}
+                    <div className="bg-stone-900/80 p-5 rounded-2xl border border-stone-800 space-y-3">
+                      <h4 className="font-serif text-sm font-bold text-white flex items-center space-x-2">
+                        <QrCode className="w-4 h-4 text-wedding-gold" />
+                        <span>2. Tùy Chọn An Toàn QR Chuyển Khoản</span>
+                      </h4>
+                      <div className="p-3.5 rounded-xl bg-stone-900/90 border border-stone-800 flex items-center justify-between gap-3">
+                        <div>
+                          <span className="text-xs font-bold text-white block">Cho phép khách bấm xem mã QR</span>
+                          <span className="text-[10px] text-stone-400 block mt-0.5">
+                            Nếu tắt, thiệp chỉ hiện số tài khoản chính chủ và tên ngân hàng kèm nút chép số nhanh (tránh bị nghi lừa đảo)
+                          </span>
+                        </div>
+                        <input
+                          type="checkbox"
+                          checked={formData.donateConfig?.showQr !== false}
+                          onChange={(e) => {
+                            const current = formData.donateConfig || DEFAULT_DONATE_CONFIG;
+                            setFormData({
+                              ...formData,
+                              donateConfig: { ...current, showQr: e.target.checked },
+                            });
+                          }}
+                          className="w-5 h-5 accent-emerald-500 cursor-pointer shrink-0"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Custom Texts */}
+                    <div className="bg-stone-900/80 p-5 rounded-2xl border border-stone-800 space-y-4">
+                      <h4 className="font-serif text-sm font-bold text-white">
+                        3. Tiêu Đề & Thông Điệp Chúc Phúc
+                      </h4>
+                      <div className="space-y-3 text-xs">
+                        <div>
+                          <label className="block text-stone-400 mb-1 font-semibold">Tiêu Đề Hộp Mừng Cưới</label>
+                          <input
+                            type="text"
+                            value={formData.donateConfig?.title || 'Hộp Mừng Cưới & Chúc Phúc Tùy Tâm'}
+                            onChange={(e) => {
+                              const current = formData.donateConfig || DEFAULT_DONATE_CONFIG;
+                              setFormData({
+                                ...formData,
+                                donateConfig: { ...current, title: e.target.value },
+                              });
+                            }}
+                            className="w-full px-3 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-stone-400 mb-1 font-semibold">Lời Nhắn Gửi Tới Khách Mời</label>
+                          <textarea
+                            rows={2}
+                            value={formData.donateConfig?.subtitle || ''}
+                            onChange={(e) => {
+                              const current = formData.donateConfig || DEFAULT_DONATE_CONFIG;
+                              setFormData({
+                                ...formData,
+                                donateConfig: { ...current, subtitle: e.target.value },
+                              });
+                            }}
+                            className="w-full px-3 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-stone-400 mb-1 font-semibold">Lời Tri Ân Cảm Ơn Cuối Hộp</label>
+                          <input
+                            type="text"
+                            value={formData.donateConfig?.thankYouMessage || ''}
+                            onChange={(e) => {
+                              const current = formData.donateConfig || DEFAULT_DONATE_CONFIG;
+                              setFormData({
+                                ...formData,
+                                donateConfig: { ...current, thankYouMessage: e.target.value },
+                              });
+                            }}
+                            className="w-full px-3 py-2.5 rounded-xl bg-stone-800 border border-stone-700 text-white"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bank Account Numbers Groom & Bride */}
+                    <div className="bg-stone-900/80 p-5 rounded-2xl border border-stone-800 space-y-4">
+                      <h4 className="font-serif text-sm font-bold text-white">
+                        4. Thông Tin Tài Khoản Chú Rể & Cô Dâu
+                      </h4>
+
+                      {/* Groom Bank */}
+                      <div className="p-4 rounded-xl bg-stone-900/90 border border-stone-800 space-y-3">
+                        <span className="text-xs font-bold text-wedding-gold block">
+                          Tài Khoản Chú Rể ({formData.groom.shortName || formData.groom.name})
+                        </span>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                          <div>
+                            <label className="text-[10px] text-stone-400 block mb-0.5">Tên Ngân Hàng</label>
+                            <input
+                              type="text"
+                              value={formData.groom.bankInfo.bankName}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  groom: {
+                                    ...formData.groom,
+                                    bankInfo: { ...formData.groom.bankInfo, bankName: e.target.value },
+                                  },
+                                })
+                              }
+                              className="w-full px-2.5 py-1.5 rounded-lg bg-stone-800 border border-stone-700 text-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-stone-400 block mb-0.5">Số Tài Khoản</label>
+                            <input
+                              type="text"
+                              value={formData.groom.bankInfo.accountNumber}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  groom: {
+                                    ...formData.groom,
+                                    bankInfo: { ...formData.groom.bankInfo, accountNumber: e.target.value },
+                                  },
+                                })
+                              }
+                              className="w-full px-2.5 py-1.5 rounded-lg bg-stone-800 border border-stone-700 text-white font-mono"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-stone-400 block mb-0.5">Tên Chủ Tài Khoản</label>
+                            <input
+                              type="text"
+                              value={formData.groom.bankInfo.accountHolder}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  groom: {
+                                    ...formData.groom,
+                                    bankInfo: { ...formData.groom.bankInfo, accountHolder: e.target.value },
+                                  },
+                                })
+                              }
+                              className="w-full px-2.5 py-1.5 rounded-lg bg-stone-800 border border-stone-700 text-white uppercase"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Bride Bank */}
+                      <div className="p-4 rounded-xl bg-stone-900/90 border border-stone-800 space-y-3">
+                        <span className="text-xs font-bold text-pink-400 block">
+                          Tài Khoản Cô Dâu ({formData.bride.shortName || formData.bride.name})
+                        </span>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                          <div>
+                            <label className="text-[10px] text-stone-400 block mb-0.5">Tên Ngân Hàng</label>
+                            <input
+                              type="text"
+                              value={formData.bride.bankInfo.bankName}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  bride: {
+                                    ...formData.bride,
+                                    bankInfo: { ...formData.bride.bankInfo, bankName: e.target.value },
+                                  },
+                                })
+                              }
+                              className="w-full px-2.5 py-1.5 rounded-lg bg-stone-800 border border-stone-700 text-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-stone-400 block mb-0.5">Số Tài Khoản</label>
+                            <input
+                              type="text"
+                              value={formData.bride.bankInfo.accountNumber}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  bride: {
+                                    ...formData.bride,
+                                    bankInfo: { ...formData.bride.bankInfo, accountNumber: e.target.value },
+                                  },
+                                })
+                              }
+                              className="w-full px-2.5 py-1.5 rounded-lg bg-stone-800 border border-stone-700 text-white font-mono"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-stone-400 block mb-0.5">Tên Chủ Tài Khoản</label>
+                            <input
+                              type="text"
+                              value={formData.bride.bankInfo.accountHolder}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  bride: {
+                                    ...formData.bride,
+                                    bankInfo: { ...formData.bride.bankInfo, accountHolder: e.target.value },
+                                  },
+                                })
+                              }
+                              className="w-full px-2.5 py-1.5 rounded-lg bg-stone-800 border border-stone-700 text-white uppercase"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1370,7 +1839,57 @@ export const WeddingStudioPage: React.FC = () => {
             </div>
 
             {/* RIGHT PANE: LIVE INTERACTIVE PREVIEW */}
-            <div className="hidden lg:flex flex-1 bg-stone-950 items-center justify-center p-6 relative overflow-hidden">
+            <div className="hidden lg:flex flex-1 bg-stone-950 flex-col items-center justify-center p-6 relative overflow-hidden">
+              {/* Preview Toolbar */}
+              <div className="w-full max-w-md flex items-center justify-between mb-3 px-2 text-xs text-stone-400">
+                <div className="flex items-center space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => setPreviewDevice('mobile')}
+                    className={`px-3 py-1.5 rounded-lg font-semibold flex items-center space-x-1.5 transition-colors cursor-pointer ${
+                      previewDevice === 'mobile'
+                        ? 'bg-stone-800 text-white border border-wedding-gold/40'
+                        : 'text-stone-400 hover:text-white'
+                    }`}
+                  >
+                    <Smartphone className="w-3.5 h-3.5" />
+                    <span>Di Động</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewDevice('desktop')}
+                    className={`px-3 py-1.5 rounded-lg font-semibold flex items-center space-x-1.5 transition-colors cursor-pointer ${
+                      previewDevice === 'desktop'
+                        ? 'bg-stone-800 text-white border border-wedding-gold/40'
+                        : 'text-stone-400 hover:text-white'
+                    }`}
+                  >
+                    <Monitor className="w-3.5 h-3.5" />
+                    <span>Máy Tính</span>
+                  </button>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => setPreviewKey((k) => k + 1)}
+                    className="p-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white transition-colors cursor-pointer"
+                    title="Tải lại giao diện xem trước"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                  </button>
+                  <a
+                    href={`/?w=${weddingSlug}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="p-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white transition-colors cursor-pointer"
+                    title="Mở thiệp trong tab trình duyệt mới"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+
               <div
                 className={`transition-all duration-500 relative shadow-2xl overflow-hidden flex flex-col ${
                   previewDevice === 'mobile'
@@ -1387,8 +1906,9 @@ export const WeddingStudioPage: React.FC = () => {
 
                 {/* Live Preview Iframe */}
                 <iframe
+                  key={previewKey}
                   title="Live Wedding Invitation Preview"
-                  src={`/?w=${weddingSlug}`}
+                  src={`/?w=${weddingSlug}&v=${previewKey}`}
                   className="w-full h-full border-none bg-wedding-cream"
                 />
               </div>

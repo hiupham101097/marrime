@@ -1,4 +1,33 @@
-import { WeddingData, WishMessage, WeddingMusicConfig, GalleryPhotoItem } from './types';
+import {
+  WeddingData,
+  WishMessage,
+  WeddingMusicConfig,
+  GalleryPhotoItem,
+  WeddingSectionsConfig,
+  WeddingDonateConfig,
+} from './types';
+
+export const DEFAULT_SECTIONS_CONFIG: WeddingSectionsConfig = {
+  showGuestCard: true,
+  showCouple: true,
+  showGallery: true,
+  showTimeline: true,
+  showLoveMessages: true,
+  showDresscode: true,
+  showEvents: true,
+  showRSVP: true,
+  showWishes: true,
+  showDonateBox: true,
+};
+
+export const DEFAULT_DONATE_CONFIG: WeddingDonateConfig = {
+  enabled: true,
+  title: 'Hộp Mừng Cưới & Chúc Phúc Tùy Tâm',
+  subtitle: 'Tình cảm và lời chúc của bạn là món quà quý giá nhất. Nếu ở xa không thể về dự tiệc, bạn có thể gửi quà chúc phúc tùy tâm tới Dâu & Rể tại đây.',
+  revealMode: 'on_completion_only',
+  showQr: true,
+  thankYouMessage: 'Dâu & Rể xin chân thành cảm ơn tình cảm và món quà thương quý của bạn!',
+};
 
 export const DEFAULT_GALLERY_PHOTOS: GalleryPhotoItem[] = [
   {
@@ -309,6 +338,8 @@ export const ROYAL_VELVET_DATA: WeddingData = {
     message: 'Hôn lễ của chúng con sẽ không thể trọn vẹn nếu thiếu đi sự hiện diện, tình thương và lời chúc phúc quý báu từ đấng sinh thành, họ hàng hai bên nội ngoại, cùng toàn thể quý cô chú, anh chị và các bạn bè thân quý. Sự hiện diện và lời chúc của mọi người là món quà cưới vô giá, là động lực để chúng con cùng nhau vun đắp một gia đình nhỏ hạnh phúc và bền vững mai sau.',
     signatures: 'Tuấn Anh & Mai Phương kính chúc',
   },
+  sectionsConfig: { ...DEFAULT_SECTIONS_CONFIG },
+  donateConfig: { ...DEFAULT_DONATE_CONFIG },
 };
 
 // ==========================================
@@ -463,6 +494,12 @@ export const BLUSH_RIBBON_DATA: WeddingData = {
     message: 'Tình yêu và sự hiện diện của quý vị là những đóa hoa thơm ngát nhất điểm tô cho ngày cưới của chúng con. Xin chân thành cảm ơn những lời chúc phúc ngọt ngào đã tiếp thêm sức mạnh cho tổ ấm nhỏ của Minh Trí & Thảo Nhi.',
     signatures: 'Minh Trí & Thảo Nhi đồng kính tạ',
   },
+  sectionsConfig: { ...DEFAULT_SECTIONS_CONFIG },
+  donateConfig: {
+    ...DEFAULT_DONATE_CONFIG,
+    title: 'Hộp Chúc Phúc & Món Quà Yêu Thương',
+    subtitle: 'Khu vườn hạnh phúc của chúng mình càng ngát hương nhờ sự chúc phúc của bạn. Món quà tùy tâm là niềm vui to lớn đối với dâu rể.',
+  },
 };
 
 // ==========================================
@@ -587,6 +624,12 @@ export const MODERN_MINIMAL_DATA: WeddingData = {
     message: 'Sự hiện diện thanh lịch và những lời chúc tốt đẹp của quý khách là niềm vinh dự sâu sắc cho ngày vui của gia đình chúng tôi.',
     signatures: 'Nhật Nam & Thanh Hằng trân trọng cảm ơn',
   },
+  sectionsConfig: { ...DEFAULT_SECTIONS_CONFIG },
+  donateConfig: {
+    ...DEFAULT_DONATE_CONFIG,
+    title: 'Hộp Quà Mừng Cưới Tinh Tế',
+    subtitle: 'Sự hiện diện và lời chúc của bạn là điều trân quý nhất. Bạn cũng có thể gửi món quà chúc phúc tinh tế tới hai bạn tại đây.',
+  },
 };
 
 // ==========================================
@@ -703,6 +746,12 @@ export const EMERALD_BRASS_DATA: WeddingData = {
     title: 'Lời Cảm Ơn Gia Tộc & Quan Khách',
     message: 'Chúng con xin cúi đầu cảm tạ công sinh thành dưỡng dục của hai bên cha mẹ, cùng lòng ưu ái quý báu của toàn thể quý vị khách quý đã đến chứng kiến giây phút thiêng liêng này.',
     signatures: 'Khắc Huy & Thùy Linh bái tạ',
+  },
+  sectionsConfig: { ...DEFAULT_SECTIONS_CONFIG },
+  donateConfig: {
+    ...DEFAULT_DONATE_CONFIG,
+    title: 'Hòm Thư Mừng Cưới Tri Ân',
+    subtitle: 'Đôi uyên ương xin cảm tạ tấm lòng và lời chúc phúc của quý khách. Mọi sự chúc phúc và quà mừng là niềm vinh hạnh của gia tộc.',
   },
 };
 

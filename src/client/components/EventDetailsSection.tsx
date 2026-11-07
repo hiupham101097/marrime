@@ -1,12 +1,16 @@
 import React from 'react';
 import { Calendar, Clock, MapPin, Navigation, ExternalLink, CalendarPlus, Building2 } from 'lucide-react';
-import { WeddingEventSchedule } from '../../shared/types';
+import { WeddingEventSchedule, WeddingTemplate } from '../../shared/types';
 
 interface EventDetailsSectionProps {
   events: WeddingEventSchedule[];
+  template?: WeddingTemplate;
 }
 
-export const EventDetailsSection: React.FC<EventDetailsSectionProps> = ({ events }) => {
+export const EventDetailsSection: React.FC<EventDetailsSectionProps> = ({
+  events,
+  template = 'royal',
+}) => {
   const handleAddToCalendar = (event: WeddingEventSchedule) => {
     // Generate Google Calendar Link
     // Date: 2026-11-20T11:00:00+07:00
@@ -44,14 +48,32 @@ export const EventDetailsSection: React.FC<EventDetailsSectionProps> = ({ events
           {events.map((evt) => (
             <div
               key={evt.id}
-              className="bg-wedding-cream/60 rounded-3xl p-6 sm:p-10 border-2 border-wedding-gold/30 shadow-envelope flex flex-col justify-between relative overflow-hidden group hover:border-wedding-gold/60 transition-all duration-300"
+              className={`p-6 sm:p-10 flex flex-col justify-between relative overflow-hidden transition-all duration-300 ${
+                template === 'modern'
+                  ? 'bg-white rounded-2xl border border-stone-200 shadow-sm hover:shadow-md'
+                  : template === 'fairytale'
+                  ? 'bg-[#FFF8F9] rounded-3xl border-2 border-pink-200/80 shadow-md'
+                  : template === 'vintage'
+                  ? 'bg-[#FAF5E9] rounded-3xl border-2 border-[#855B14]/40 shadow-lg'
+                  : 'bg-wedding-cream/60 rounded-3xl border-2 border-wedding-gold/30 shadow-envelope group hover:border-wedding-gold/60'
+              }`}
             >
               {/* Event Badge */}
               <div className="flex items-center justify-between mb-6">
-                <span className="px-3.5 py-1.5 rounded-full bg-wedding-burgundy text-wedding-gold-light text-xs font-semibold tracking-wide">
+                <span
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide ${
+                    template === 'modern'
+                      ? 'bg-stone-900 text-white font-mono text-[11px]'
+                      : template === 'fairytale'
+                      ? 'bg-pink-600 text-white'
+                      : template === 'vintage'
+                      ? 'bg-[#064E3B] text-[#FFF7CC]'
+                      : 'bg-wedding-burgundy text-wedding-gold-light'
+                  }`}
+                >
                   {evt.title}
                 </span>
-                <span className="text-xs text-stone-500 font-medium">
+                <span className="text-xs text-stone-500 font-medium font-mono">
                   {evt.lunarDate}
                 </span>
               </div>

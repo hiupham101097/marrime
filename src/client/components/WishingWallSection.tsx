@@ -3,7 +3,11 @@ import { Heart, MessageSquarePlus, Send, Sparkles } from 'lucide-react';
 import { WishMessage } from '../../shared/types';
 import { INITIAL_WISHES } from '../../shared/defaultData';
 
-export const WishingWallSection: React.FC = () => {
+interface WishingWallSectionProps {
+  onWishSuccess?: () => void;
+}
+
+export const WishingWallSection: React.FC<WishingWallSectionProps> = ({ onWishSuccess }) => {
   const [wishes, setWishes] = useState<WishMessage[]>(INITIAL_WISHES);
   const [name, setName] = useState('');
   const [relationRole, setRelationRole] = useState('Bạn bè');
@@ -66,6 +70,7 @@ export const WishingWallSection: React.FC = () => {
         if (json.data) {
           setWishes((prev) => [json.data, ...prev]);
           setContent('');
+          onWishSuccess?.();
         }
       } else {
         // Fallback local update
@@ -80,6 +85,7 @@ export const WishingWallSection: React.FC = () => {
         };
         setWishes((prev) => [localWish, ...prev]);
         setContent('');
+        onWishSuccess?.();
       }
     } catch {
       // Local fallback
@@ -94,6 +100,7 @@ export const WishingWallSection: React.FC = () => {
       };
       setWishes((prev) => [localWish, ...prev]);
       setContent('');
+      onWishSuccess?.();
     } finally {
       setIsSubmitting(false);
     }

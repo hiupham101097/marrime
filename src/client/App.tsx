@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles } from 'lucide-react';
-import { DEFAULT_WEDDING_DATA, PRESET_WEDDING_PROJECTS } from '../shared/defaultData';
+import { DEFAULT_WEDDING_DATA, PRESET_WEDDING_PROJECTS, DEFAULT_SECTIONS_CONFIG, DEFAULT_DONATE_CONFIG } from '../shared/defaultData';
 import { WeddingData, GuestRole } from '../shared/types';
 import { useGuestInfo } from './hooks/useGuestInfo';
 import { useWeddingAudio } from './hooks/useWeddingAudio';
@@ -18,6 +18,7 @@ import { ThankYouSection } from './components/ThankYouSection';
 import { EventDetailsSection } from './components/EventDetailsSection';
 import { RSVPSection } from './components/RSVPSection';
 import { WishingWallSection } from './components/WishingWallSection';
+import { CompletionDonateSection } from './components/CompletionDonateSection';
 import { FloatingEffects } from './components/FloatingEffects';
 import { MusicPlayer } from './components/MusicPlayer';
 import { WeddingStudioPage } from './pages/WeddingStudioPage';
@@ -63,6 +64,9 @@ export const App: React.FC = () => {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  const sections = weddingData.sectionsConfig || DEFAULT_SECTIONS_CONFIG;
 
   const { guest } = useGuestInfo();
   const { isPlaying, isMuted, toggleMute, startMusic, toggleMusic, playEnvelopeOpeningSound, currentTrackTitle } =
@@ -318,29 +322,49 @@ export const App: React.FC = () => {
         />
 
         {/* 2. Personalized Guest Invitation Card (Chế độ chỉ đọc cho quan khách) */}
-        <div id="invitation-card">
-          <GuestInvitationCard
-            guest={guest}
-            venueName={weddingData.events[0]?.venueName || 'Riverside Palace'}
-            hallName={weddingData.events[0]?.hallName || 'Sảnh Grand Ballroom (Tầng 3)'}
-            weddingDateFormatted={weddingData.weddingDateFormatted}
-          />
-        </div>
+        {sections.showGuestCard !== false && (
+          <div id="invitation-card">
+            <GuestInvitationCard
+              guest={guest}
+              venueName={weddingData.events[0]?.venueName || 'Riverside Palace'}
+              hallName={weddingData.events[0]?.hallName || 'Sảnh Grand Ballroom (Tầng 3)'}
+              weddingDateFormatted={weddingData.weddingDateFormatted}
+            />
+          </div>
+        )}
 
         {/* 3. Couple Showcase (Đại diện hai họ thông gia) */}
-        <CoupleSection groom={weddingData.groom} bride={weddingData.bride} />
+        {sections.showCouple !== false && (
+          <CoupleSection
+            groom={weddingData.groom}
+            bride={weddingData.bride}
+            template={weddingData.template}
+          />
+        )}
 
-        {/* 4. Royal Wedding Photo Gallery (Khoảnh khắc đẹp nhất) */}
-        <RoyalGallerySection photos={weddingData.gallery} />
+        {/* 4. Wedding Photo Gallery (Khoảnh khắc đẹp nhất) */}
+        {sections.showGallery !== false && (
+          <RoyalGallerySection
+            photos={weddingData.gallery}
+            template={weddingData.template}
+          />
+        )}
 
         {/* 5. Timeline Section (Từng chặng đường & hình ảnh kỷ niệm) */}
-        <TimelineSection milestones={weddingData.timeline} />
+        {sections.showTimeline !== false && (
+          <TimelineSection
+            milestones={weddingData.timeline}
+            template={weddingData.template}
+          />
+        )}
 
         {/* 6. Love Messages (Những lời hẹn ước dâu rể) */}
-        <LoveMessagesSection messages={weddingData.loveStoryMessages} />
+        {sections.showLoveMessages !== false && (
+          <LoveMessagesSection messages={weddingData.loveStoryMessages} />
+        )}
 
         {/* 7. Dresscode & 5-Star Program (Trang phục gợi ý & lịch trình tiệc) */}
-        <DresscodeEtiquetteSection />
+        {sections.showDresscode !== false && <DresscodeEtiquetteSection />}
 
         {/* 8. Thank You (Lời tri ân sâu sắc gửi đấng sinh thành & quan khách) */}
         <ThankYouSection
@@ -350,13 +374,38 @@ export const App: React.FC = () => {
         />
 
         {/* 9. Event Details & Wedding Hall (Thời gian, địa điểm, sảnh cưới, Google Maps) */}
-        <EventDetailsSection events={weddingData.events} />
+        {sections.showEvents !== false && (
+          <EventDetailsSection
+            events={weddingData.events}
+            template={weddingData.template}
+          />
+        )}
 
         {/* 10. RSVP Section (Xác nhận tham dự connected to Node.js backend) */}
-        <RSVPSection guest={guest} />
+        {sections.showRSVP !== false && (
+          <RSVPSection
+            guest={guest}
+            onSuccessSubmit={() => setIsCompleted(true)}
+          />
+        )}
 
         {/* 11. Wishing Wall (Sổ lưu bút trực tuyến với thả tim & realtime) */}
-        <WishingWallSection />
+        {sections.showWishes !== false && (
+          <WishingWallSection
+            onWishSuccess={() => setIsCompleted(true)}
+          />
+        )}
+
+        {/* 12. Completion Donate Box (Hộp Mừng Cưới & Chúc Phúc Tùy Tâm) */}
+        {sections.showDonateBox !== false && (
+          <CompletionDonateSection
+            groom={weddingData.groom}
+            bride={weddingData.bride}
+            template={weddingData.template}
+            donateConfig={weddingData.donateConfig}
+            isCompleted={isCompleted}
+          />
+        )}
       </main>
 
       {/* Scroll to top button */}
