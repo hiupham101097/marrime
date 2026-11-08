@@ -58,6 +58,41 @@ export const ROLE_CONFIG: Record<GuestRole, { label: string; prefix: string; pro
   },
 };
 
+/**
+ * Universal salutation formatter that prevents embarrassing duplicate prefixes
+ * like "Bạn Bạn và Người Thương", "Anh Anh Tuấn", etc.
+ */
+export function formatGuestSalutation(guest: GuestInfo): string {
+  const rawName = (guest.name || '').trim();
+  if (!rawName) return 'Quý Khách';
+
+  const roleData = ROLE_CONFIG[guest.role] || ROLE_CONFIG.ban;
+  if (guest.role === 'gia_dinh') {
+    return rawName.toLowerCase().startsWith('gia đình') || rawName.toLowerCase().startsWith('gd ')
+      ? rawName
+      : `Gia đình ${rawName}`;
+  }
+
+  const prefix = roleData.prefix;
+  const nameLower = rawName.toLowerCase();
+  const prefixLower = prefix.toLowerCase();
+
+  // If the rawName starts with the prefix (e.g. "Bạn và Người Thương", "Bạn Linh")
+  if (nameLower === prefixLower || nameLower.startsWith(prefixLower + ' ') || nameLower.startsWith(prefixLower + ' &')) {
+    return rawName;
+  }
+
+  // Also check if rawName starts with any common Vietnamese title
+  const allPrefixes = ['bạn', 'anh', 'chị', 'em', 'cô', 'chú', 'bác', 'ông', 'bà', 'gia đình', 'quý khách'];
+  for (const p of allPrefixes) {
+    if (nameLower === p || nameLower.startsWith(p + ' ') || nameLower.startsWith(p + ' &')) {
+      return rawName;
+    }
+  }
+
+  return `${prefix} ${rawName}`;
+}
+
 export function useGuestInfo() {
   const [guest, setGuest] = useState<GuestInfo>({
     name: 'Quý Khách Quý',
@@ -100,16 +135,12 @@ export function useGuestInfo() {
   };
 
   const getFullInvitationTitle = (): string => {
-    const config = ROLE_CONFIG[guest.role] || ROLE_CONFIG.ban;
-    if (guest.role === 'gia_dinh') {
-      return `Kính mời: ${guest.name}`;
-    }
-    return `Kính mời: ${config.prefix} ${guest.name}`;
+    return `Kính mời: ${formatGuestSalutation(guest)}`;
   };
 
   const getWarmGreeting = (): string => {
     const config = ROLE_CONFIG[guest.role] || ROLE_CONFIG.ban;
-    return `Trân trọng kính mời ${config.prefix} ${guest.name} cùng ${config.companion} đến chung vui trong ngày trọng đại của chúng tôi!`;
+    return `Trân trọng kính mời ${formatGuestSalutation(guest)} cùng ${config.companion} đến chung vui trong ngày trọng đại của chúng tôi!`;
   };
 
   return {

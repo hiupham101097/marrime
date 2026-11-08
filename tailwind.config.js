@@ -9,7 +9,11 @@ export default {
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
-        handwriting: ['"Dancing Script"', 'cursive', 'sans-serif'],
+        cinzel: ['"Cinzel Decorative"', '"Cinzel"', 'Georgia', 'serif'],
+        cormorant: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        script: ['"Pinyon Script"', '"Great Vibes"', 'cursive'],
+        montserrat: ['"Montserrat"', 'system-ui', 'sans-serif'],
+        handwriting: ['"Pinyon Script"', '"Great Vibes"', '"Dancing Script"', 'cursive'],
       },
       colors: {
         wedding: {

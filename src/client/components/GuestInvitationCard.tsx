@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Check, Copy } from 'lucide-react';
 import { GuestInfo } from '../../shared/types';
-import { ROLE_CONFIG } from '../hooks/useGuestInfo';
+import { ROLE_CONFIG, formatGuestSalutation } from '../hooks/useGuestInfo';
 
 interface GuestInvitationCardProps {
   guest: GuestInfo;
@@ -19,7 +19,7 @@ export const GuestInvitationCard: React.FC<GuestInvitationCardProps> = ({
   const [copied, setCopied] = useState(false);
 
   const roleData = ROLE_CONFIG[guest.role] || ROLE_CONFIG.ban;
-  const salutation = guest.role === 'gia_dinh' ? guest.name : `${roleData.prefix} ${guest.name}`;
+  const salutation = formatGuestSalutation(guest);
 
   const handleShareLink = () => {
     const url = new URL(window.location.origin + window.location.pathname);
