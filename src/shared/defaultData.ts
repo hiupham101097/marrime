@@ -374,7 +374,7 @@ export const BLUSH_RIBBON_DATA: WeddingData = {
   typographyFont: 'cormorant',
   animationEffect: 'rose_petals',
   enableMouseTrail: true,
-  heroImage: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2000&auto=format&fit=crop',
+  heroImage: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=2000&auto=format&fit=crop',
   gallery: [
     {
       id: 'br-1',
@@ -534,7 +534,7 @@ export const MODERN_MINIMAL_DATA: WeddingData = {
   typographyFont: 'montserrat',
   animationEffect: 'golden_stardust',
   enableMouseTrail: true,
-  heroImage: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=2000&auto=format&fit=crop',
+  heroImage: 'https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=2000&auto=format&fit=crop',
   gallery: [
     {
       id: 'mm-1',
@@ -664,7 +664,7 @@ export const EMERALD_BRASS_DATA: WeddingData = {
   typographyFont: 'cormorant',
   animationEffect: 'mixed_romance',
   enableMouseTrail: true,
-  heroImage: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=2000&auto=format&fit=crop',
+  heroImage: 'https://images.unsplash.com/photo-1544077960-604201fe74bc?q=80&w=2000&auto=format&fit=crop',
   gallery: [
     {
       id: 'eb-1',
@@ -1118,7 +1118,7 @@ export const EDITORIAL_VOGUE_DATA: WeddingData = {
   typographyFont: 'montserrat',
   animationEffect: 'none',
   enableMouseTrail: false,
-  heroImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop',
+  heroImage: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=2000&auto=format&fit=crop',
   gallery: DEFAULT_GALLERY_PHOTOS,
   music: PRESET_MUSIC_TRACKS[4],
   groom: {
@@ -1218,7 +1218,7 @@ export const KOREAN_PASTEL_DATA: WeddingData = {
   typographyFont: 'cormorant',
   animationEffect: 'glowing_hearts',
   enableMouseTrail: true,
-  heroImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop',
+  heroImage: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=2000&auto=format&fit=crop',
   gallery: DEFAULT_GALLERY_PHOTOS,
   music: PRESET_MUSIC_TRACKS[0],
   groom: {
@@ -1318,7 +1318,7 @@ export const CELESTIAL_MIDNIGHT_DATA: WeddingData = {
   typographyFont: 'playfair',
   animationEffect: 'golden_stardust',
   enableMouseTrail: true,
-  heroImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop',
+  heroImage: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=2000&auto=format&fit=crop',
   gallery: DEFAULT_GALLERY_PHOTOS,
   music: PRESET_MUSIC_TRACKS[1],
   groom: {
@@ -1502,7 +1502,7 @@ export const MASTER_TEMPLATE_CATALOG: MasterTemplateItem[] = [
     badge: 'Gu Thẩm Mỹ Đỉnh Cao',
     tagline: 'Bố cục tạp chí thời trang đẳng cấp thế giới',
     colors: ['#121212', '#FFFFFF', '#737373', '#F4F4F5'],
-    heroImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=1200&auto=format&fit=crop',
     icon: '📰',
     envelopeStyle: 'editorial_vellum',
     recommendedTheme: 'editorial_mono',
@@ -1518,7 +1518,7 @@ export const MASTER_TEMPLATE_CATALOG: MasterTemplateItem[] = [
     badge: 'Trẻ Trung & Dịu Ngọt',
     tagline: 'Câu chuyện tình yêu ngọt ngào tựa thước phim truyền hình Hàn Quốc',
     colors: ['#FCEAE6', '#FED7AA', '#FDFBF9', '#E11D48'],
-    heroImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1000&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=1200&auto=format&fit=crop',
     icon: '🌸',
     envelopeStyle: 'korean_chiffon',
     recommendedTheme: 'korean_peach',
@@ -1534,7 +1534,7 @@ export const MASTER_TEMPLATE_CATALOG: MasterTemplateItem[] = [
     badge: 'Mới Ra Mắt 2026',
     tagline: 'Lời nguyện ước vĩnh cửu được ghi danh giữa bầu trời ngàn sao',
     colors: ['#090D1A', '#CBD5E1', '#FDE68A', '#1E293B'],
-    heroImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=1200&auto=format&fit=crop',
     icon: '✨',
     envelopeStyle: 'celestial_midnight',
     recommendedTheme: 'midnight_star',
@@ -1550,7 +1550,7 @@ export const MASTER_TEMPLATE_CATALOG: MasterTemplateItem[] = [
     badge: 'Kinh Điển Nữ Tính',
     tagline: 'Khởi đầu chuyện tình cổ tích ngập tràn nắng và hoa',
     colors: ['#9D174D', '#F472B6', '#FFF0F5', '#831843'],
-    heroImage: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1000&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1200&auto=format&fit=crop',
     icon: '🕊️',
     envelopeStyle: 'blush_ribbon',
     recommendedTheme: 'rose',
@@ -1566,7 +1566,7 @@ export const MASTER_TEMPLATE_CATALOG: MasterTemplateItem[] = [
     badge: 'Thanh Lịch Tinh Tế',
     tagline: 'Vẻ đẹp của sự tinh giản, trọn vẹn cảm xúc',
     colors: ['#3C3633', '#E0D9D1', '#FAF8F5', '#1C1917'],
-    heroImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=1200&auto=format&fit=crop',
     icon: '💎',
     envelopeStyle: 'modern_minimal',
     recommendedTheme: 'gold',
@@ -1582,7 +1582,7 @@ export const MASTER_TEMPLATE_CATALOG: MasterTemplateItem[] = [
     badge: 'Sang Trọng Vượt Thời Gian',
     tagline: 'Vẻ đẹp quý phái trường tồn theo năm tháng',
     colors: ['#064E3B', '#C5A059', '#FAF5E9', '#022C22'],
-    heroImage: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=1000&auto=format&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1544077960-604201fe74bc?q=80&w=1200&auto=format&fit=crop',
     icon: '⏳',
     envelopeStyle: 'emerald_brass',
     recommendedTheme: 'emerald',

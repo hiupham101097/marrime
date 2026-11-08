@@ -12,6 +12,8 @@ import {
   Music,
   Users,
   Smartphone,
+  Monitor,
+  Globe,
   Check,
   Eye,
   Star,
@@ -37,6 +39,8 @@ import {
 export const PlatformLandingPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [previewTemplate, setPreviewTemplate] = useState<MasterTemplateItem | null>(null);
+  const [previewMode, setPreviewMode] = useState<'website' | 'envelope'>('website');
+  const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
   const [lookupInput, setLookupInput] = useState('');
   const [lookupError, setLookupError] = useState('');
   const [isLookingUp, setIsLookingUp] = useState(false);
@@ -358,48 +362,154 @@ export const PlatformLandingPage: React.FC = () => {
 
       {/* 4. QUICK LIVE PREVIEW MODAL */}
       {previewTemplate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-fadeIn">
-          <div className="bg-[#FFFDF9] border border-stone-300 rounded-3xl max-w-4xl w-full h-[90vh] flex flex-col overflow-hidden shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-5 bg-black/85 backdrop-blur-md animate-fadeIn">
+          <div className="bg-[#FFFDF9] border border-stone-300 rounded-3xl max-w-5xl w-full h-[92vh] flex flex-col overflow-hidden shadow-2xl relative">
             {/* Modal Header */}
-            <div className="h-16 px-6 bg-white border-b border-stone-200 flex items-center justify-between flex-shrink-0">
+            <div className="px-5 py-3 sm:py-4 bg-white border-b border-stone-200 flex flex-wrap items-center justify-between flex-shrink-0 gap-3">
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">{previewTemplate.icon}</span>
+                <span className="text-2xl sm:text-3xl">{previewTemplate.icon}</span>
                 <div>
-                  <h4 className="font-serif text-base font-bold text-stone-900">
-                    {previewTemplate.name}
-                  </h4>
-                  <p className="text-[11px] text-[#A2682A]">{previewTemplate.subtitle}</p>
+                  <div className="flex items-center space-x-2">
+                    <h4 className="font-serif text-base sm:text-lg font-bold text-stone-900">
+                      {previewTemplate.name}
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-[#A2682A] border border-amber-200">
+                      {previewTemplate.categoryLabel}
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#A2682A] font-medium">{previewTemplate.subtitle}</p>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-3">
+              {/* View Mode & Device Controls */}
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                {/* Mode Switcher */}
+                <div className="flex items-center p-1 rounded-xl bg-stone-100 border border-stone-200">
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMode('website')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer ${
+                      previewMode === 'website'
+                        ? 'bg-white text-stone-900 shadow-sm'
+                        : 'text-stone-600 hover:text-stone-900'
+                    }`}
+                  >
+                    <Globe className="w-3.5 h-3.5 text-[#A2682A]" />
+                    <span>Toàn Bộ Website</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMode('envelope')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer ${
+                      previewMode === 'envelope'
+                        ? 'bg-white text-stone-900 shadow-sm'
+                        : 'text-stone-600 hover:text-stone-900'
+                    }`}
+                  >
+                    <Mail className="w-3.5 h-3.5 text-rose-600" />
+                    <span>Bao Thư & Sáp Nến 3D</span>
+                  </button>
+                </div>
+
+                {/* Device Switcher (Desktop / Mobile) */}
+                <div className="hidden sm:flex items-center p-1 rounded-xl bg-stone-100 border border-stone-200">
+                  <button
+                    type="button"
+                    onClick={() => setPreviewDevice('desktop')}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 transition-all cursor-pointer ${
+                      previewDevice === 'desktop'
+                        ? 'bg-white text-stone-900 shadow-sm'
+                        : 'text-stone-600 hover:text-stone-900'
+                    }`}
+                    title="Xem bản Máy Tính (Desktop)"
+                  >
+                    <Monitor className="w-3.5 h-3.5" />
+                    <span>Desktop</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewDevice('mobile')}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 transition-all cursor-pointer ${
+                      previewDevice === 'mobile'
+                        ? 'bg-white text-stone-900 shadow-sm'
+                        : 'text-stone-600 hover:text-stone-900'
+                    }`}
+                    title="Xem bản Di Động (Mobile)"
+                  >
+                    <Smartphone className="w-3.5 h-3.5" />
+                    <span>Mobile</span>
+                  </button>
+                </div>
+
+                {/* Studio CTA */}
                 <a
                   href={`/studio?template=${previewTemplate.id}`}
-                  className="px-4 py-2 rounded-full bg-gradient-to-r from-[#8B1A32] to-[#722235] text-white font-bold text-xs shadow-md hover:opacity-95 transition-all flex items-center space-x-1"
+                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#8B1A32] to-[#722235] text-white font-bold text-xs shadow-md hover:opacity-95 transition-all flex items-center space-x-1.5"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-200" />
-                  <span>Sử Dụng Mẫu Này Trong Studio</span>
+                  <span className="hidden md:inline">Tạo Bằng Mẫu Này</span>
+                  <span className="md:hidden">Dùng Mẫu</span>
                 </a>
 
+                {/* Open in new tab */}
+                <a
+                  href={`/?w=${previewTemplate.presetKey}${previewMode === 'website' ? '&preview=true' : ''}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-[#722235] transition-colors"
+                  title="Mở toàn màn hình trong tab mới"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+
+                {/* Close Button */}
                 <button
                   type="button"
                   onClick={() => setPreviewTemplate(null)}
                   className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 flex items-center justify-center cursor-pointer transition-colors"
+                  title="Đóng xem trước"
                 >
-                  ✕
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
             {/* Modal Iframe Body */}
-            <div className="flex-1 bg-stone-100 flex items-center justify-center p-4 overflow-hidden">
-              <div className="w-[390px] h-full max-h-[750px] rounded-[40px] border-[10px] border-stone-800 shadow-2xl overflow-hidden relative ring-2 ring-stone-300">
-                <iframe
-                  title="Live Template Preview"
-                  src={`/?w=${previewTemplate.presetKey}`}
-                  className="w-full h-full border-none bg-wedding-cream"
-                />
-              </div>
+            <div className="flex-1 bg-stone-100/90 flex items-center justify-center p-3 sm:p-5 overflow-hidden">
+              {previewDevice === 'mobile' ? (
+                <div className="w-[390px] h-full max-h-[760px] rounded-[44px] border-[10px] border-stone-800 shadow-2xl overflow-hidden relative ring-2 ring-stone-300 flex flex-col bg-white">
+                  {/* Dynamic Island / Notch */}
+                  <div className="h-6 bg-stone-800 w-full flex items-center justify-center relative flex-shrink-0">
+                    <div className="w-24 h-4 bg-stone-900 rounded-full flex items-center justify-center">
+                      <div className="w-2.5 h-2.5 rounded-full bg-stone-950/80" />
+                    </div>
+                  </div>
+                  <iframe
+                    title="Live Template Preview Mobile"
+                    src={`/?w=${previewTemplate.presetKey}${previewMode === 'website' ? '&preview=true' : ''}`}
+                    className="w-full flex-1 border-none bg-wedding-cream"
+                  />
+                </div>
+              ) : (
+                <div className="w-full h-full max-w-5xl rounded-2xl border border-stone-300 shadow-2xl overflow-hidden flex flex-col bg-white">
+                  {/* Mock Browser Topbar */}
+                  <div className="h-9 bg-stone-200/80 border-b border-stone-300 px-4 flex items-center space-x-3 flex-shrink-0">
+                    <div className="flex items-center space-x-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-rose-400" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                    </div>
+                    <div className="flex-1 max-w-sm mx-auto h-6 rounded-md bg-white border border-stone-300 flex items-center px-3 text-[11px] text-stone-500 font-mono select-none truncate">
+                      🔒 marrime.vn/w/{previewTemplate.presetKey}
+                    </div>
+                  </div>
+                  <iframe
+                    title="Live Template Preview Desktop"
+                    src={`/?w=${previewTemplate.presetKey}${previewMode === 'website' ? '&preview=true' : ''}`}
+                    className="w-full flex-1 border-none bg-wedding-cream"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
