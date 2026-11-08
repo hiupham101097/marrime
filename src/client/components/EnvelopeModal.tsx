@@ -450,13 +450,17 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
               />
 
               {/* =============================================================
-                  THE INNER INVITATION CARD (THIỆP MỜI TRONG SUỐT / LƯỚT LÊN KHI MỞ)
+                  THE INNER INVITATION CARD (CHỈ LƯỚT LÊN KHI NHẤN MỞ SÁP NẾN)
                  ============================================================= */}
               <div
                 onClick={handleEnterSiteDirectly}
-                className="absolute inset-x-4 top-3 bottom-4 rounded-xl bg-white shadow-2xl p-5 border border-amber-200/60 flex flex-col justify-between transition-transform duration-700 ease-out z-10 cursor-pointer text-stone-900"
+                className={`absolute inset-x-4 top-3 bottom-4 rounded-xl bg-white shadow-2xl p-5 border border-amber-200/60 flex flex-col justify-between transition-all duration-700 ease-out z-10 cursor-pointer text-stone-900 ${
+                  isFlapOpen
+                    ? 'opacity-100 pointer-events-auto'
+                    : 'opacity-0 pointer-events-none'
+                }`}
                 style={{
-                  transform: isFlapOpen ? 'translateY(-48%)' : 'translateY(0%)',
+                  transform: isFlapOpen ? 'translateY(-48%)' : 'translateY(25%)',
                 }}
               >
                 {/* Inner Card Hairline Frame */}
