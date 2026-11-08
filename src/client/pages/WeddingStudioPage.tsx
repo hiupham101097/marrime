@@ -2042,7 +2042,7 @@ export const WeddingStudioPage: React.FC = () => {
                 <iframe
                   key={previewKey}
                   title="Live Wedding Invitation Preview"
-                  src={`/?w=${weddingSlug}&v=${previewKey}`}
+                  src={`/?w=${weddingSlug}&v=${previewKey}&preview=true`}
                   className="w-full h-full border-none bg-wedding-cream"
                 />
               </div>

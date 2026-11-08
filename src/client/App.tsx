@@ -61,7 +61,9 @@ export const App: React.FC = () => {
     : DEFAULT_WEDDING_DATA;
 
   const [weddingData, setWeddingData] = useState<WeddingData>(initialWeddingData);
-  const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(true);
+  const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(
+    searchParams.get('preview') === 'true' || searchParams.get('no_envelope') === 'true' ? false : true
+  );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
