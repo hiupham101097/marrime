@@ -71,22 +71,15 @@ export const GuestInvitationCard: React.FC<GuestInvitationCardProps> = ({
             </div>
           </div>
 
-          {/* Quick Copy Link to send personalized invitation */}
+          {/* Guest Action: Scroll to RSVP */}
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <button
-              type="button"
-              onClick={handleShareLink}
-              className="px-6 py-2.5 bg-gradient-to-r from-wedding-burgundy to-[#4A1020] text-wedding-gold-light hover:opacity-95 rounded-full text-xs font-semibold flex items-center space-x-2 shadow-md transition-all cursor-pointer border border-wedding-gold/50"
+            <a
+              href="#rsvp-section"
+              className="px-6 py-3 bg-gradient-to-r from-wedding-burgundy to-[#4A1020] text-wedding-gold-light hover:opacity-95 rounded-full text-xs font-bold flex items-center space-x-2 shadow-md transition-all cursor-pointer border border-wedding-gold/50"
             >
-              {copied ? (
-                <Check className="w-4 h-4 text-emerald-400" />
-              ) : (
-                <Copy className="w-4 h-4 text-wedding-gold" />
-              )}
-              <span>
-                {copied ? 'Đã sao chép liên kết thiệp!' : 'Sao chép link thiệp của ' + roleData.prefix}
-              </span>
-            </button>
+              <span>Xác Nhận Tham Dự & Gửi Lời Chúc</span>
+              <span className="text-amber-200">➜</span>
+            </a>
           </div>
         </div>
       </div>
