@@ -40,13 +40,14 @@ export interface AuthorDonateConfig {
 }
 
 export const AUTHOR_DONATE_CONFIG: AuthorDonateConfig = {
-  bankName: 'MBBank (Ngân Hàng Quân Đội)',
-  accountNumber: '101019978888',
-  accountHolder: 'PHAM MINH HIEU',
-  qrImageUrl: 'https://api.vietqr.io/image/970422-101019978888-compact2.jpg?accountName=PHAM%20MINH%20HIEU&addInfo=Chuc%20Mung%20Marrime',
+  bankName: 'ACB (Ngân Hàng Á Châu)',
+  accountNumber: '7909707',
+  accountHolder: 'PHẠM MINH HIẾU',
+  qrImageUrl: '/images/author-qr.jpg',
   title: 'Tặng Tác Giả Ly Cà Phê Chúc Phúc ☕',
   subtitle: 'Nền tảng thiệp cưới mở & miễn phí cho dâu rể',
-  message: 'Marrime là nền tảng tạo thiệp cưới miễn phí. Nếu bạn thấy thiệp đẹp và hữu ích cho hôn lễ của mình, bạn có thể gửi tặng một ly cà phê chúc phúc tới tác giả. Ủng hộ hoàn toàn tùy tâm, không gửi cũng không sao, thiệp cưới của hai bạn vẫn hoạt động vĩnh viễn và hoàn toàn miễn phí!',
+  message:
+    'Marrime là nền tảng tạo thiệp cưới miễn phí. Nếu bạn thấy thiệp đẹp và hữu ích cho hôn lễ của mình, bạn có thể gửi tặng một ly cà phê chúc phúc tới tác giả. Ủng hộ hoàn toàn tùy tâm, không gửi cũng không sao, thiệp cưới của hai bạn vẫn hoạt động vĩnh viễn và hoàn toàn miễn phí!',
 };
 
 export const DEFAULT_GALLERY_PHOTOS: GalleryPhotoItem[] = [
