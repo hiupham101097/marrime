@@ -187,7 +187,15 @@ export const App: React.FC = () => {
         guest={guest}
         groomName={weddingData.groom.name}
         brideName={weddingData.bride.name}
+        groomParents={weddingData.groom.parents}
+        brideParents={weddingData.bride.parents}
         weddingDateFormatted={weddingData.weddingDateFormatted}
+        venueName={weddingData.events[0]?.venueName}
+        hallName={weddingData.events[0]?.hallName}
+        eventAddress={weddingData.events[0]?.address}
+        eventTime={weddingData.events[0]?.time}
+        dayOfWeek={weddingData.events[0]?.dayOfWeek}
+        lunarDate={weddingData.events[0]?.lunarDate}
         playOpenSound={playEnvelopeOpeningSound}
         envelopeStyle={weddingData.envelopeStyle}
         waxSealMonogram={weddingData.waxSealMonogram}
