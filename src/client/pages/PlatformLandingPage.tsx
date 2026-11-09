@@ -26,6 +26,7 @@ import {
   Wand2,
   Filter,
   X,
+  Menu,
   ExternalLink,
   Copy,
   ChevronDown,
@@ -45,6 +46,7 @@ export const PlatformLandingPage: React.FC = () => {
   const [lookupError, setLookupError] = useState('');
   const [isLookingUp, setIsLookingUp] = useState(false);
   const [copiedSTK, setCopiedSTK] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const handleLookupSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,46 +85,42 @@ export const PlatformLandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-stone-800 font-sans selection:bg-rose-200 selection:text-rose-900">
-      {/* 1. TOP NAVBAR (SANG TRỌNG, TRONG SÁNG, TINH TẾ) */}
+      {/* 1. TOP NAVBAR (ATELIER CƯỚI SANG TRỌNG, TINH TẾ & CHUẨN MỰC) */}
       <header className="sticky top-0 z-40 bg-[#FFFDF9]/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
           {/* Brand Logo */}
-          <a href="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#722235] to-[#4A1020] text-[#FFFDF9] border border-[#DFB76C]/60 flex items-center justify-center font-serif text-sm font-bold shadow-md">
+          <a href="/" className="flex items-center space-x-3 shrink-0">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#722235] to-[#4A1020] text-[#FFFDF9] border border-[#DFB76C]/60 flex items-center justify-center font-serif text-sm font-bold shadow-md shrink-0">
               M
             </div>
-            <div>
-              <span className="font-serif text-xl font-bold text-[#4A1020] tracking-wider block leading-none">
+            <div className="whitespace-nowrap">
+              <span className="font-serif text-xl font-bold text-[#4A1020] tracking-wider block leading-tight">
                 MARRIME
               </span>
-              <span className="text-[9px] text-[#A2682A] tracking-[0.25em] uppercase font-bold">
-                XƯỞNG THIỆP CƯỚI NGHỆ THUẬT
+              <span className="text-[9px] text-[#A2682A] tracking-[0.2em] uppercase font-bold block">
+                ATELIER THIỆP CƯỚI ĐỘC BẢN
               </span>
             </div>
           </a>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center space-x-8 text-xs font-semibold text-stone-600">
+          {/* Desktop Nav Links (Gọn gàng, chuẩn phong cách cưới, không rớt dòng chữ) */}
+          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8 text-xs font-semibold text-stone-600 whitespace-nowrap">
             <button
+              type="button"
               onClick={() => scrollToSection('templates')}
               className="hover:text-[#722235] transition-colors cursor-pointer flex items-center space-x-1.5"
             >
-              <span>10 Phong Cách Độc Bản</span>
-              <span className="px-1.5 py-0.2 rounded-full bg-rose-100 text-[10px] text-rose-800 font-bold">
-                10
+              <span>Mẫu Thiệp Cưới</span>
+              <span className="px-2 py-0.5 rounded-full bg-rose-100 text-[10px] text-rose-800 font-bold">
+                10 Mẫu
               </span>
             </button>
             <button
+              type="button"
               onClick={() => scrollToSection('features')}
               className="hover:text-[#722235] transition-colors cursor-pointer"
             >
-              Tính Năng Tự Thiết Kế
-            </button>
-            <button
-              onClick={() => scrollToSection('free-concept')}
-              className="hover:text-[#722235] transition-colors cursor-pointer"
-            >
-              Nền Tảng Mở & Donate
+              Tính Năng Nổi Bật
             </button>
             <a
               href="/?w=korean_pastel"
@@ -131,29 +129,102 @@ export const PlatformLandingPage: React.FC = () => {
               className="text-[#722235] hover:text-rose-700 transition-colors flex items-center space-x-1"
             >
               <Eye className="w-3.5 h-3.5" />
-              <span>Xem Thiệp Mẫu Thực Tế</span>
+              <span>Xem Mẫu Trực Tiếp</span>
             </a>
           </nav>
 
-          {/* Header Action Buttons */}
-          <div className="flex items-center space-x-3">
+          {/* Header Action Buttons & Mobile Hamburger */}
+          <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
             <button
+              type="button"
               onClick={() => scrollToSection('lookup-portal')}
-              className="hidden sm:inline-flex px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs border border-stone-200 transition-colors cursor-pointer items-center space-x-1.5"
+              className="hidden md:inline-flex px-3.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs border border-stone-200 transition-colors cursor-pointer items-center space-x-1.5 whitespace-nowrap"
+              title="Tra cứu hoặc sửa thiệp đã tạo bằng Mã Bí Mật"
             >
               <KeyRound className="w-3.5 h-3.5 text-[#A2682A]" />
-              <span>Nhập Mã Sửa Thiệp</span>
+              <span>Tra Cứu Mã Thiệp</span>
             </button>
 
             <a
               href="/studio"
-              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8B1A32] via-[#722235] to-[#551020] text-white font-bold text-xs shadow-md hover:shadow-lg hover:opacity-95 transition-all cursor-pointer border border-[#DFB76C]/40 flex items-center space-x-1.5"
+              className="px-4 sm:px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8B1A32] via-[#722235] to-[#551020] text-white font-bold text-xs shadow-md hover:shadow-lg hover:opacity-95 transition-all cursor-pointer border border-[#DFB76C]/40 flex items-center space-x-1.5 whitespace-nowrap"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-200" />
-              <span>Vào Studio Tạo Thiệp (Miễn Phí)</span>
+              <span>Tạo Thiệp Cưới</span>
             </a>
+
+            {/* Mobile Hamburger Button */}
+            <button
+              type="button"
+              onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+              className="lg:hidden p-2 rounded-xl text-stone-700 hover:text-stone-900 hover:bg-stone-100 transition-colors cursor-pointer"
+              aria-label="Menu"
+            >
+              {isMobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Drawer Menu */}
+        {isMobileNavOpen && (
+          <div className="lg:hidden border-t border-stone-200 bg-[#FFFDF9] px-4 py-4 space-y-3 shadow-lg animate-fadeIn">
+            <nav className="flex flex-col space-y-2 text-sm font-medium text-stone-700">
+              <button
+                type="button"
+                onClick={() => {
+                  scrollToSection('templates');
+                  setIsMobileNavOpen(false);
+                }}
+                className="flex items-center justify-between p-2 rounded-lg hover:bg-stone-100 text-left transition-colors cursor-pointer"
+              >
+                <span>Mẫu Thiệp Cưới</span>
+                <span className="px-2 py-0.5 rounded-full bg-rose-100 text-xs text-rose-800 font-bold">
+                  10 Phong Cách
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  scrollToSection('features');
+                  setIsMobileNavOpen(false);
+                }}
+                className="p-2 rounded-lg hover:bg-stone-100 text-left transition-colors cursor-pointer"
+              >
+                Tính Năng Nổi Bật
+              </button>
+              <a
+                href="/?w=korean_pastel"
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setIsMobileNavOpen(false)}
+                className="p-2 rounded-lg hover:bg-stone-100 flex items-center space-x-2 text-[#722235] transition-colors"
+              >
+                <Eye className="w-4 h-4" />
+                <span>Xem Thiệp Mẫu Thực Tế (7799 Storyteller)</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  scrollToSection('lookup-portal');
+                  setIsMobileNavOpen(false);
+                }}
+                className="p-2 rounded-lg hover:bg-stone-100 flex items-center space-x-2 text-stone-700 transition-colors cursor-pointer text-left"
+              >
+                <KeyRound className="w-4 h-4 text-[#A2682A]" />
+                <span>Tra Cứu Hoặc Sửa Thiệp Cũ Bằng Mã Bí Mật</span>
+              </button>
+            </nav>
+            <div className="pt-2 border-t border-stone-100">
+              <a
+                href="/studio"
+                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#8B1A32] to-[#722235] text-white font-bold text-xs shadow-md flex items-center justify-center space-x-2"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-200" />
+                <span>Bắt Đầu Tạo Thiệp Cưới Ngay</span>
+              </a>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* 2. HERO SECTION (LUMINOUS, ROMANTIC, BRIDAL ELEGANCE) */}

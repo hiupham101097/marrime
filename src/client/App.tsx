@@ -239,8 +239,8 @@ export const App: React.FC = () => {
             onClick={scrollToTop}
             className="flex items-center space-x-2 font-serif text-lg font-bold text-wedding-burgundy cursor-pointer"
           >
-            <span className="w-8 h-8 rounded-full bg-gradient-to-br from-wedding-burgundy to-[#4A1020] text-wedding-gold-light flex items-center justify-center text-xs font-serif font-bold border border-wedding-gold/50 shadow-sm">
-              A&P
+            <span className="w-8 h-8 rounded-full bg-gradient-to-br from-wedding-burgundy to-[#4A1020] text-wedding-gold-light flex items-center justify-center text-xs font-serif font-bold border border-wedding-gold/50 shadow-sm shrink-0">
+              {(weddingData.groom.shortName || weddingData.groom.name || 'G').charAt(0)}&{(weddingData.bride.shortName || weddingData.bride.name || 'B').charAt(0)}
             </span>
             <span className="tracking-wide">
               {weddingData.groom.shortName || weddingData.groom.name} &{' '}
