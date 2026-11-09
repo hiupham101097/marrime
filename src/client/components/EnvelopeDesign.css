@@ -1,0 +1,496 @@
+.envelope-design {
+  --stock: #f6f0e2;
+  /* High-fidelity cotton paper grain — 4 octave fractalNoise */
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.74' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath d='M0 0h200v200H0z' filter='url(%23n)' opacity='.1'/%3E%3C/svg%3E");
+  --ink: #302c27;
+  --art-ink: #8f775d;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --mark-size: 3.7cqi;
+  --left: 9%;
+  --right: 9%;
+  --mark-top: 13%;
+  --address-top: 36%;
+  --address-height: 30%;
+  --signature-top: 72%;
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: inherit;
+  container-type: inline-size;
+  background:
+    var(--paper-grain),
+    linear-gradient(128deg, rgba(255,248,227,.26), transparent 36%, rgba(58,40,16,.07) 100%),
+    var(--stock);
+  color: var(--ink);
+  text-align: var(--alignment, left);
+  /* Realistic paper edge lighting — top highlight, left sheen, bottom shadow */
+  box-shadow:
+    inset 0  1px 0 rgba(255,248,231,.75),
+    inset 1px 0 0 rgba(255,248,231,.45),
+    inset 0 -1px 0 rgba(64,48,34,.32);
+}
+
+.envelope-design__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--art-ink);
+  pointer-events: none;
+}
+
+.envelope-design__mark,
+.envelope-design__address,
+.envelope-design__signature {
+  position: absolute;
+  inset-inline: var(--left) var(--right);
+  overflow-wrap: anywhere;
+}
+
+.envelope-design__mark {
+  top: var(--mark-top);
+  color: var(--mark-ink, var(--ink));
+  font: var(--mark-weight, 400) var(--mark-size) / 1 var(--display);
+}
+
+.envelope-design__address {
+  top: var(--address-top);
+  max-height: var(--address-height);
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+.envelope-design__address > span,
+.envelope-design__signature {
+  display: block;
+  font-size: 2.55cqi;
+  line-height: 1.3;
+  letter-spacing: .025em;
+}
+
+.envelope-design__address strong {
+  display: block;
+  margin-top: 1.4cqi;
+  font: var(--name-weight, 400) var(--name-size, 7.7cqi) / 1.05 var(--display);
+}
+
+.envelope-design__signature {
+  top: var(--signature-top);
+  bottom: 5%;
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+.envelope-design__signature > span {
+  display: block;
+}
+
+.envelope-design__signature > span + span {
+  margin-top: .5cqi;
+}
+
+.envelope-design[data-design='royal_velvet'] {
+  --stock: linear-gradient(130deg, #faf4e8, #e9d9c5);
+  --ink: #592836;
+  --art-ink: #824b55;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --name-size: 9cqi;
+  --name-weight: 600;
+  --alignment: center;
+  --left: 17%;
+  --right: 17%;
+  --mark-top: 15%;
+  --mark-size: 4.2cqi;
+  --address-top: 36%;
+  --signature-top: 78%;
+}
+
+.envelope-design[data-design='korean_chiffon'] {
+  --stock: linear-gradient(140deg, #fbf7f1, #f1e5dc);
+  --ink: #543d39;
+  --art-ink: #865c53;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --name-size: 9cqi;
+  --name-weight: 600;
+  --left: 11%;
+  --right: 36%;
+  --mark-top: 16%;
+  --address-top: 36%;
+  --signature-top: 73%;
+}
+
+.envelope-design[data-design='korean_chiffon'] .envelope-design__mark {
+  font-style: italic;
+}
+
+.envelope-design[data-design='traditional_silk'] {
+  --stock: linear-gradient(130deg, #a13935, #782824);
+  --ink: #fff0cf;
+  --art-ink: #e6b878;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --left: 40%;
+  --right: 8%;
+  --alignment: center;
+  --name-size: 8.2cqi;
+  --name-weight: 600;
+  --address-top: 31%;
+  --signature-top: 68%;
+}
+
+.envelope-design[data-design='traditional_silk'] .envelope-design__mark {
+  inset-inline: 12.7% auto;
+  top: 50%;
+  width: 18%;
+  transform: translateY(-50%);
+  font-size: 10cqi;
+}
+
+.envelope-design[data-design='rustic_twine'] {
+  --stock: linear-gradient(120deg, #eee3cb, #cdb693);
+  --ink: #343424;
+  --art-ink: #596143;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --name-weight: 700;
+  --left: 11%;
+  --right: 30%;
+  --mark-top: 18%;
+  --address-top: 38%;
+}
+
+.envelope-design[data-design='editorial_vellum'] {
+  --stock: #f8f7f2;
+  --ink: #21201f;
+  --art-ink: #242220;
+  --mark-ink: #f8f7f2;
+  --display: 'Inter', Arial, sans-serif;
+  --name-size: 7.1cqi;
+  --name-weight: 700;
+  --left: 30%;
+  --right: 7%;
+  --address-top: 32%;
+  --signature-top: 71%;
+}
+
+.envelope-design[data-design='editorial_vellum'] .envelope-design__mark {
+  top: 50%;
+  inset-inline: 1% auto;
+  width: 23%;
+  padding-inline: 1%;
+  transform: translateY(-50%);
+  text-align: center;
+  font-weight: 700;
+}
+
+.envelope-design[data-design='celestial_midnight'] {
+  --stock: radial-gradient(ellipse at 85% 15%, #27395f, #11192e 72%);
+  --ink: #f4eddf;
+  --art-ink: #e4c993;
+  --right: 43%;
+  --mark-top: 17%;
+  --address-top: 40%;
+  --signature-top: 75%;
+}
+
+.envelope-design[data-design='blush_ribbon'] {
+  --stock: linear-gradient(145deg, #f6e4e4, #e5b4bf);
+  --ink: #632e41;
+  --art-ink: #ac6679;
+  --left: 23%;
+  --right: 23%;
+  --alignment: center;
+  --mark-top: 33%;
+  --mark-size: 3cqi;
+  --address-top: 43%;
+  --address-height: 22%;
+  --name-size: 6.4cqi;
+  --signature-top: 65%;
+}
+
+.envelope-design[data-design='emerald_brass'] {
+  --stock: linear-gradient(145deg, #244738, #0d281f);
+  --ink: #f5e5b6;
+  --art-ink: #d5ac62;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --alignment: center;
+  --mark-top: 15%;
+  --mark-size: 3.4cqi;
+  --address-top: 36%;
+  --signature-top: 68%;
+  --name-weight: 700;
+}
+
+.envelope-design[data-design='indochine_kraft'] {
+  --stock: radial-gradient(ellipse at 45% 24%, #f4e2bb, #d4b681);
+  --ink: #50372a;
+  --art-ink: #8b4e3b;
+  --left: 9%;
+  --right: 28%;
+  --mark-top: 13%;
+  --address-top: 40%;
+  --signature-top: 76%;
+}
+
+.envelope-design[data-design='modern_minimal'] {
+  --stock: #f9f7ef;
+  --ink: #2c3931;
+  --art-ink: #6d7a6c;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --alignment: center;
+  --mark-top: 20%;
+  --mark-size: 3.8cqi;
+  --address-top: 36%;
+  --name-size: 9cqi;
+  --name-weight: 600;
+  --signature-top: 73%;
+}
+
+.envelope-collection {
+  display: grid;
+  grid-template-columns: clamp(226px, 25%, 320px) minmax(0, 1fr);
+  min-width: 0;
+  min-height: 510px;
+  overflow: hidden;
+  border: 1px solid #dfd6c8;
+  border-radius: 7px;
+  background: #f5f0e6;
+  color: #342f29;
+}
+
+.envelope-collection__library {
+  padding: 18px 14px;
+  background: #fbf8f1;
+  border-right: 1px solid #e3dacd;
+}
+
+.envelope-collection__library-heading,
+.envelope-collection__toolbar,
+.envelope-collection__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+
+.envelope-collection__library-heading {
+  padding: 0 4px 14px;
+}
+
+.envelope-collection__library-heading h3 {
+  font-size: .86rem;
+  font-weight: 650;
+}
+
+.envelope-collection__library-heading span,
+.envelope-collection__footer p {
+  color: #726559;
+  font-size: .75rem;
+}
+
+.envelope-collection__workspace {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-width: 0;
+}
+
+.envelope-collection__toolbar,
+.envelope-collection__footer {
+  padding: 9px 16px;
+  background: #fbf8f1;
+}
+
+.envelope-collection__toolbar {
+  border-bottom: 1px solid #e3dacd;
+}
+
+.envelope-collection__footer {
+  border-top: 1px solid #e3dacd;
+  padding-block: 13px;
+}
+
+.envelope-collection__footer h4 {
+  font: 600 1.38rem / 1.05 "Cormorant Garamond", Georgia, serif;
+}
+
+.envelope-collection__sides,
+.envelope-collection__zoom {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid #ded4c5;
+  border-radius: 6px;
+  background: #f3ede2;
+}
+
+.envelope-collection__toolbar button,
+.envelope-collection__footer button {
+  display: inline-flex;
+  min-width: 32px;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 9px;
+  border-radius: 4px;
+  font-size: .76rem;
+  font-weight: 600;
+}
+
+.envelope-collection__toolbar button[aria-pressed='true'],
+.envelope-collection__toolbar button:hover:not(:disabled) {
+  background: #e6dccd;
+}
+
+.envelope-collection__toolbar button:disabled {
+  opacity: .35;
+}
+
+.envelope-collection__footer button {
+  min-height: 42px;
+  padding-inline: 14px;
+  background: #53483c;
+  color: #fffaf0;
+}
+
+.envelope-collection__mat {
+  display: grid;
+  min-height: 280px;
+  padding: clamp(38px, 7.5vw, 100px) clamp(24px, 6vw, 92px);
+  align-content: safe center;
+  justify-items: safe center;
+  overflow: auto;
+  background: var(--grain), radial-gradient(ellipse at 25% 16%, #f8f0e1, #e5d8c5 58%, #cdbca4);
+}
+
+.envelope-collection__paper {
+  position: relative;
+  width: calc(min(100%, 640px) * var(--zoom));
+  aspect-ratio: 5 / 3;
+  border-radius: 3px;
+  isolation: isolate;
+}
+
+.envelope-picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.envelope-picker > button {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  padding: 5px;
+  border: 1px solid #e3dacd;
+  border-radius: 5px;
+  color: #44392e;
+  text-align: left;
+}
+
+.envelope-picker > button:hover {
+  background: #f1e8da;
+}
+
+.envelope-picker > button[aria-pressed='true'] {
+  border-color: #53483c;
+  background: #eee1ce;
+}
+
+.envelope-collection button:focus-visible {
+  outline: 2px solid #53483c;
+  outline-offset: 2px;
+}
+
+.envelope-picker__sample {
+  position: relative;
+  display: block;
+  aspect-ratio: 5 / 3;
+  border-radius: 2px;
+}
+
+.envelope-picker > button > strong {
+  font-size: .69rem;
+  line-height: 1.28;
+}
+
+@media (max-width: 720px) {
+  .envelope-collection {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .envelope-collection__workspace {
+    grid-row: 1;
+  }
+
+  .envelope-collection__library {
+    border-top: 1px solid #e3dacd;
+    border-right: 0;
+  }
+
+  .envelope-picker {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 94px), 1fr));
+  }
+}
+
+.envelope-collection__envelope,
+.envelope-collection__paper > .wedding-envelope__face {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    0 1px 0 #bda789,
+    0 2px 0 #a78f71,
+    3px 5px 7px -3px #3a241b72,
+    12px 22px 26px -10px #46302265;
+}
+
+.envelope-collection__envelope {
+  transform: translate(-2%, 6%) rotate(-3deg);
+}
+
+.envelope-collection__insert {
+  position: absolute;
+  inset: 0 1% 7% 9%;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  padding-top: 5%;
+  border-radius: 2px;
+  background: var(--grain), linear-gradient(130deg, #fffdf7, #e8d8be);
+  color: var(--letter-ink);
+  box-shadow: 0 1px 0 #b29c7a, 3px 10px 16px -6px #3825176b, inset 0 1px 0 #fff;
+  transform: translate(5%, -12%) rotate(6deg);
+  container-type: inline-size;
+  overflow: hidden;
+}
+
+.envelope-collection__insert::after {
+  position: absolute;
+  inset: 5%;
+  border: 1px solid currentColor;
+  opacity: .22;
+  content: '';
+}
+
+.envelope-collection__insert .envelope-design__art {
+  color: currentColor;
+  opacity: .22;
+}
+
+.envelope-collection__insert > span {
+  z-index: 1;
+  font: italic 5cqi / 1 'Cormorant Garamond', Georgia, serif;
+}
+
+.envelope-collection__paper > .wedding-envelope__face {
+  transform: rotate(-3deg);
+}
+
+@media (max-width: 720px) {
+  .envelope-collection__mat {
+    padding-inline: max(24px, 7%);
+  }
+}

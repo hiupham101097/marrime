@@ -79,10 +79,11 @@ export const App: React.FC = () => {
     const slug = searchParams.get('w') || searchParams.get('slug') || '';
     const fetchUrl = slug ? `/api/wedding-info?w=${encodeURIComponent(slug)}` : '/api/wedding-info';
 
+    let receivedSimulatorData = false;
     fetch(fetchUrl)
       .then((res) => res.json())
       .then((data) => {
-        if (data && data.success && data.data) {
+        if (!receivedSimulatorData && data && data.success && data.data) {
           setWeddingData(data.data);
         }
       })
@@ -92,7 +93,15 @@ export const App: React.FC = () => {
 
     // Listen for real-time live preview updates from Studio parent frame
     const handleLivePreviewMsg = (e: MessageEvent) => {
-      if (e.data && e.data.type === 'MARRIME_LIVE_PREVIEW' && e.data.payload) {
+      if (
+        searchParams.get('simulator') === '1' &&
+        window.parent !== window &&
+        e.source === window.parent &&
+        e.origin === window.location.origin &&
+        e.data?.type === 'MARRIME_LIVE_PREVIEW' &&
+        e.data.payload
+      ) {
+        receivedSimulatorData = true;
         setWeddingData(e.data.payload);
       }
     };

@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { EnvelopeDesignPicker } from '../components/EnvelopeDesign';
+import { EnvelopeModal } from '../components/EnvelopeModal';
 import {
   Sparkles,
   Smartphone,
@@ -46,7 +48,6 @@ import {
   WeddingData,
   WeddingTheme,
   WeddingTemplate,
-  EnvelopeStyle,
   AnimationEffect,
   TypographyFont,
   TimelineMilestone,
@@ -94,6 +95,8 @@ export const WeddingStudioPage: React.FC = () => {
   const [previewDevice, setPreviewDevice] = useState<'mobile' | 'desktop'>('mobile');
   const [previewViewMode, setPreviewViewMode] = useState<'website' | 'envelope'>('website');
   const [previewKey, setPreviewKey] = useState(0);
+  const [showEnvelopePreview, setShowEnvelopePreview] = useState(false);
+  const simulatorRef = useRef<HTMLIFrameElement>(null);
 
   // Wedding form data
   const [weddingSlug, setWeddingSlug] = useState('tuan-anh-mai-phuong');
@@ -167,16 +170,14 @@ export const WeddingStudioPage: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  // Real-time live preview sync with the simulator iframe
-  useEffect(() => {
-    const iframe = document.querySelector('iframe');
-    if (iframe && iframe.contentWindow) {
-      iframe.contentWindow.postMessage(
-        { type: 'MARRIME_LIVE_PREVIEW', payload: formData },
-        '*'
-      );
-    }
-  }, [formData]);
+  const syncSimulator = () => {
+    simulatorRef.current?.contentWindow?.postMessage(
+      { type: 'MARRIME_LIVE_PREVIEW', payload: formData },
+      window.location.origin,
+    );
+  };
+
+  useEffect(syncSimulator, [formData]);
 
   // Lookup existing card by code / slug
   const handleLookupCode = async (e: React.FormEvent) => {
@@ -484,7 +485,7 @@ export const WeddingStudioPage: React.FC = () => {
       {/* MAIN SPLIT SCREEN WORKSPACE */}
       <div className="flex-1 flex overflow-hidden">
         {/* LEFT PANE: 5-STEP GUIDED FORM BUILDER */}
-        <div className="w-full lg:w-[54%] xl:w-[50%] flex flex-col bg-[#FAF8F5] border-r border-stone-200 overflow-hidden">
+        <div className={`w-full flex flex-col bg-[#FAF8F5] border-r border-stone-200 overflow-hidden ${currentStep === 5 ? "" : "lg:w-[54%] xl:w-[50%]"}`}>
           {/* STEPPER PROGRESS BAR (5 Bước Rõ Ràng, Dễ Hiểu) */}
           <div className="bg-white border-b border-stone-200 px-4 py-3 flex items-center justify-between overflow-x-auto no-scrollbar flex-shrink-0">
             {STEPS.map((step) => {
@@ -1374,50 +1375,25 @@ export const WeddingStudioPage: React.FC = () => {
               <div className="space-y-6 animate-fadeIn">
                 {/* 3D Envelope Selector */}
                 <div className="bg-white p-5 sm:p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
-                  <div className="flex items-center justify-between border-b border-stone-100 pb-3">
-                    <h3 className="font-serif text-base font-bold text-stone-900 flex items-center space-x-2">
-                      <Mail className="w-4 h-4 text-[#A2682A]" />
-                      <span>Kiểu Bao Thư Vật Lý 3D & Con Dấu Sáp</span>
-                    </h3>
-                    <span className="text-xs font-bold text-[#A2682A]">
-                      {formData.envelopeStyle}
-                    </span>
-                  </div>
+                  <div className="space-y-1 border-b border-stone-100 pb-3">
+                    <h3 className="font-serif text-base font-bold text-stone-900">Chọn mẫu phong bì</h3>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                    {[
-                      { id: 'royal_velvet', name: 'Nhung Đỏ Hoàng Gia', desc: 'Sáp đỏ son & vàng' },
-                      { id: 'korean_chiffon', name: 'Sage & Peach Pastel', desc: 'Chuẩn ảnh 7799' },
-                      { id: 'traditional_silk', name: 'Lụa Gấm Song Hỷ', desc: 'Song Hỷ 囍 đỏ thắm' },
-                      { id: 'rustic_twine', name: 'Giấy Mộc Kraft Sân Vườn', desc: 'Lá xô thơm' },
-                      { id: 'editorial_vellum', name: 'Obsidian Matte Black', desc: 'Thời thượng tối giản' },
-                      { id: 'celestial_midnight', name: 'Xanh Đêm Ánh Trăng', desc: 'Ngàn sao lấp lánh' },
-                      { id: 'blush_ribbon', name: 'Hồng Phấn Rose Voan', desc: 'Ngọt ngào lãng mạn' },
-                      { id: 'emerald_brass', name: 'Lục Bảo & Đồng Cổ', desc: 'Quý tộc di sản' },
-                      { id: 'indochine_kraft', name: 'Đông Dương Cổ Điển', desc: 'Tem thư xưa' },
-                      { id: 'modern_minimal', name: 'Champagne Ivory', desc: 'Đương đại tinh tế' },
-                    ].map((env) => (
-                      <button
-                        key={env.id}
-                        type="button"
-                        onClick={() =>
-                          setFormData({
-                            ...formData,
-                            envelopeStyle: env.id as EnvelopeStyle,
-                          })
-                        }
-                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                          formData.envelopeStyle === env.id
-                            ? 'border-[#722235] bg-rose-50 text-[#722235] ring-2 ring-[#722235]/20 shadow-xs'
-                            : 'border-stone-200 hover:bg-stone-50 text-stone-700'
-                        }`}
-                      >
-                        <span className="font-serif text-xs font-bold block">{env.name}</span>
-                        <span className="text-[10px] text-stone-500 block mt-0.5">{env.desc}</span>
-                      </button>
-                    ))}
                   </div>
-
+                  <EnvelopeDesignPicker
+                    value={formData.envelopeStyle}
+                    onOpenPreview={() => setShowEnvelopePreview(true)}
+                    sample={{
+                      monogram: formData.waxSealMonogram || `${formData.groom.name.charAt(0)} & ${formData.bride.name.charAt(0)}`,
+                      guest: 'Bạn Lan',
+                      couple: `${formData.groom.name} & ${formData.bride.name}`,
+                      date: formData.weddingDateFormatted,
+                    }}
+                    onChange={(style) => {
+                      setFormData((data) => ({ ...data, envelopeStyle: style }));
+                      setPreviewViewMode('envelope');
+                      setPreviewKey((key) => key + 1);
+                    }}
+                  />
                   {/* Wax Seal Monogram */}
                   <div className="pt-2">
                     <label className="text-xs font-bold text-stone-700 uppercase tracking-wider block mb-1">
@@ -1827,7 +1803,7 @@ export const WeddingStudioPage: React.FC = () => {
         </div>
 
         {/* RIGHT PANE: LIVE PREVIEW SIMULATOR */}
-        <div className="hidden lg:flex flex-1 bg-[#F5F3EF] flex-col overflow-hidden items-center justify-center p-4 xl:p-6 relative">
+        <div className={`${currentStep === 5 ? "hidden" : "hidden lg:flex"} flex-1 bg-[#F5F3EF] flex-col overflow-hidden items-center justify-center p-4 xl:p-6 relative`}>
           {/* Top Quick Status Pill */}
           <div className="absolute top-4 left-6 right-6 flex items-center justify-between pointer-events-none z-10">
             <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-stone-200 text-stone-700 text-xs font-bold shadow-xs pointer-events-auto flex items-center space-x-1.5">
@@ -1868,6 +1844,8 @@ export const WeddingStudioPage: React.FC = () => {
 
               {/* Iframe */}
               <iframe
+                ref={simulatorRef}
+                onLoad={syncSimulator}
                 key={previewKey}
                 title="Live Mobile Simulator"
                 src={`/?w=${weddingSlug}${previewViewMode === 'website' ? '&preview=true' : ''}&simulator=1`}
@@ -1890,6 +1868,8 @@ export const WeddingStudioPage: React.FC = () => {
 
               {/* Iframe */}
               <iframe
+                ref={simulatorRef}
+                onLoad={syncSimulator}
                 key={previewKey}
                 title="Live Desktop Simulator"
                 src={`/?w=${weddingSlug}${previewViewMode === 'website' ? '&preview=true' : ''}&simulator=1`}
@@ -1899,6 +1879,26 @@ export const WeddingStudioPage: React.FC = () => {
           )}
         </div>
       </div>
+
+      {showEnvelopePreview && (
+        <EnvelopeModal
+          isOpen
+          isPreview
+          onOpenEnvelope={() => setShowEnvelopePreview(false)}
+          guest={{ name: 'Lan', role: 'ban' }}
+          groomName={formData.groom.name}
+          brideName={formData.bride.name}
+          weddingDateFormatted={formData.weddingDateFormatted}
+          venueName={formData.events[0]?.venueName}
+          hallName={formData.events[0]?.hallName}
+          eventAddress={formData.events[0]?.address}
+          eventTime={formData.events[0]?.time}
+          dayOfWeek={formData.events[0]?.dayOfWeek}
+          lunarDate={formData.events[0]?.lunarDate}
+          envelopeStyle={formData.envelopeStyle}
+          waxSealMonogram={formData.waxSealMonogram}
+        />
+      )}
 
       {/* PUBLISH SUCCESS MODAL WITH SECRET PIN & DONATE INFO */}
       {isPublishModalOpen && (

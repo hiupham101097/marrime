@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { EnvelopeDesignPicker } from './EnvelopeDesign';
 import {
   X,
   Lock,
@@ -28,7 +29,6 @@ import {
   WeddingData,
   WeddingTheme,
   WeddingTemplate,
-  EnvelopeStyle,
   AnimationEffect,
   GalleryPhotoItem,
 } from '../../shared/types';
@@ -975,75 +975,10 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                       <Mail className="w-4 h-4 text-wedding-burgundy" />
                       <span>3. Phong Cách Phong Bì Thiệp Cưới (Envelope Style)</span>
                     </h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                      {[
-                        {
-                          id: 'royal_velvet',
-                          name: 'Royal Velvet (Nhung Đỏ Quý Tộc)',
-                          desc: 'Nhung đỏ burgundy sang trọng, 4 góc viền hoa văn vàng kim và con dấu sáp vàng ấn tượng.',
-                          badge: 'Mẫu Cung Đình',
-                          color: '#75142B',
-                        },
-                        {
-                          id: 'blush_ribbon',
-                          name: 'Blush Ribbon (Hồng Phấn Thắt Nơ Lụa)',
-                          desc: 'Tông hồng pastel dịu dàng, nơ ruy băng lụa mềm mại và hoa văn cành lá mùa xuân.',
-                          badge: 'Nữ Tính & Thơ Mộng',
-                          color: '#F472B6',
-                        },
-                        {
-                          id: 'modern_minimal',
-                          name: 'Modern Minimal (Giấy Mỹ Thuật Viền Vàng)',
-                          desc: 'Mặt giấy ivory vân nổi dập chìm, đường chỉ mạ vàng tinh tế theo trường phái tối giản.',
-                          badge: 'Thanh Lịch Tinh Tế',
-                          color: '#E6CF9B',
-                        },
-                        {
-                          id: 'emerald_brass',
-                          name: 'Emerald Brass (Xanh Ngọc Lục Bảo & Con Dấu Đồng)',
-                          desc: 'Màu xanh lục bảo vương giả, phụ kiện con dấu đồng cổ điển phong cách quý tộc châu Âu.',
-                          badge: 'Đẳng Cấp Cổ Điển',
-                          color: '#064E3B',
-                        },
-                      ].map((env) => (
-                        <button
-                          key={env.id}
-                          type="button"
-                          onClick={() =>
-                            setFormData({ ...formData, envelopeStyle: env.id as EnvelopeStyle })
-                          }
-                          className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                            formData.envelopeStyle === env.id
-                              ? 'border-wedding-burgundy bg-wedding-rose-50/70 ring-2 ring-wedding-burgundy/30 shadow-sm'
-                              : 'border-stone-200 hover:border-stone-300 bg-white'
-                          }`}
-                        >
-                          <div>
-                            <div className="flex items-center justify-between mb-1.5">
-                              <span
-                                className="w-3.5 h-3.5 rounded-full inline-block border border-black/10 shadow-sm"
-                                style={{ backgroundColor: env.color }}
-                              />
-                              <span className="text-[10px] px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 font-semibold">
-                                {env.badge}
-                              </span>
-                            </div>
-                            <span className="font-serif text-xs font-bold text-stone-900 block">
-                              {env.name}
-                            </span>
-                            <span className="text-[11px] text-stone-500 mt-1 block leading-relaxed">
-                              {env.desc}
-                            </span>
-                          </div>
-                          {formData.envelopeStyle === env.id && (
-                            <div className="mt-3 flex items-center text-[10px] font-bold text-wedding-burgundy">
-                              <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-wedding-burgundy" />
-                              <span>Đang kích hoạt trên web</span>
-                            </div>
-                          )}
-                        </button>
-                      ))}
-                    </div>
+                    <EnvelopeDesignPicker
+                      value={formData.envelopeStyle}
+                      onChange={(style) => setFormData((data) => ({ ...data, envelopeStyle: style }))}
+                    />
                   </div>
                 </div>
               )}
