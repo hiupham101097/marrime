@@ -1,282 +1,978 @@
 /* ============================================================
-   ENVELOPE DESIGN — Haute Couture Stationery Styling (7799 Aesthetic)
+   ENVELOPE DESIGN — 10 Bespoke Unique Stationery Layouts
+   Mỗi phong cách là một thiết kế hoàn toàn riêng biệt
    ============================================================ */
 
 .envelope-design {
-  --stock: #FAF6EE;
-  /* Ultra-fine tactile cotton paper grain */
-  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath d='M0 0h200v200H0z' filter='url(%23n)' opacity='.09'/%3E%3C/svg%3E");
-  --ink: #2C2621;
-  --art-ink: #8F775D;
   --display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
-  --margin-x: 10%;
-
   position: absolute;
   inset: 0;
   display: block;
   overflow: hidden;
   border-radius: inherit;
   container-type: inline-size;
-  background:
-    var(--paper-grain),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 45%, rgba(0, 0, 0, 0.04) 100%),
-    var(--stock);
-  color: var(--ink);
-  text-align: center;
-
-  /* Fine embossed paper edges */
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.75),
     inset 1px 0 0 rgba(255, 255, 255, 0.45),
     inset 0 -1px 0 rgba(0, 0, 0, 0.22);
 }
 
-/* Background artwork SVG */
-.envelope-design__art {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  color: var(--art-ink);
-  pointer-events: none;
+/* ============================================================
+   1. TRADITIONAL SILK (ĐỎ SON CUNG ĐÌNH & SONG HỶ)
+   ============================================================ */
+.envelope-design--traditional {
+  background:
+    var(--grain),
+    linear-gradient(135deg, #B51824 0%, #94101A 50%, #6E0810 100%);
+  color: #FFF0D0;
+  padding: 5% 6%;
 }
 
-/* Common positioning for zones */
-.envelope-design__crest-zone,
-.envelope-design__title-zone,
-.envelope-design__guest-zone,
-.envelope-design__footer-zone {
+.trad-wave-border {
   position: absolute;
-  inset-inline: var(--margin-x);
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: repeating-linear-gradient(
+    90deg,
+    #FADB6B 0px,
+    #FADB6B 14px,
+    #8C0E17 14px,
+    #8C0E17 28px
+  );
+  opacity: 0.75;
+}
+.trad-wave-border--top { top: 0; }
+.trad-wave-border--bottom { bottom: 0; }
+
+.trad-layout {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 36% 64%;
+  align-items: center;
+  gap: 4%;
+}
+
+.trad-medallion-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trad-medallion {
+  width: min(85%, 150px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #D41A28 0%, #7A0A12 85%);
+  border: 3px double #FADB6B;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(250, 219, 107, 0.4);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
-  overflow-wrap: anywhere;
+  text-align: center;
 }
 
-/* ── 1. Top Crest Zone (Save the Date & Monogram) ─────────────── */
-.envelope-design__crest-zone {
-  top: 7%;
-  height: 33%;
+.trad-songhy {
+  font-size: 13cqi;
+  font-weight: 900;
+  color: #FADB6B;
+  line-height: 1;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.trad-sub-blessing {
+  font-size: 1.5cqi;
+  letter-spacing: 0.16em;
+  color: #FFF0D0;
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+.trad-text-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: 1.2cqi;
+  text-align: left;
 }
 
-.envelope-design__date-badge {
-  display: block;
-  font-family: var(--display);
-  font-size: 1.6cqi;
-  letter-spacing: 0.26em;
+.trad-headline {
+  font-size: 2.2cqi;
+  letter-spacing: 0.28em;
+  color: #FADB6B;
+  font-weight: 700;
+}
+
+.trad-salutation {
+  font-size: 2cqi;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.trad-guest-name {
+  font-size: 6.8cqi;
+  color: #FFFFFF;
+  font-weight: 700;
+  line-height: 1.15;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.trad-gold-line {
+  height: 1.5px;
+  background: linear-gradient(90deg, #FADB6B 0%, transparent 95%);
+  margin-top: 0.5cqi;
+}
+
+.trad-footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3cqi;
+  font-size: 1.9cqi;
+  color: #FADB6B;
+  letter-spacing: 0.08em;
+  margin-top: 1cqi;
+  opacity: 0.9;
+}
+
+/* ============================================================
+   2. INDOCHINE KRAFT (BƯU THIẾP ĐÔNG DƯƠNG SÀI GÒN 1930)
+   ============================================================ */
+.envelope-design--indochine {
+  background:
+    var(--grain),
+    radial-gradient(ellipse at 50% 30%, #F5E8D0 0%, #E8D4B2 60%, #D4B98E 100%);
+  color: #4A2814;
+  padding: 5% 6%;
+}
+
+.indochine-airmail-frame {
+  position: absolute;
+  inset: 6px;
+  border: 1.5px dashed rgba(186, 84, 36, 0.45);
+  pointer-events: none;
+}
+
+.indochine-postcard {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 46% 2px 48%;
+  align-items: center;
+  gap: 3%;
+}
+
+.indochine-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  gap: 1.2cqi;
+  padding-right: 2%;
+}
+
+.indochine-header {
+  font-size: 1.8cqi;
+  letter-spacing: 0.22em;
+  font-weight: 700;
+  color: #BA5424;
+  border-bottom: 1px solid rgba(186, 84, 36, 0.3);
+  padding-bottom: 0.5cqi;
+}
+
+.indochine-body-quote {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 2cqi;
+  line-height: 1.35;
+  color: #5D3720;
+}
+
+.indochine-couple-sign {
+  font-family: 'Great Vibes', cursive, serif;
+  font-size: 4cqi;
+  color: #7A3515;
+  line-height: 1.1;
+  margin-top: 0.5cqi;
+}
+
+.indochine-location {
+  font-size: 1.5cqi;
+  letter-spacing: 0.15em;
+  opacity: 0.65;
   text-transform: uppercase;
+}
+
+.indochine-divider {
+  height: 80%;
+  background: linear-gradient(180deg, transparent, rgba(74, 40, 20, 0.25), transparent);
+}
+
+.indochine-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 88%;
+  padding-left: 2%;
+}
+
+.indochine-stamp-zone {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.indochine-stamp {
+  width: 14cqi;
+  height: 16cqi;
+  border: 1.5px dashed #BA5424;
+  background: #FFF7EB;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.15);
+}
+.indochine-stamp-icon { font-size: 4cqi; }
+.indochine-stamp-val { font-size: 1.2cqi; font-weight: 700; color: #BA5424; }
+
+.indochine-postmark {
+  width: 12cqi;
+  height: 12cqi;
+  border-radius: 50%;
+  border: 1px solid rgba(74, 40, 20, 0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2cqi;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  transform: rotate(-12deg);
+}
+
+.indochine-address-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8cqi;
+  text-align: left;
+}
+
+.indochine-dest-label {
+  font-size: 1.7cqi;
+  font-style: italic;
+  opacity: 0.75;
+}
+
+.indochine-guest-name {
+  font-size: 5.5cqi;
+  color: #381D0F;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.indochine-line {
+  height: 1px;
+  background: rgba(74, 40, 20, 0.25);
+  border-bottom: 1px dotted rgba(74, 40, 20, 0.35);
+}
+
+.indochine-line--sub {
+  font-size: 1.7cqi;
+  font-style: italic;
+  opacity: 0.7;
+  border: none;
+  margin-top: 2px;
+}
+
+/* ============================================================
+   3. EDITORIAL VELLUM (ẤN BẢN TẠP CHÍ VOGUE THỜI TRANG)
+   ============================================================ */
+.envelope-design--editorial {
+  background:
+    var(--grain),
+    linear-gradient(135deg, #FFFFFF 0%, #F8F8F5 50%, #EDEDE6 100%);
+  color: #1A1918;
+  padding: 6% 7%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.editorial-crop {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #1A1918;
+  opacity: 0.35;
+}
+.editorial-crop--tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+.editorial-crop--tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
+.editorial-crop--bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
+.editorial-crop--br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+.editorial-masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 2px solid #1A1918;
+  padding-bottom: 1cqi;
+}
+
+.editorial-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 4.8cqi;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.editorial-issue {
+  font-size: 1.6cqi;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  opacity: 0.65;
+}
+
+.editorial-body {
+  height: calc(100% - 7cqi);
+  display: grid;
+  grid-template-columns: 35% 65%;
+  align-items: center;
+  gap: 5%;
+}
+
+.editorial-hero-initials {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14cqi;
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: #1A1918;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editorial-feature {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 1cqi;
+}
+
+.editorial-tag {
+  display: inline-block;
+  align-self: flex-start;
+  background: #1A1918;
+  color: #FFF;
+  font-size: 1.3cqi;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  padding: 0.3cqi 1cqi;
+}
+
+.editorial-guest-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 6.2cqi;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.editorial-story {
+  font-size: 1.7cqi;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+.editorial-date-code {
+  font-size: 1.5cqi;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  opacity: 0.55;
+  margin-top: 0.5cqi;
+}
+
+/* ============================================================
+   4. CELESTIAL MIDNIGHT (DẠ TIỆC VŨ TRỤ & HẢI ĐỒ TINH TÚ)
+   ============================================================ */
+.envelope-design--celestial {
+  background:
+    var(--grain),
+    radial-gradient(ellipse at 50% 40%, #1E2F60 0%, #101B3C 55%, #050A18 100%);
+  color: #F8FAFC;
+  padding: 5% 6%;
+}
+
+.celestial-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #FFF, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 150px 70px, #FDE68A, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 280px 180px, #FFF, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 450px 40px, #FDE68A, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 520px 220px, #FFF, rgba(0,0,0,0));
+  background-repeat: repeat;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.celestial-moon-phases {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 2.5cqi;
+  opacity: 0.65;
+}
+.celestial-full-moon {
+  transform: scale(1.3);
+  filter: drop-shadow(0 0 6px #FDE68A);
+}
+
+.celestial-astral-ring {
+  margin-top: 2cqi;
+  height: calc(100% - 6cqi);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1cqi;
+}
+
+.celestial-sub-orbit {
+  font-size: 1.8cqi;
+  letter-spacing: 0.35em;
+  color: #FDE68A;
+  font-weight: 600;
+}
+
+.celestial-salutation {
+  font-size: 1.9cqi;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.celestial-guest-name {
+  font-size: 7cqi;
+  font-weight: 700;
+  color: #FFFDF9;
+  text-shadow: 0 0 12px rgba(253, 230, 138, 0.4);
+  line-height: 1.1;
+}
+
+.celestial-gold-dust-line {
+  width: 65%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #FDE68A, transparent);
+  margin-block: 0.5cqi;
+}
+
+.celestial-couple-orbit {
+  font-size: 1.9cqi;
+  letter-spacing: 0.16em;
+  color: #FDE68A;
+  opacity: 0.88;
+}
+
+.celestial-coord-date {
+  font-size: 1.5cqi;
+  letter-spacing: 0.28em;
+  opacity: 0.65;
+}
+
+/* ============================================================
+   5. BLUSH RIBBON (NƠ LỤA NÀNG THƠ & MỀ ĐAY DIOR)
+   ============================================================ */
+.envelope-design--blush {
+  background:
+    var(--grain),
+    linear-gradient(135deg, #FFF7F9 0%, #FDECF0 50%, #F7D8E2 100%);
+  color: #612136;
+  padding: 5% 6%;
+}
+
+.blush-top-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 2%;
+}
+
+.blush-french-title {
+  font-size: 2cqi;
+  letter-spacing: 0.32em;
+  font-weight: 600;
+  color: #9C3357;
+}
+
+.blush-date-stamp {
+  font-size: 1.7cqi;
+  letter-spacing: 0.18em;
+  opacity: 0.7;
+}
+
+.blush-ribbon-bar {
+  position: relative;
+  margin-top: 3cqi;
+  height: 12cqi;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blush-ribbon-stripe {
+  position: absolute;
+  left: -6%;
+  right: -6%;
+  height: 4.5cqi;
+  background: linear-gradient(180deg, #F0C4D2 0%, #E298B0 50%, #D47A95 100%);
+  box-shadow: 0 2px 6px rgba(156, 51, 87, 0.25);
+}
+
+.blush-cameo-medallion {
+  position: relative;
+  z-index: 2;
+  width: 18cqi;
+  height: 11cqi;
+  border-radius: 50%;
+  background: #FFFDF9;
+  border: 2px solid #E298B0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blush-cameo-monogram {
+  font-family: 'Great Vibes', cursive, serif;
+  font-size: 5.5cqi;
+  color: #9C3357;
+  line-height: 1;
+}
+
+.blush-guest-zone {
+  margin-top: 2cqi;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6cqi;
+}
+
+.blush-salutation {
+  font-size: 2cqi;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.blush-guest-name {
+  font-size: 6.8cqi;
+  color: #4D1528;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.blush-pearl-line {
+  width: 45%;
+  height: 2px;
+  border-bottom: 2px dotted #E298B0;
+  margin-top: 0.4cqi;
+}
+
+.blush-couple-names {
+  font-size: 2.1cqi;
+  letter-spacing: 0.14em;
+  opacity: 0.75;
+  margin-top: 0.4cqi;
+}
+
+/* ============================================================
+   6. EMERALD BRASS (GATSBY 1920s ART DECO MẠ VÀNG)
+   ============================================================ */
+.envelope-design--emerald {
+  background:
+    var(--grain),
+    linear-gradient(135deg, #1C4535 0%, #133226 50%, #091C15 100%);
+  color: #F9EFCF;
+  padding: 5% 6%;
+}
+
+.deco-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #E5C368;
+}
+.deco-corner--tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+.deco-corner--tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
+.deco-corner--bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
+.deco-corner--br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+.deco-frame {
+  height: 100%;
+  border: 1px solid rgba(229, 195, 104, 0.4);
+  padding: 3% 4%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.deco-top-emblem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #E5C368;
+}
+
+.deco-sunburst { font-size: 2.4cqi; }
+.deco-header-text {
+  font-size: 2.1cqi;
+  letter-spacing: 0.32em;
+  font-weight: 700;
+}
+
+.deco-guest-cartouche {
+  width: 90%;
+  border-block: 1.5px solid #E5C368;
+  padding-block: 1.5cqi;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6cqi;
+}
+
+.deco-cartouche-label {
+  font-size: 1.7cqi;
+  letter-spacing: 0.3em;
+  opacity: 0.8;
+}
+
+.deco-guest-name {
+  font-size: 7.2cqi;
+  color: #FFF;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  text-shadow: 0 0 10px rgba(229, 195, 104, 0.4);
+}
+
+.deco-footer-plaque {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 1.8cqi;
+  letter-spacing: 0.22em;
+  color: #E5C368;
+  opacity: 0.85;
+}
+
+/* ============================================================
+   7. RUSTIC TWINE (VƯỜN MỘC KRAFT & THẺ TREO CÀNH LÁ)
+   ============================================================ */
+.envelope-design--rustic {
+  background:
+    var(--grain),
+    linear-gradient(135deg, #EDE5D8 0%, #DDD2C0 50%, #C9BCA6 100%);
+  color: #382C1E;
+  padding: 5% 7%;
+}
+
+.rustic-luggage-tag {
+  height: 100%;
+  border: 1px dashed rgba(56, 44, 30, 0.35);
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 4px;
+  padding: 3% 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.rustic-tag-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #556B48;
+}
+
+.rustic-tag-eyelet { font-size: 2.2cqi; opacity: 0.6; }
+.rustic-sub { font-size: 1.8cqi; letter-spacing: 0.25em; font-weight: 700; }
+
+.rustic-tag-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6cqi;
+}
+
+.rustic-salutation { font-size: 2.1cqi; font-style: italic; opacity: 0.8; }
+.rustic-guest-name { font-size: 6.8cqi; font-weight: 700; color: #271E14; line-height: 1.1; }
+.rustic-dashed-line { width: 60%; height: 1px; border-bottom: 1.5px dashed rgba(56, 44, 30, 0.3); margin-block: 0.4cqi; }
+.rustic-couple-lead { font-size: 1.9cqi; font-style: italic; opacity: 0.8; }
+.rustic-couple-sign { font-family: 'Playfair Display', Georgia, serif; font-size: 3.2cqi; font-weight: 700; color: #556B48; }
+.rustic-date-tag { font-size: 1.6cqi; letter-spacing: 0.18em; opacity: 0.65; }
+
+/* ============================================================
+   8. MODERN MINIMAL (KIẾN TRÚC & TỐI GIẢN BẮC ÂU)
+   ============================================================ */
+.envelope-design--minimal {
+  background:
+    var(--grain),
+    linear-gradient(135deg, #FFFFFF 0%, #FAF9F6 50%, #F0EEE9 100%);
+  color: #242A27;
+  padding: 7% 8%;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.minimal-grid-mark {
+  position: absolute;
+  font-family: monospace;
+  font-size: 3cqi;
+  color: rgba(36, 42, 39, 0.4);
+}
+.minimal-grid-mark--tl { top: 14px; left: 16px; }
+.minimal-grid-mark--br { bottom: 14px; right: 16px; }
+
+.minimal-split-layout {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 28% 1px 68%;
+  align-items: center;
+  gap: 3%;
+}
+
+.minimal-left-col {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.1;
+}
+
+.minimal-vert-title { font-size: 3.8cqi; font-weight: 900; letter-spacing: 0.1em; }
+.minimal-vert-sub { font-size: 2.2cqi; font-weight: 400; letter-spacing: 0.22em; opacity: 0.65; }
+.minimal-vert-code { font-size: 1.4cqi; font-family: monospace; opacity: 0.4; margin-top: 1cqi; }
+
+.minimal-separator {
+  height: 70%;
+  background: rgba(36, 42, 39, 0.2);
+}
+
+.minimal-right-col {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 2.5cqi;
+  padding-left: 3%;
+}
+
+.minimal-guest-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4cqi;
+}
+
+.minimal-label {
+  font-size: 1.4cqi;
+  letter-spacing: 0.25em;
+  font-weight: 700;
+  opacity: 0.5;
+}
+
+.minimal-guest-name {
+  font-size: 6.2cqi;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.minimal-couple-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2cqi;
+}
+
+.minimal-couple-name { font-size: 2.6cqi; font-weight: 600; opacity: 0.85; }
+.minimal-date { font-size: 1.5cqi; font-family: monospace; opacity: 0.5; }
+
+/* ============================================================
+   9. KOREAN CHIFFON (CHUẨN 100% 7799 STORYTELLER MINT SAGE)
+   ============================================================ */
+.envelope-design--korean {
+  background:
+    var(--grain),
+    linear-gradient(135deg, #F0F6F2 0%, #E3EFE7 50%, #D4E4DA 100%);
+  color: #1B382D;
+  padding: 6% 8%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.korean-top-crest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6cqi;
+}
+
+.korean-save-the-date {
+  font-size: 1.7cqi;
+  letter-spacing: 0.28em;
   font-weight: 600;
   opacity: 0.7;
 }
 
-.envelope-design__monogram {
-  display: block;
-  font-family: var(--display);
-  font-size: var(--monogram-size, 8.5cqi);
+.korean-monogram {
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
-  font-weight: 500;
-  line-height: 1.05;
-  letter-spacing: 0.04em;
-  color: var(--monogram-ink, var(--ink));
-}
-
-/* ── 2. Formal Invitation Headline ───────────────────────────── */
-.envelope-design__title-zone {
-  top: 43%;
-  height: 10%;
-}
-
-.envelope-design__title-text {
-  display: inline-block;
-  font-family: var(--display);
-  font-size: 2.2cqi;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
+  font-size: 8cqi;
   font-weight: 600;
-  opacity: 0.82;
-  padding-inline: 1cqi;
-  border-block: 0.5px solid color-mix(in srgb, currentColor 28%, transparent);
-  padding-block: 0.4cqi;
+  line-height: 1;
+  color: #204A3B;
 }
 
-/* ── 3. Guest Salutation & Dotted Leader Line (7799 Signature) ── */
-.envelope-design__guest-zone {
-  top: 55%;
-  height: 27%;
+.korean-invitation-bar {
+  border-block: 0.5px solid rgba(27, 56, 45, 0.25);
+  padding-block: 0.5cqi;
+  font-size: 2.2cqi;
+  letter-spacing: 0.35em;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.korean-guest-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 0.6cqi;
 }
 
-.envelope-design__salutation {
-  display: block;
-  font-family: var(--display);
+.korean-guest-line-wrapper {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 1.5cqi;
+  flex-wrap: wrap;
+}
+
+.korean-salutation {
   font-size: 2.1cqi;
-  font-style: italic;
-  letter-spacing: 0.06em;
-  opacity: 0.78;
-}
-
-.envelope-design__guest-name {
-  display: block;
-  font-family: var(--display);
-  font-size: var(--guest-size, 7.2cqi);
+  letter-spacing: 0.12em;
   font-weight: 600;
-  letter-spacing: 0.02em;
-  line-height: 1.12;
-  color: var(--guest-ink, var(--ink));
+  opacity: 0.8;
 }
 
-.envelope-design__dotted-line {
-  display: block;
-  width: min(92%, 360px);
+.korean-guest-name {
+  font-size: 6.8cqi;
+  font-weight: 700;
+  color: #142C23;
+  line-height: 1.1;
+}
+
+.korean-dotted-leader {
+  width: 85%;
   height: 2px;
-  border-bottom: 1.5px dotted color-mix(in srgb, currentColor 45%, transparent);
-  margin-top: 0.8cqi;
+  border-bottom: 2px dotted rgba(27, 56, 45, 0.4);
 }
 
-/* ── 4. Couple Footer Signature ──────────────────────────────── */
-.envelope-design__footer-zone {
-  top: 85%;
-  bottom: 4%;
-}
-
-.envelope-design__couple-names {
-  display: block;
-  font-family: var(--display);
-  font-size: 2cqi;
+.korean-footer {
+  font-size: 2.1cqi;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  opacity: 0.68;
+  opacity: 0.7;
 }
 
 /* ============================================================
-   PER-PALETTE STYLING & ATMOSPHERE
+   10. ROYAL VELVET (HOÀNG GIA QUÝ TỘC CHÂU ÂU)
    ============================================================ */
-
-/* 1. Korean Pastel Sage & Coral (7799 Storyteller Aesthetic) */
-.envelope-design[data-design='korean_chiffon'] {
-  --stock: linear-gradient(135deg, #F0F6F2 0%, #E3EFE7 50%, #D4E4DA 100%);
-  --ink: #1B382D;
-  --art-ink: #2C5747;
-  --guest-ink: #142C23;
-  --monogram-ink: #204A3B;
-  --margin-x: 10%;
+.envelope-design--royal {
+  background:
+    var(--grain),
+    linear-gradient(135deg, #FFFDF8 0%, #F5ECDD 50%, #E8D9C0 100%);
+  color: #5A1222;
+  padding: 6% 7%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
 }
 
-/* 2. Royal Velvet European Atelier */
-.envelope-design[data-design='royal_velvet'] {
-  --stock: linear-gradient(135deg, #FFFDF8 0%, #F5ECDD 50%, #E8D9C0 100%);
-  --ink: #5A1222;
-  --art-ink: #8B243B;
-  --guest-ink: #480C1A;
-  --monogram-ink: #8B243B;
-  --margin-x: 10%;
+.royal-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #8B243B;
+  opacity: 0.45;
+}
+.royal-corner--tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+.royal-corner--tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
+.royal-corner--bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
+.royal-corner--br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+.royal-crest-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4cqi;
 }
 
-/* 3. Đỏ Son Truyền Thống */
-.envelope-design[data-design='traditional_silk'] {
-  --stock: linear-gradient(135deg, #B51824 0%, #94101A 50%, #6E0810 100%);
-  --ink: #FFF0D0;
-  --art-ink: #FADB6B;
-  --guest-ink: #FFFFFF;
-  --monogram-ink: #FADB6B;
-  --margin-x: 8%;
-}
-.envelope-design[data-design='traditional_silk'] .envelope-design__monogram {
-  font-style: normal;
+.royal-crown { font-size: 4cqi; }
+
+.royal-monogram {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 7cqi;
   font-weight: 700;
-  font-size: 9.5cqi;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  color: #8B243B;
+  line-height: 1;
 }
 
-/* 4. Celestial Midnight */
-.envelope-design[data-design='celestial_midnight'] {
-  --stock: linear-gradient(135deg, #182650 0%, #0E1838 50%, #060B1E 100%);
-  --ink: #F8FAFC;
-  --art-ink: #FDE68A;
-  --guest-ink: #FFFDF9;
-  --monogram-ink: #FDE68A;
-  --margin-x: 10%;
-}
-
-/* 5. Rustic Twine Botanical */
-.envelope-design[data-design='rustic_twine'] {
-  --stock: linear-gradient(135deg, #EDE5D8 0%, #DDD2C0 50%, #C9BCA6 100%);
-  --ink: #382C1E;
-  --art-ink: #556B48;
-  --guest-ink: #271E14;
-  --monogram-ink: #382C1E;
-  --margin-x: 10%;
-}
-
-/* 6. Editorial Vellum (Vogue Minimalist) */
-.envelope-design[data-design='editorial_vellum'] {
-  --stock: linear-gradient(135deg, #FFFFFF 0%, #F8F8F5 50%, #EDEDE6 100%);
-  --ink: #1C1B1A;
-  --art-ink: #6B6864;
-  --guest-ink: #000000;
-  --monogram-ink: #1C1B1A;
-  --display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --margin-x: 8%;
-  --guest-size: 6.2cqi;
-}
-.envelope-design[data-design='editorial_vellum'] .envelope-design__monogram {
-  font-style: normal;
+.royal-proclamation {
+  font-size: 1.6cqi;
+  letter-spacing: 0.3em;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  opacity: 0.75;
 }
-.envelope-design[data-design='editorial_vellum'] .envelope-design__title-text {
+
+.royal-title-bar {
+  border-block: 1px double rgba(139, 36, 59, 0.4);
+  padding-block: 0.6cqi;
+  width: 90%;
+  font-size: 2.3cqi;
+  letter-spacing: 0.35em;
   font-weight: 700;
-  letter-spacing: 0.42em;
 }
 
-/* 7. Blush Ribbon Romantic */
-.envelope-design[data-design='blush_ribbon'] {
-  --stock: linear-gradient(135deg, #FFF7F9 0%, #FDECF0 50%, #F7D8E2 100%);
-  --ink: #612136;
-  --art-ink: #A84564;
-  --guest-ink: #4D1528;
-  --monogram-ink: #7A2440;
-  --margin-x: 12%;
+.royal-guest-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6cqi;
 }
 
-/* 8. Emerald Brass Gatsby */
-.envelope-design[data-design='emerald_brass'] {
-  --stock: linear-gradient(135deg, #1C4535 0%, #133226 50%, #091C15 100%);
-  --ink: #F9EFCF;
-  --art-ink: #E5C368;
-  --guest-ink: #FFFFFF;
-  --monogram-ink: #E5C368;
-  --margin-x: 10%;
-}
+.royal-salutation { font-size: 2cqi; font-style: italic; opacity: 0.85; }
+.royal-guest-name { font-size: 6.8cqi; font-weight: 700; color: #480C1A; line-height: 1.1; }
+.royal-gold-line { width: 50%; height: 1px; background: #8B243B; opacity: 0.4; }
+.royal-couple-lead { font-size: 2cqi; font-style: italic; opacity: 0.8; }
 
-/* 9. Indochine Kraft Vintage */
-.envelope-design[data-design='indochine_kraft'] {
-  --stock: linear-gradient(135deg, #F3E4C8 0%, #E5D0AC 50%, #D2B78B 100%);
-  --ink: #4D2C1A;
-  --art-ink: #8A4624;
-  --guest-ink: #381D0F;
-  --monogram-ink: #8A4624;
-  --margin-x: 9%;
-}
-
-/* 10. Modern Minimalist */
-.envelope-design[data-design='modern_minimal'] {
-  --stock: linear-gradient(135deg, #FFFFFF 0%, #FAF9F6 50%, #F0EEE9 100%);
-  --ink: #242A27;
-  --art-ink: #717B75;
-  --guest-ink: #111412;
-  --monogram-ink: #242A27;
-  --margin-x: 10%;
+.royal-footer {
+  font-size: 1.7cqi;
+  letter-spacing: 0.22em;
+  opacity: 0.65;
 }
 
 /* ============================================================
    WAX SEAL TYPOGRAPHY
    ============================================================ */
-
 .wedding-envelope__seal-text {
   position: relative;
   display: block;
@@ -290,7 +986,7 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), 0 0 1px rgba(0, 0, 0, 0.4);
   letter-spacing: 0.04em;
   pointer-events: none;
-  select-none: none;
+  user-select: none;
 }
 
 .wedding-envelope__seal-text.is-script {
@@ -305,7 +1001,6 @@
 /* ============================================================
    STUDIO PICKER (ENVELOPE COLLECTION WORKSPACE)
    ============================================================ */
-
 .envelope-collection {
   display: grid;
   grid-template-columns: clamp(230px, 26%, 330px) minmax(0, 1fr);
@@ -511,19 +1206,6 @@
   transform: translate(5%, -12%) rotate(5deg);
   container-type: inline-size;
   overflow: hidden;
-}
-
-.envelope-collection__insert::after {
-  position: absolute;
-  inset: 5%;
-  border: 1px solid currentColor;
-  opacity: 0.22;
-  content: '';
-}
-
-.envelope-collection__insert .envelope-design__art {
-  color: currentColor;
-  opacity: 0.22;
 }
 
 .envelope-collection__insert > span {
