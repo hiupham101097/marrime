@@ -4,7 +4,6 @@ import { ArrowRight, ArrowUpRight, Sparkles } from 'lucide-react';
 import { GuestInfo, EnvelopeStyle } from '../../shared/types';
 import { formatGuestSalutation } from '../hooks/useGuestInfo';
 import {
-  EnvelopeArtwork,
   EnvelopeBack,
   EnvelopeDesign,
   envelopePalettes,
@@ -138,6 +137,27 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
           {isPreview ? 'Đóng xem thử' : 'Vào thẳng website'} <ArrowUpRight size={14} aria-hidden="true" />
         </button>
 
+        {/* Flatlay loose wax seal accessory on the fabric backdrop (7799 Storyteller signature) */}
+        <div className="wedding-envelope__flatlay-seal" aria-hidden="true">
+          <svg viewBox="0 0 100 100">
+            <defs>
+              <radialGradient id="flatlayLooseSealGrad" cx="34%" cy="25%" r="78%">
+                <stop offset="0%" stopColor={currentStyle.looseSealGrad[0]} />
+                <stop offset="42%" stopColor={currentStyle.looseSealGrad[1]} />
+                <stop offset="85%" stopColor={currentStyle.looseSealGrad[2]} />
+              </radialGradient>
+            </defs>
+            <path
+              fill="url(#flatlayLooseSealGrad)"
+              d="M50 4C64 1 72 8 83 14C96 21 94 33 98 45C104 58 93 70 89 82C85 94 74 93 61 98C48 103 38 96 26 94C13 91 13 78 7 67C1 55 8 44 9 33C11 20 25 19 35 11C41 6 47 7 50 4Z"
+            />
+            <circle cx="50" cy="50" r="30" fill="rgba(0,0,0,0.15)" stroke="rgba(255,240,190,0.5)" strokeWidth="1.2" />
+          </svg>
+          <span className="wedding-envelope__flatlay-seal-text">
+            {currentStyle.sealInscription === 'song_hy' ? '囍' : 'with love'}
+          </span>
+        </div>
+
         <div className="wedding-envelope__layout">
           {/* Animated hint badge */}
           {phase !== 'open' && (
@@ -170,10 +190,6 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
               <div className="wedding-envelope__face wedding-envelope__back" inert={!isFlipped}>
                 {/* 2A. INNER LETTER CARD */}
                 <div className="wedding-envelope__letter" inert={!isFlapOpen}>
-                  <div className="wedding-envelope__letter-art" aria-hidden="true">
-                    <EnvelopeArtwork style={design} />
-                  </div>
-
                   <div className="wedding-envelope__letter-inner">
                     <p className="wedding-envelope__letter-monogram">{displayMonogram}</p>
                     <p className="wedding-envelope__letter-salutation-label">Trân trọng kính mời</p>

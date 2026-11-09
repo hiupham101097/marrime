@@ -19,24 +19,24 @@ interface StylePalette {
 }
 
 export const envelopePalettes: Record<EnvelopeStyle, StylePalette> = {
-  // 1. Korean Pastel Sage & Coral (Chuẩn 100% phong cách 7799 Wedding Storyteller)
+  // 1. Korean Pastel Mint & Coral (Chuẩn 100% phong cách 7799 Wedding Storyteller)
   korean_chiffon: {
-    name: 'Hàn Quốc Pastel Thơ Mộng',
-    detail: 'Giấy mint sage, cành khuynh diệp nhã nhặn, con dấu sáp vàng đồng trên nền voan đào coral',
-    paperGradient: 'linear-gradient(135deg, #F0F6F2 0%, #E3EFE7 50%, #D4E4DA 100%)',
-    pocketGradient: 'linear-gradient(180deg, #DCE9E0 0%, #D0E0D5 60%, #BFD4C6 100%)',
+    name: 'Hàn Quốc Pastel 7799 Storyteller',
+    detail: 'Giấy mint sage, cành khuynh diệp nhã nhặn, con dấu sáp vàng đồng trên nền voan đào san hô',
+    paperGradient: 'linear-gradient(135deg, #EEF5F1 0%, #DFECE4 50%, #CFE2D6 100%)',
+    pocketGradient: 'linear-gradient(180deg, #D6E6DC 0%, #C8DDD0 60%, #B7D1C0 100%)',
     accentGold: '#C59A4E',
     sealInscription: 'with_love',
-    looseSealGrad: ['#FFE79A', '#D4A33B', '#6E4909'],
+    looseSealGrad: ['#FFE9A6', '#D4A33B', '#6E4909'],
     sceneGradient: 'radial-gradient(ellipse at 42% 28%, #FFEFE6 0%, #FFDFCF 45%, #F5BCA8 75%, #DF886E 100%)',
-    ctaGradient: 'linear-gradient(135deg, #1E4436, #112820)',
+    ctaGradient: 'linear-gradient(135deg, #1C4234, #0F2A20)',
     ctaText: '#FFFDF9',
     letterInk: '#18382D',
   },
 
   // 2. Hoàng Gia Châu Âu (Royal European Burgundy & Champagne Gold)
   royal_velvet: {
-    name: 'Hoàng Gia Quý Tộc',
+    name: 'Hoàng Gia Quý Tộc Châu Âu',
     detail: 'Giấy kem dệt vân sang trọng, hoa văn Baroque hoàng gia, dấu sáp đỏ rượu bordeaux',
     paperGradient: 'linear-gradient(135deg, #FFFDF8 0%, #F5ECDD 50%, #E8D9C0 100%)',
     pocketGradient: 'linear-gradient(180deg, #EFE3CE 0%, #E2D2B8 60%, #D2BFA1 100%)',
@@ -51,8 +51,8 @@ export const envelopePalettes: Record<EnvelopeStyle, StylePalette> = {
 
   // 3. Đỏ Son Truyền Thống (Song Hỷ Sơn Son Thiếp Vàng)
   traditional_silk: {
-    name: 'Đỏ Son Truyền Thống',
-    detail: 'Lụa đỏ son cung đình, đại huy hiệu Song Hỷ mạ vàng, họa tiết vân mây và câu đối chúc phúc',
+    name: 'Đỏ Son Cung Đình Truyền Thống',
+    detail: 'Lụa đỏ son cung đình, đại huy hiệu Song Hỷ mạ vàng, vân mây cát tường',
     paperGradient: 'linear-gradient(135deg, #B51824 0%, #94101A 50%, #6E0810 100%)',
     pocketGradient: 'linear-gradient(180deg, #8C0E17 0%, #750A12 60%, #54040A 100%)',
     accentGold: '#FADB6B',
@@ -81,8 +81,8 @@ export const envelopePalettes: Record<EnvelopeStyle, StylePalette> = {
 
   // 5. Vườn Mộc Rustic (Rustic Botanical & Kraft Linen)
   rustic_twine: {
-    name: 'Vườn Mộc Rustic',
-    detail: 'Bao thiệp kraft vẽ tay cành ô liu, thẻ treo hành lý mộc mạc và dây thừng tự nhiên',
+    name: 'Vườn Mộc Sân Vườn Rustic',
+    detail: 'Bao thiệp kraft vẽ tay cành ô liu mộc mạc, thẻ hành lý và dây thừng tự nhiên',
     paperGradient: 'linear-gradient(135deg, #EDE5D8 0%, #DDD2C0 50%, #C9BCA6 100%)',
     pocketGradient: 'linear-gradient(180deg, #D9CCA9 0%, #C8B99E 60%, #B4A385 100%)',
     accentGold: '#9E6738',
@@ -96,8 +96,8 @@ export const envelopePalettes: Record<EnvelopeStyle, StylePalette> = {
 
   // 6. Ấn Bản Tạp Chí Editorial (Haute Couture Editorial Vellum)
   editorial_vellum: {
-    name: 'Ấn Bản Tạp Chí Vogue',
-    detail: 'Bố cục bìa tạp chí thời trang Vogue, typography ấn tượng, mã vạch phát hành số đặc biệt',
+    name: 'Ấn Bản Tạp Chí Vogue Editorial',
+    detail: 'Bố cục bìa tạp chí thời trang Vogue, typography ấn tượng, dấu sáp đen obsidian',
     paperGradient: 'linear-gradient(135deg, #FFFFFF 0%, #F8F8F5 50%, #EDEDE6 100%)',
     pocketGradient: 'linear-gradient(180deg, #F3F3ED 0%, #E8E8DF 60%, #D8D8CC 100%)',
     accentGold: '#C5A059',
@@ -111,8 +111,8 @@ export const envelopePalettes: Record<EnvelopeStyle, StylePalette> = {
 
   // 7. Nơ Lụa Hồng Pastel (Dior Romantic Blush Ribbon)
   blush_ribbon: {
-    name: 'Nơ Lụa Hồng Nàng Thơ',
-    detail: 'Dải lụa satin ngang thân thiệp, mề đay ngọc trai hoàng gia Pháp, dấu sáp cánh hồng',
+    name: 'Nơ Lụa Hồng Nàng Thơ Dior',
+    detail: 'Dải lụa satin ngang thân thiệp, mề đay Cameo chạm ngọc trai, dấu sáp cánh hồng',
     paperGradient: 'linear-gradient(135deg, #FFF7F9 0%, #FDECF0 50%, #F7D8E2 100%)',
     pocketGradient: 'linear-gradient(180deg, #F9E2EA 0%, #F0CFDC 60%, #E2B9C8 100%)',
     accentGold: '#DF7D97',
@@ -126,8 +126,8 @@ export const envelopePalettes: Record<EnvelopeStyle, StylePalette> = {
 
   // 8. Lục Bảo Art Deco (Gatsby Imperial Emerald & Gold)
   emerald_brass: {
-    name: 'Lục Bảo Art Deco',
-    detail: 'Màu xanh lục bảo vương giả, khung kim loại hình học Great Gatsby 1920, thẻ tên dập nổi góc',
+    name: 'Lục Bảo Art Deco Gatsby',
+    detail: 'Màu xanh lục bảo vương giả, khung kim loại hình học Great Gatsby 1920s mạ vàng',
     paperGradient: 'linear-gradient(135deg, #1C4535 0%, #133226 50%, #091C15 100%)',
     pocketGradient: 'linear-gradient(180deg, #143528 0%, #0D261C 60%, #061610 100%)',
     accentGold: '#E5C368',
@@ -141,8 +141,8 @@ export const envelopePalettes: Record<EnvelopeStyle, StylePalette> = {
 
   // 9. Bưu Thiếp Đông Dương (Indochine Heritage Saigon 1930)
   indochine_kraft: {
-    name: 'Bưu Thiếp Đông Dương',
-    detail: 'Bưu thiếp bưu điện Sài Gòn xưa, tem sen hoa cổ, dấu nhật ấn bưu vụ và viền sọc hàng không',
+    name: 'Bưu Thiếp Bưu Điện Đông Dương 1930',
+    detail: 'Bưu thiếp hoài cổ Sài Gòn xưa, tem sen hoa cổ, dấu nhật ấn bưu điện và viền bưu vụ',
     paperGradient: 'linear-gradient(135deg, #F3E4C8 0%, #E5D0AC 50%, #D2B78B 100%)',
     pocketGradient: 'linear-gradient(180deg, #DFCA9E 0%, #CEB482 60%, #BA9C66 100%)',
     accentGold: '#BA5424',
@@ -156,8 +156,8 @@ export const envelopePalettes: Record<EnvelopeStyle, StylePalette> = {
 
   // 10. Tối Giản Hiện Đại (Modern Minimalist Cotton)
   modern_minimal: {
-    name: 'Tối Giản Thuần Khiết',
-    detail: 'Bố cục kiến trúc bất đối xứng Bắc Âu, khoảng trắng tinh khôi, tọa độ typographic hiện đại',
+    name: 'Tối Giản Thuần Khiết Bắc Âu',
+    detail: 'Bố cục kiến trúc bất đối xứng Bắc Âu, khoảng trắng tinh khôi, typographic hiện đại',
     paperGradient: 'linear-gradient(135deg, #FFFFFF 0%, #FAF9F6 50%, #F0EEE9 100%)',
     pocketGradient: 'linear-gradient(180deg, #F5F4EF 0%, #EBE9E2 60%, #DDD9D0 100%)',
     accentGold: '#998A78',
@@ -222,290 +222,29 @@ interface EnvelopeDesignProps {
 }
 
 /**
- * 10 PHONG CÁCH BAO THIỆP ĐỘC BẢN HOÀN TOÀN — KHÔNG CÁI NÀO TRÙNG CÁI NÀO
+ * 10 PHONG CÁCH BAO THIỆP ĐỘC BẢN HOÀN TOÀN — KHÔNG CÓ BẤT KỲ EMOJI NÀO
  */
 export function EnvelopeDesign({ style, monogram, guest, couple, date }: EnvelopeDesignProps) {
-  // ── STYLE 1: TRADITIONAL SILK (Đỏ Son Cung Đình & Song Hỷ) ──
-  if (style === 'traditional_silk') {
-    return (
-      <span className="envelope-design envelope-design--traditional" data-design={style}>
-        {/* Imperial Auspicious wave borders */}
-        <span className="trad-wave-border trad-wave-border--top" />
-        <span className="trad-wave-border trad-wave-border--bottom" />
-
-        <div className="trad-layout">
-          {/* Left Column: Big Gold Medallion with Song Hy */}
-          <div className="trad-medallion-box">
-            <div className="trad-medallion">
-              <span className="trad-songhy">囍</span>
-              <span className="trad-sub-blessing">TRĂM NĂM HẠNH PHÚC</span>
-            </div>
-          </div>
-
-          {/* Right Column: Formal Vietnamese Proclamation */}
-          <div className="trad-text-box">
-            <span className="trad-headline">✦ THIỆP HỒNG BÁO HỶ ✦</span>
-            <span className="trad-salutation">Kính mời quan khách danh dự:</span>
-            <strong className="trad-guest-name">{guest}</strong>
-            <span className="trad-gold-line" />
-            <div className="trad-footer-info">
-              <span>HÔN LỄ: {couple}</span>
-              {date && <span>NGÀY LÀNH: {date}</span>}
-            </div>
-          </div>
-        </div>
-      </span>
-    );
-  }
-
-  // ── STYLE 2: INDOCHINE KRAFT (Bưu Thiếp Bưu Điện Sài Gòn 1930s) ──
-  if (style === 'indochine_kraft') {
-    return (
-      <span className="envelope-design envelope-design--indochine" data-design={style}>
-        {/* Airmail striped border */}
-        <span className="indochine-airmail-frame" />
-
-        <div className="indochine-postcard">
-          {/* Left Half: Carte Postale message */}
-          <div className="indochine-left">
-            <span className="indochine-header">CARTE POSTALE · THƯ BÁO HỶ</span>
-            <p className="indochine-body-quote">
-              "Nguyện cùng nhau trọn kiếp ba sinh, trăm năm tay nắm bàn tay đi qua thăng trầm..."
-            </p>
-            <span className="indochine-couple-sign">{couple}</span>
-            <span className="indochine-location">Sài Gòn - Chợ Lớn · 1930</span>
-          </div>
-
-          <span className="indochine-divider" />
-
-          {/* Right Half: Stamp & Address Lines */}
-          <div className="indochine-right">
-            <div className="indochine-stamp-zone">
-              {/* Postage Stamp with Lotus */}
-              <div className="indochine-stamp">
-                <span className="indochine-stamp-icon">🪷</span>
-                <span className="indochine-stamp-val">BƯU CHÍNH 5c</span>
-              </div>
-              {/* Circular Postal Cancellation Mark */}
-              <div className="indochine-postmark">
-                <span>POSTES</span>
-                <strong>SAIGON</strong>
-                <small>{date || '1930'}</small>
-              </div>
-            </div>
-
-            <div className="indochine-address-lines">
-              <span className="indochine-dest-label">Destinataire / Kính gửi:</span>
-              <strong className="indochine-guest-name">{guest}</strong>
-              <span className="indochine-line" />
-              <span className="indochine-line indochine-line--sub">Tới dự lễ thành hôn đôi lứa</span>
-            </div>
-          </div>
-        </div>
-      </span>
-    );
-  }
-
-  // ── STYLE 3: EDITORIAL VELLUM (Ấn Bản Tạp Chí Vogue Thời Trang) ──
-  if (style === 'editorial_vellum') {
-    return (
-      <span className="envelope-design envelope-design--editorial" data-design={style}>
-        {/* Corner Crop Marks */}
-        <span className="editorial-crop editorial-crop--tl" />
-        <span className="editorial-crop editorial-crop--tr" />
-        <span className="editorial-crop editorial-crop--bl" />
-        <span className="editorial-crop editorial-crop--br" />
-
-        {/* Magazine Masthead */}
-        <div className="editorial-masthead">
-          <span className="editorial-title">THE WEDDING ISSUE</span>
-          <span className="editorial-issue">VOL. 26 // SPECIAL ATELIER EDITION</span>
-        </div>
-
-        {/* Asymmetrical Body */}
-        <div className="editorial-body">
-          <div className="editorial-hero-initials">{monogram}</div>
-          <div className="editorial-feature">
-            <span className="editorial-tag">SPECIAL VIP GUEST</span>
-            <strong className="editorial-guest-name">{guest}</strong>
-            <p className="editorial-story">
-              EXCLUSIVELY INVITED TO CELEBRATE THE UNION OF {couple.toUpperCase()}
-            </p>
-            {date && <span className="editorial-date-code">{date} — HCM CITY</span>}
-          </div>
-        </div>
-      </span>
-    );
-  }
-
-  // ── STYLE 4: CELESTIAL MIDNIGHT (Dạ Tiệc Vũ Trụ & Hải Đồ Tinh Tú) ──
-  if (style === 'celestial_midnight') {
-    return (
-      <span className="envelope-design envelope-design--celestial" data-design={style}>
-        {/* Constellation Star Background */}
-        <span className="celestial-stars" />
-
-        {/* Top Moon Phases Banner */}
-        <div className="celestial-moon-phases">
-          <span>🌑</span>
-          <span>🌒</span>
-          <span className="celestial-full-moon">🌕</span>
-          <span>🌘</span>
-          <span>🌑</span>
-        </div>
-
-        {/* Astrological Centerpiece */}
-        <div className="celestial-astral-ring">
-          <span className="celestial-sub-orbit">✦ WRITTEN IN THE STARS ✦</span>
-          <span className="celestial-salutation">Trân trọng đón mời quan khách:</span>
-          <strong className="celestial-guest-name">{guest}</strong>
-          <span className="celestial-gold-dust-line" />
-          <p className="celestial-couple-orbit">
-            HÔN LỄ TRĂM NĂM DƯỚI BẦU TRỜI NGÀN SAO CỦA {couple}
-          </p>
-          {date && <span className="celestial-coord-date">{date} · MOONLIGHT GALA</span>}
-        </div>
-      </span>
-    );
-  }
-
-  // ── STYLE 5: BLUSH RIBBON (Nơ Lụa Nàng Thơ & Mề Đay Hoàng Gia Pháp) ──
-  if (style === 'blush_ribbon') {
-    return (
-      <span className="envelope-design envelope-design--blush" data-design={style}>
-        {/* Delicate French Header */}
-        <div className="blush-top-banner">
-          <span className="blush-french-title">✦ INVITATION AU MARIAGE ✦</span>
-          {date && <span className="blush-date-stamp">{date}</span>}
-        </div>
-
-        {/* Horizontal Satin Ribbon with Center Oval Cameo */}
-        <div className="blush-ribbon-bar">
-          <span className="blush-ribbon-stripe" />
-          <div className="blush-cameo-medallion">
-            <span className="blush-cameo-monogram">{monogram}</span>
-          </div>
-        </div>
-
-        {/* Bottom Guest Area */}
-        <div className="blush-guest-zone">
-          <span className="blush-salutation">Trân quý kính mời:</span>
-          <strong className="blush-guest-name">{guest}</strong>
-          <span className="blush-pearl-line" />
-          <span className="blush-couple-names">{couple}</span>
-        </div>
-      </span>
-    );
-  }
-
-  // ── STYLE 6: EMERALD BRASS (Gatsby 1920s Art Deco Mạ Vàng) ──
-  if (style === 'emerald_brass') {
-    return (
-      <span className="envelope-design envelope-design--emerald" data-design={style}>
-        {/* Stepped Art Deco Geometric Corners */}
-        <span className="deco-corner deco-corner--tl" />
-        <span className="deco-corner deco-corner--tr" />
-        <span className="deco-corner deco-corner--bl" />
-        <span className="deco-corner deco-corner--br" />
-
-        <div className="deco-frame">
-          <div className="deco-top-emblem">
-            <span className="deco-sunburst">❖</span>
-            <span className="deco-header-text">THE GREAT WEDDING SOIREE</span>
-            <span className="deco-sunburst">❖</span>
-          </div>
-
-          <div className="deco-guest-cartouche">
-            <span className="deco-cartouche-label">CORDIALLY INVITING:</span>
-            <strong className="deco-guest-name">{guest}</strong>
-          </div>
-
-          <div className="deco-footer-plaque">
-            <span className="deco-couple-names">MR. & MRS. {couple.toUpperCase()}</span>
-            {date && <span className="deco-date-badge">{date}</span>}
-          </div>
-        </div>
-      </span>
-    );
-  }
-
-  // ── STYLE 7: RUSTIC TWINE (Vườn Mộc Kraft & Thẻ Treo Cành Lá) ──
-  if (style === 'rustic_twine') {
-    return (
-      <span className="envelope-design envelope-design--rustic" data-design={style}>
-        {/* Pressed botanical sprig */}
-        <span className="rustic-olive-branch" />
-
-        <div className="rustic-luggage-tag">
-          <div className="rustic-tag-header">
-            <span className="rustic-tag-eyelet">●</span>
-            <span className="rustic-sub">GARDEN WEDDING INVITATION</span>
-          </div>
-          <div className="rustic-tag-body">
-            <span className="rustic-salutation">Thân mời bạn:</span>
-            <strong className="rustic-guest-name">{guest}</strong>
-            <span className="rustic-dashed-line" />
-            <p className="rustic-couple-lead">
-              Đến chung vui hôn lễ sân vườn cùng đôi lứa
-            </p>
-            <span className="rustic-couple-sign">{couple}</span>
-            {date && <span className="rustic-date-tag">{date}</span>}
-          </div>
-        </div>
-      </span>
-    );
-  }
-
-  // ── STYLE 8: MODERN MINIMAL (Kiến Trúc & Tối Giản Bắc Âu) ──
-  if (style === 'modern_minimal') {
-    return (
-      <span className="envelope-design envelope-design--minimal" data-design={style}>
-        {/* Architectural grid crosshairs */}
-        <span className="minimal-grid-mark minimal-grid-mark--tl">+</span>
-        <span className="minimal-grid-mark minimal-grid-mark--br">+</span>
-
-        <div className="minimal-split-layout">
-          {/* Left Vertical Column */}
-          <div className="minimal-left-col">
-            <span className="minimal-vert-title">WEDDING</span>
-            <span className="minimal-vert-sub">INVITATION</span>
-            <span className="minimal-vert-code">// 2026</span>
-          </div>
-
-          <span className="minimal-separator" />
-
-          {/* Right Detail Column */}
-          <div className="minimal-right-col">
-            <div className="minimal-guest-box">
-              <span className="minimal-label">HONORED GUEST:</span>
-              <strong className="minimal-guest-name">{guest}</strong>
-            </div>
-
-            <div className="minimal-couple-box">
-              <span className="minimal-label">CELEBRATING:</span>
-              <span className="minimal-couple-name">{couple}</span>
-              {date && <span className="minimal-date">{date}</span>}
-            </div>
-          </div>
-        </div>
-      </span>
-    );
-  }
-
-  // ── STYLE 9: KOREAN CHIFFON (Chuẩn 100% 7799 Wedding Storyteller Mint Sage) ──
+  // ── 1. KOREAN CHIFFON (CHUẨN 100% 7799 WEDDING STORYTELLER MINT SAGE) ──
   if (style === 'korean_chiffon') {
     return (
       <span className="envelope-design envelope-design--korean" data-design={style}>
-        {/* Delicate eucalyptus sprig framing top */}
-        <span className="korean-sprig-sketch" />
+        {/* Botanical Sprig Sketch Vector */}
+        <svg className="korean-sprig-svg" viewBox="0 0 200 90" fill="none" stroke="currentColor" aria-hidden="true">
+          <path d="M20 75 Q100 20 180 75" strokeWidth="1" strokeLinecap="round" opacity="0.45" />
+          <path d="M60 48 Q50 30 70 28 Q78 42 60 48 Z" fill="currentColor" opacity="0.25" />
+          <path d="M90 35 Q85 15 105 14 Q110 30 90 35 Z" fill="currentColor" opacity="0.3" />
+          <path d="M125 35 Q145 15 140 32 Q125 40 125 35 Z" fill="currentColor" opacity="0.3" />
+          <path d="M150 48 Q170 30 160 48 Z" fill="currentColor" opacity="0.25" />
+        </svg>
 
-        {/* Top: Arched SAVE THE DATE and Monogram */}
+        {/* Top: Arched SAVE THE DATE & Monogram */}
         <div className="korean-top-crest">
           {date && <span className="korean-save-the-date">SAVE THE DATE · {date}</span>}
           <span className="korean-monogram">{monogram}</span>
         </div>
 
-        {/* Center: Clean Spaced WEDDING INVITATION */}
+        {/* Center: Spaced WEDDING INVITATION */}
         <div className="korean-invitation-bar">
           <span>WEDDING INVITATION</span>
         </div>
@@ -527,32 +266,301 @@ export function EnvelopeDesign({ style, monogram, guest, couple, date }: Envelop
     );
   }
 
-  // ── STYLE 10 (DEFAULT): ROYAL VELVET (Hoàng Gia Quý Tộc Châu Âu) ──
+  // ── 2. TRADITIONAL SILK (ĐỎ SON CUNG ĐÌNH & SONG HỶ THIẾP VÀNG) ──
+  if (style === 'traditional_silk') {
+    return (
+      <span className="envelope-design envelope-design--traditional" data-design={style}>
+        <div className="trad-wave-border trad-wave-border--top" />
+        <div className="trad-wave-border trad-wave-border--bottom" />
+
+        <div className="trad-layout">
+          {/* Left Column: Big Gold Medallion with Song Hy */}
+          <div className="trad-medallion-box">
+            <div className="trad-medallion">
+              <span className="trad-songhy">囍</span>
+              <span className="trad-sub-blessing">TRĂM NĂM HẠNH PHÚC</span>
+            </div>
+          </div>
+
+          {/* Right Column: Formal Vietnamese Proclamation */}
+          <div className="trad-text-box">
+            <span className="trad-headline">THIỆP HỒNG BÁO HỶ</span>
+            <span className="trad-salutation">Kính mời quan khách danh dự:</span>
+            <strong className="trad-guest-name">{guest}</strong>
+            <span className="trad-gold-line" />
+            <div className="trad-footer-info">
+              <span>HÔN LỄ: {couple}</span>
+              {date && <span>NGÀY LÀNH: {date}</span>}
+            </div>
+          </div>
+        </div>
+      </span>
+    );
+  }
+
+  // ── 3. INDOCHINE KRAFT (BƯU THIẾP BƯU ĐIỆN SÀI GÒN 1930) ──
+  if (style === 'indochine_kraft') {
+    return (
+      <span className="envelope-design envelope-design--indochine" data-design={style}>
+        <div className="indochine-airmail-frame" />
+
+        <div className="indochine-postcard">
+          {/* Left Half: Carte Postale message */}
+          <div className="indochine-left">
+            <span className="indochine-header">CARTE POSTALE · THƯ BÁO HỶ</span>
+            <p className="indochine-body-quote">
+              "Nguyện cùng nhau trọn kiếp ba sinh, trăm năm tay nắm bàn tay đi qua thăng trầm..."
+            </p>
+            <span className="indochine-couple-sign">{couple}</span>
+            <span className="indochine-location">Sài Gòn - Chợ Lớn · 1930</span>
+          </div>
+
+          <div className="indochine-divider" />
+
+          {/* Right Half: Stamp & Address Lines */}
+          <div className="indochine-right">
+            <div className="indochine-stamp-zone">
+              {/* Postage Stamp with Lotus Vector */}
+              <div className="indochine-stamp">
+                <svg className="indochine-stamp-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M12 4 Q7 12 12 18 Q17 12 12 4 Z" fill="currentColor" opacity="0.3" />
+                  <path d="M12 10 Q5 14 8 20 Q12 18 12 10 Z" fill="currentColor" opacity="0.2" />
+                  <path d="M12 10 Q19 14 16 20 Q12 18 12 10 Z" fill="currentColor" opacity="0.2" />
+                </svg>
+                <span className="indochine-stamp-val">POSTES 5c</span>
+              </div>
+              {/* Circular Postal Cancellation Mark */}
+              <div className="indochine-postmark">
+                <span>POSTES</span>
+                <strong>SAIGON</strong>
+                <small>{date || '1930'}</small>
+              </div>
+            </div>
+
+            <div className="indochine-address-lines">
+              <span className="indochine-dest-label">Destinataire / Kính gửi:</span>
+              <strong className="indochine-guest-name">{guest}</strong>
+              <div className="indochine-line" />
+              <span className="indochine-line indochine-line--sub">Tới dự lễ thành hôn đôi lứa</span>
+            </div>
+          </div>
+        </div>
+      </span>
+    );
+  }
+
+  // ── 4. EDITORIAL VELLUM (ẤN BẢN TẠP CHÍ VOGUE THỜI TRANG) ──
+  if (style === 'editorial_vellum') {
+    return (
+      <span className="envelope-design envelope-design--editorial" data-design={style}>
+        {/* Corner Crop Marks */}
+        <span className="editorial-crop editorial-crop--tl" />
+        <span className="editorial-crop editorial-crop--tr" />
+        <span className="editorial-crop editorial-crop--bl" />
+        <span className="editorial-crop editorial-crop--br" />
+
+        <div className="editorial-masthead">
+          <span className="editorial-title">THE WEDDING ISSUE</span>
+          <span className="editorial-issue">VOL. 26 // ATELIER EDITION</span>
+        </div>
+
+        <div className="editorial-body">
+          <div className="editorial-hero-initials">{monogram}</div>
+          <div className="editorial-feature">
+            <span className="editorial-tag">SPECIAL VIP GUEST</span>
+            <strong className="editorial-guest-name">{guest}</strong>
+            <p className="editorial-story">
+              EXCLUSIVELY INVITED TO CELEBRATE THE UNION OF {couple.toUpperCase()}
+            </p>
+            {date && <span className="editorial-date-code">{date} — HCM CITY</span>}
+          </div>
+        </div>
+      </span>
+    );
+  }
+
+  // ── 5. CELESTIAL MIDNIGHT (DẠ TIỆC VŨ TRỤ & HẢI ĐỒ TINH TÚ) ──
+  if (style === 'celestial_midnight') {
+    return (
+      <span className="envelope-design envelope-design--celestial" data-design={style}>
+        <div className="celestial-stars" />
+
+        {/* Top Moon Phases Vector Banner */}
+        <div className="celestial-moon-phases">
+          <svg viewBox="0 0 160 24" className="celestial-moons-svg" fill="currentColor">
+            <circle cx="20" cy="12" r="6" fillOpacity="0.2" stroke="currentColor" strokeWidth="0.8" />
+            <path d="M50 6 A 6 6 0 0 0 50 18 A 4 4 0 0 1 50 6 Z" />
+            <circle cx="80" cy="12" r="7.5" fill="#FDE68A" />
+            <path d="M110 6 A 6 6 0 0 1 110 18 A 4 4 0 0 0 110 6 Z" />
+            <circle cx="140" cy="12" r="6" fillOpacity="0.2" stroke="currentColor" strokeWidth="0.8" />
+          </svg>
+        </div>
+
+        {/* Astrological Centerpiece */}
+        <div className="celestial-astral-ring">
+          <span className="celestial-sub-orbit">WRITTEN IN THE STARS</span>
+          <span className="celestial-salutation">Trân trọng đón mời quan khách:</span>
+          <strong className="celestial-guest-name">{guest}</strong>
+          <div className="celestial-gold-dust-line" />
+          <p className="celestial-couple-orbit">
+            HÔN LỄ TRĂM NĂM DƯỚI BẦU TRỜI NGÀN SAO CỦA {couple}
+          </p>
+          {date && <span className="celestial-coord-date">{date} · MOONLIGHT GALA</span>}
+        </div>
+      </span>
+    );
+  }
+
+  // ── 6. BLUSH RIBBON (NƠ LỤA NÀNG THƠ & MỀ ĐAY DIOR) ──
+  if (style === 'blush_ribbon') {
+    return (
+      <span className="envelope-design envelope-design--blush" data-design={style}>
+        <div className="blush-top-banner">
+          <span className="blush-french-title">INVITATION AU MARIAGE</span>
+          {date && <span className="blush-date-stamp">{date}</span>}
+        </div>
+
+        {/* Satin Ribbon Band with Center Oval Cameo */}
+        <div className="blush-ribbon-bar">
+          <div className="blush-ribbon-stripe" />
+          <div className="blush-cameo-medallion">
+            <span className="blush-cameo-monogram">{monogram}</span>
+          </div>
+        </div>
+
+        {/* Bottom Guest Area */}
+        <div className="blush-guest-zone">
+          <span className="blush-salutation">Trân quý kính mời:</span>
+          <strong className="blush-guest-name">{guest}</strong>
+          <div className="blush-pearl-line" />
+          <span className="blush-couple-names">{couple}</span>
+        </div>
+      </span>
+    );
+  }
+
+  // ── 7. EMERALD BRASS (GATSBY 1920s ART DECO MẠ VÀNG) ──
+  if (style === 'emerald_brass') {
+    return (
+      <span className="envelope-design envelope-design--emerald" data-design={style}>
+        {/* Stepped Art Deco Geometric Corners */}
+        <span className="deco-corner deco-corner--tl" />
+        <span className="deco-corner deco-corner--tr" />
+        <span className="deco-corner deco-corner--bl" />
+        <span className="deco-corner deco-corner--br" />
+
+        <div className="deco-frame">
+          <div className="deco-top-emblem">
+            <span className="deco-line-art" />
+            <span className="deco-header-text">THE GREAT WEDDING SOIREE</span>
+            <span className="deco-line-art" />
+          </div>
+
+          <div className="deco-guest-cartouche">
+            <span className="deco-cartouche-label">CORDIALLY INVITING:</span>
+            <strong className="deco-guest-name">{guest}</strong>
+          </div>
+
+          <div className="deco-footer-plaque">
+            <span className="deco-couple-names">MR. &amp; MRS. {couple.toUpperCase()}</span>
+            {date && <span className="deco-date-badge">{date}</span>}
+          </div>
+        </div>
+      </span>
+    );
+  }
+
+  // ── 8. RUSTIC TWINE (VƯỜN MỘC KRAFT & THẺ TREO CÀNH LÁ) ──
+  if (style === 'rustic_twine') {
+    return (
+      <span className="envelope-design envelope-design--rustic" data-design={style}>
+        <div className="rustic-luggage-tag">
+          <div className="rustic-tag-header">
+            <svg className="rustic-sprig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M4 20 Q12 12 20 4" strokeLinecap="round" />
+              <path d="M10 14 Q6 10 10 6 Q14 10 10 14 Z" fill="currentColor" opacity="0.3" />
+              <path d="M16 8 Q12 4 16 0 Q20 4 16 8 Z" fill="currentColor" opacity="0.3" />
+            </svg>
+            <span className="rustic-sub">GARDEN WEDDING INVITATION</span>
+          </div>
+
+          <div className="rustic-tag-body">
+            <span className="rustic-salutation">Thân mời bạn:</span>
+            <strong className="rustic-guest-name">{guest}</strong>
+            <div className="rustic-dashed-line" />
+            <p className="rustic-couple-lead">
+              Đến chung vui hôn lễ sân vườn cùng đôi lứa
+            </p>
+            <span className="rustic-couple-sign">{couple}</span>
+            {date && <span className="rustic-date-tag">{date}</span>}
+          </div>
+        </div>
+      </span>
+    );
+  }
+
+  // ── 9. MODERN MINIMAL (KIẾN TRÚC & TỐI GIẢN BẮC ÂU) ──
+  if (style === 'modern_minimal') {
+    return (
+      <span className="envelope-design envelope-design--minimal" data-design={style}>
+        <span className="minimal-grid-mark minimal-grid-mark--tl">+</span>
+        <span className="minimal-grid-mark minimal-grid-mark--br">+</span>
+
+        <div className="minimal-split-layout">
+          <div className="minimal-left-col">
+            <span className="minimal-vert-title">WEDDING</span>
+            <span className="minimal-vert-sub">INVITATION</span>
+            <span className="minimal-vert-code">// 2026</span>
+          </div>
+
+          <div className="minimal-separator" />
+
+          <div className="minimal-right-col">
+            <div className="minimal-guest-box">
+              <span className="minimal-label">HONORED GUEST:</span>
+              <strong className="minimal-guest-name">{guest}</strong>
+            </div>
+
+            <div className="minimal-couple-box">
+              <span className="minimal-label">CELEBRATING:</span>
+              <span className="minimal-couple-name">{couple}</span>
+              {date && <span className="minimal-date">{date}</span>}
+            </div>
+          </div>
+        </div>
+      </span>
+    );
+  }
+
+  // ── 10 (DEFAULT): ROYAL VELVET (HOÀNG GIA QUÝ TỘC CHÂU ÂU) ──
   return (
     <span className="envelope-design envelope-design--royal" data-design={style}>
-      {/* Baroque Filigree Corners */}
       <span className="royal-corner royal-corner--tl" />
       <span className="royal-corner royal-corner--tr" />
       <span className="royal-corner royal-corner--bl" />
       <span className="royal-corner royal-corner--br" />
 
-      {/* Royal Crown Crest */}
+      {/* Royal Crown Vector Emblem */}
       <div className="royal-crest-box">
-        <span className="royal-crown">👑</span>
+        <svg className="royal-crown-svg" viewBox="0 0 36 24" fill="currentColor">
+          <path d="M4 20 L32 20 L30 10 L23 16 L18 6 L13 16 L6 10 Z" />
+          <circle cx="6" cy="8" r="1.5" />
+          <circle cx="18" cy="4" r="2" />
+          <circle cx="30" cy="8" r="1.5" />
+          <rect x="4" y="21" width="28" height="2" rx="1" opacity="0.8" />
+        </svg>
         <span className="royal-monogram">{monogram}</span>
         <span className="royal-proclamation">HOÀNG GIA CHÂU ÂU · ATELIER</span>
       </div>
 
-      {/* Formal Royal Invitation Bar */}
       <div className="royal-title-bar">
         <span>ROYAL WEDDING INVITATION</span>
       </div>
 
-      {/* Honored Noble Guest */}
       <div className="royal-guest-zone">
         <span className="royal-salutation">Trân trọng kính mời Quan khách Quý tộc:</span>
         <strong className="royal-guest-name">{guest}</strong>
-        <span className="royal-gold-line" />
+        <div className="royal-gold-line" />
         <span className="royal-couple-lead">
           Tham dự lễ cưới hoàng gia của {couple}
         </span>
@@ -595,13 +603,6 @@ export function EnvelopeBack({
   const sealGradientId = useId();
   const sealShineId = useId();
   const Seal = onOpen ? 'button' : 'span';
-  const sealMarks = {
-    with_love: 'with love',
-    song_hy: '囍',
-    monogram,
-    moon: '☾',
-    olive: '❧',
-  };
 
   return (
     <>
@@ -647,7 +648,7 @@ export function EnvelopeBack({
             d="M50 4C64 1 72 8 83 14C96 21 94 33 98 45C104 58 93 70 89 82C85 94 74 93 61 98C48 103 38 96 26 94C13 91 13 78 7 67C1 55 8 44 9 33C11 20 25 19 35 11C41 6 47 7 50 4Z"
           />
 
-          {/* Realistic specular highlight on the upper curve */}
+          {/* Specular highlight on upper curve */}
           <path
             fill={`url(#${sealShineId})`}
             d="M50 4C64 1 72 8 83 14C96 21 94 33 98 45C104 58 93 70 89 82C85 94 74 93 61 98C48 103 38 96 26 94C13 91 13 78 7 67C1 55 8 44 9 33C11 20 25 19 35 11C41 6 47 7 50 4Z"
@@ -673,14 +674,22 @@ export function EnvelopeBack({
           />
         </svg>
 
-        {/* Embossed text inscription inside the wax coin */}
+        {/* Embossed inscription inside wax coin */}
         <span
           className={`wedding-envelope__seal-text ${
             palette.sealInscription === 'with_love' ? 'is-script' : ''
           }`}
           aria-hidden="true"
         >
-          {sealMarks[palette.sealInscription]}
+          {palette.sealInscription === 'song_hy'
+            ? '囍'
+            : palette.sealInscription === 'with_love'
+            ? 'with love'
+            : palette.sealInscription === 'moon'
+            ? '☾'
+            : palette.sealInscription === 'olive'
+            ? '❧'
+            : monogram}
         </span>
       </Seal>
     </>
@@ -787,14 +796,9 @@ export function EnvelopeDesignPicker({
             style={envelopePaperStyle(selected.id)}
           >
             {side === 'front' ? (
-              <>
-                <div className="envelope-collection__insert" aria-hidden="true">
-                  <span>{sampleContent.monogram}</span>
-                </div>
-                <div className="envelope-collection__envelope">
-                  <EnvelopeDesign style={selected.id} {...sampleContent} />
-                </div>
-              </>
+              <div className="envelope-collection__envelope">
+                <EnvelopeDesign style={selected.id} {...sampleContent} />
+              </div>
             ) : (
               <div className="wedding-envelope__face">
                 <EnvelopeBack style={selected.id} monogram={sampleContent.monogram} />
