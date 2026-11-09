@@ -435,50 +435,50 @@ export const PlatformLandingPage: React.FC = () => {
       {previewTemplate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-5 bg-black/85 backdrop-blur-md animate-fadeIn">
           <div className="bg-[#FFFDF9] border border-stone-300 rounded-3xl max-w-5xl w-full h-[92vh] flex flex-col overflow-hidden shadow-2xl relative">
-            {/* Modal Header */}
-            <div className="px-5 py-3 sm:py-4 bg-white border-b border-stone-200 flex flex-wrap items-center justify-between flex-shrink-0 gap-3">
-              <div className="flex items-center space-x-3">
+            {/* Modal Header (Crisp, luxury bar with zero awkward wrapping) */}
+            <div className="px-4 sm:px-6 py-3 sm:py-3.5 bg-white border-b border-stone-200 flex items-center justify-between flex-shrink-0 gap-3 overflow-x-auto scrollbar-none">
+              <div className="flex items-center space-x-3 shrink-0">
                 <span className="text-2xl sm:text-3xl">{previewTemplate.icon}</span>
-                <div>
+                <div className="whitespace-nowrap">
                   <div className="flex items-center space-x-2">
-                    <h4 className="font-serif text-base sm:text-lg font-bold text-stone-900">
+                    <h4 className="font-serif text-base sm:text-lg font-bold text-stone-900 leading-tight">
                       {previewTemplate.name}
                     </h4>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-[#A2682A] border border-amber-200">
                       {previewTemplate.categoryLabel}
                     </span>
                   </div>
-                  <p className="text-xs text-[#A2682A] font-medium">{previewTemplate.subtitle}</p>
+                  <p className="hidden sm:block text-xs text-[#A2682A] font-medium">{previewTemplate.subtitle}</p>
                 </div>
               </div>
 
               {/* View Mode & Device Controls */}
-              <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="flex items-center space-x-2 sm:space-x-3 shrink-0 whitespace-nowrap">
                 {/* Mode Switcher */}
                 <div className="flex items-center p-1 rounded-xl bg-stone-100 border border-stone-200">
                   <button
                     type="button"
                     onClick={() => setPreviewMode('website')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer whitespace-nowrap ${
                       previewMode === 'website'
                         ? 'bg-white text-stone-900 shadow-sm'
                         : 'text-stone-600 hover:text-stone-900'
                     }`}
                   >
                     <Globe className="w-3.5 h-3.5 text-[#A2682A]" />
-                    <span>Toàn Bộ Website</span>
+                    <span>Website</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setPreviewMode('envelope')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer whitespace-nowrap ${
                       previewMode === 'envelope'
                         ? 'bg-white text-stone-900 shadow-sm'
                         : 'text-stone-600 hover:text-stone-900'
                     }`}
                   >
                     <Mail className="w-3.5 h-3.5 text-rose-600" />
-                    <span>Bao Thư & Sáp Nến 3D</span>
+                    <span>Bao Thư 3D</span>
                   </button>
                 </div>
 
@@ -515,7 +515,7 @@ export const PlatformLandingPage: React.FC = () => {
                 {/* Studio CTA */}
                 <a
                   href={`/studio?template=${previewTemplate.id}`}
-                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#8B1A32] to-[#722235] text-white font-bold text-xs shadow-md hover:opacity-95 transition-all flex items-center space-x-1.5"
+                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#8B1A32] to-[#722235] text-white font-bold text-xs shadow-md hover:opacity-95 transition-all flex items-center space-x-1.5 whitespace-nowrap shrink-0"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-200" />
                   <span className="hidden md:inline">Tạo Bằng Mẫu Này</span>
@@ -527,7 +527,7 @@ export const PlatformLandingPage: React.FC = () => {
                   href={`/?w=${previewTemplate.presetKey}${previewMode === 'website' ? '&preview=true' : ''}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-[#722235] transition-colors"
+                  className="p-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-[#722235] transition-colors shrink-0"
                   title="Mở toàn màn hình trong tab mới"
                 >
                   <ExternalLink className="w-4 h-4" />
@@ -537,7 +537,7 @@ export const PlatformLandingPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setPreviewTemplate(null)}
-                  className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 flex items-center justify-center cursor-pointer transition-colors"
+                  className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 flex items-center justify-center cursor-pointer transition-colors shrink-0"
                   title="Đóng xem trước"
                 >
                   <X className="w-4 h-4" />

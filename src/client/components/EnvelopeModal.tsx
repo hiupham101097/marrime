@@ -1,9 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Sparkles } from 'lucide-react';
 import { GuestInfo, EnvelopeStyle } from '../../shared/types';
 import { formatGuestSalutation } from '../hooks/useGuestInfo';
-import { EnvelopeArtwork, EnvelopeBack, EnvelopeDesign, envelopePalettes, envelopePaperStyle } from './EnvelopeDesign';
+import {
+  EnvelopeArtwork,
+  EnvelopeBack,
+  EnvelopeDesign,
+  envelopePalettes,
+  envelopePaperStyle,
+} from './EnvelopeDesign';
 
 interface EnvelopeModalProps {
   isOpen: boolean;
@@ -54,13 +60,18 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   const displayMonogram = waxSealMonogram || `${groomName.charAt(0)} & ${brideName.charAt(0)}`;
   const isFlipped = phase !== 'front';
   const isFlapOpen = phase === 'open';
-  const formattedDate = dayOfWeek && !weddingDateFormatted.trim().toLocaleLowerCase('vi').startsWith(dayOfWeek.trim().toLocaleLowerCase('vi'))
-    ? [dayOfWeek, weddingDateFormatted].filter(Boolean).join(', ')
-    : weddingDateFormatted;
+  const formattedDate =
+    dayOfWeek &&
+    !weddingDateFormatted.trim().toLocaleLowerCase('vi').startsWith(dayOfWeek.trim().toLocaleLowerCase('vi'))
+      ? [dayOfWeek, weddingDateFormatted].filter(Boolean).join(', ')
+      : weddingDateFormatted;
 
   useEffect(() => {
-    if (isOpen) actionRef.current?.focus({ preventScroll: true });
-    else setPhase('front');
+    if (isOpen) {
+      actionRef.current?.focus({ preventScroll: true });
+    } else {
+      setPhase('front');
+    }
     return () => {
       window.clearTimeout(openTimer.current);
       openTimer.current = undefined;
@@ -68,7 +79,9 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if (isOpen && isFlapOpen) letterActionRef.current?.focus({ preventScroll: true });
+    if (isOpen && isFlapOpen) {
+      letterActionRef.current?.focus({ preventScroll: true });
+    }
   }, [isOpen, isFlapOpen]);
 
   const openSeal = () => {
@@ -81,10 +94,10 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
     }
 
     setPhase('opening');
-    openTimer.current = window.setTimeout(() => setPhase('open'), 160);
+    openTimer.current = window.setTimeout(() => setPhase('open'), 180);
     void confetti({
-      particleCount: 48,
-      spread: 68,
+      particleCount: 50,
+      spread: 70,
       origin: { y: 0.52 },
       colors: [currentStyle.accentGold, '#FFFDF9', currentStyle.looseSealGrad[1]],
       disableForReducedMotion: true,
@@ -92,7 +105,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   };
 
   const flipEnvelope = () => {
-    setPhase((previous) => previous === 'front' ? 'back' : 'front');
+    setPhase((previous) => (previous === 'front' ? 'back' : 'front'));
     actionRef.current?.focus({ preventScroll: true });
   };
 
@@ -101,7 +114,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   const hintTexts: Record<typeof phase, string> = {
     front: '✦  Chạm phong bì để lật mặt sau',
     back: '✦  Chạm con dấu sáp để mở thiệp',
-    opening: '✦  Đang mở thiệp…',
+    opening: '✦  Đang mở thiệp cưới…',
     open: '',
   };
 
@@ -110,29 +123,39 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
       className="wedding-envelope"
       role="dialog"
       aria-modal="true"
-      aria-label="Phong bì thiệp cưới"
+      aria-label="Phong bì thiệp cưới cao cấp"
       data-design={design}
       style={envelopePaperStyle(design)}
     >
       <div className="wedding-envelope__scene">
-        <button type="button" className="wedding-envelope__skip" onClick={onOpenEnvelope}>
-          {isPreview ? 'Đóng xem thử' : 'Xem trang cưới'} <ArrowUpRight size={14} aria-hidden="true" />
+        {/* Bypass / Direct Entrance button in top corner */}
+        <button
+          type="button"
+          className="wedding-envelope__skip"
+          onClick={onOpenEnvelope}
+          title="Bỏ qua hiệu ứng mở thiệp"
+        >
+          {isPreview ? 'Đóng xem thử' : 'Vào thẳng website'} <ArrowUpRight size={14} aria-hidden="true" />
         </button>
 
         <div className="wedding-envelope__layout">
           {/* Animated hint badge */}
           {phase !== 'open' && (
             <div className="wedding-envelope__hint" aria-live="polite" aria-atomic="true">
-              <span className="wedding-envelope__hint-badge">
-                {hintTexts[phase]}
-              </span>
+              <span className="wedding-envelope__hint-badge">{hintTexts[phase]}</span>
             </div>
           )}
 
           <div className="wedding-envelope__stage" data-phase={phase}>
             <div className="wedding-envelope__rotator">
+              {/* 1. FRONT OF ENVELOPE */}
               <div className="wedding-envelope__face wedding-envelope__front" inert={isFlipped}>
-                <button type="button" className="wedding-envelope__front-button" onClick={flipEnvelope} tabIndex={-1}>
+                <button
+                  type="button"
+                  className="wedding-envelope__front-button"
+                  onClick={flipEnvelope}
+                  title="Nhấn để lật phong bì xem mặt sau"
+                >
                   <EnvelopeDesign
                     style={design}
                     monogram={displayMonogram}
@@ -143,29 +166,68 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                 </button>
               </div>
 
+              {/* 2. BACK OF ENVELOPE (WITH WAX SEAL & EXTRACTABLE LETTER) */}
               <div className="wedding-envelope__face wedding-envelope__back" inert={!isFlipped}>
+                {/* 2A. INNER LETTER CARD */}
                 <div className="wedding-envelope__letter" inert={!isFlapOpen}>
-                  <div className="wedding-envelope__letter-art" aria-hidden="true"><EnvelopeArtwork style={design} /></div>
-                  <p className="wedding-envelope__letter-label">Trân trọng kính mời</p>
-                  <h2>{groomName} <span>&amp;</span> {brideName}</h2>
-                  <p className="wedding-envelope__letter-occasion">Lễ cưới</p>
-                  <div className="wedding-envelope__letter-details">
-                    <p className="wedding-envelope__letter-date">{[formattedDate, eventTime].filter(Boolean).join(' · ')}</p>
-                    {lunarDate && <p>{lunarDate}</p>}
-                    {(venueName || hallName) && <p>{[venueName, hallName].filter(Boolean).join(' · ')}</p>}
-                    {eventAddress && <p>{eventAddress}</p>}
+                  <div className="wedding-envelope__letter-art" aria-hidden="true">
+                    <EnvelopeArtwork style={design} />
                   </div>
-                  <button ref={letterActionRef} type="button" onClick={onOpenEnvelope}>
-                    {isPreview ? 'Quay lại chọn mẫu' : 'Xem trang cưới'}
-                    <ArrowRight size={14} aria-hidden="true" />
-                  </button>
+
+                  <div className="wedding-envelope__letter-inner">
+                    <p className="wedding-envelope__letter-monogram">{displayMonogram}</p>
+                    <p className="wedding-envelope__letter-salutation-label">Trân trọng kính mời</p>
+                    <h2 className="wedding-envelope__letter-guest">{cleanSalutation}</h2>
+                    <p className="wedding-envelope__letter-occasion">Tới dự lễ thành hôn của</p>
+
+                    <h3 className="wedding-envelope__letter-couple">
+                      {groomName}{' '}
+                      <span className="wedding-envelope__letter-amp">&amp;</span>{' '}
+                      {brideName}
+                    </h3>
+
+                    <div className="wedding-envelope__letter-details">
+                      <p className="wedding-envelope__letter-date">
+                        {[formattedDate, eventTime].filter(Boolean).join(' · ')}
+                      </p>
+                      {lunarDate && (
+                        <p className="wedding-envelope__letter-lunar">{lunarDate}</p>
+                      )}
+                      {(venueName || hallName) && (
+                        <p className="wedding-envelope__letter-venue">
+                          {[venueName, hallName].filter(Boolean).join(' · ')}
+                        </p>
+                      )}
+                      {eventAddress && (
+                        <p className="wedding-envelope__letter-address">{eventAddress}</p>
+                      )}
+                    </div>
+
+                    <button
+                      ref={letterActionRef}
+                      type="button"
+                      className="wedding-envelope__letter-cta"
+                      onClick={onOpenEnvelope}
+                    >
+                      <Sparkles size={14} className="text-amber-200" aria-hidden="true" />
+                      <span>{isPreview ? 'Quay Lại Chọn Mẫu' : 'Bước Vào Không Gian Hôn Lễ'}</span>
+                      <ArrowRight size={14} aria-hidden="true" />
+                    </button>
+                  </div>
                 </div>
 
-                <EnvelopeBack style={design} monogram={displayMonogram} onOpen={openSeal} sealed={phase === 'back'} />
+                {/* 2B. ENVELOPE BACK POCKET & FLAP & WAX SEAL */}
+                <EnvelopeBack
+                  style={design}
+                  monogram={displayMonogram}
+                  onOpen={openSeal}
+                  sealed={phase === 'back'}
+                />
               </div>
             </div>
           </div>
 
+          {/* Controls underneath the envelope */}
           <div className="wedding-envelope__controls">
             <button
               type="button"
@@ -176,7 +238,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
               disabled={phase === 'opening' || isFlapOpen}
             >
               {phase === 'front'
-                ? 'Lật phong bì'
+                ? 'Lật xem mặt sau'
                 : phase === 'back'
                 ? 'Nhấn mở dấu sáp'
                 : 'Đang mở thiệp…'}
@@ -188,7 +250,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
               onClick={flipEnvelope}
               hidden={phase !== 'back'}
             >
-              ← Xem mặt trước
+              ← Xem lại mặt trước
             </button>
           </div>
         </div>

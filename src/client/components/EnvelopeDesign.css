@@ -1,17 +1,16 @@
+/* ============================================================
+   ENVELOPE DESIGN — Haute Couture Stationery Styling (7799 Aesthetic)
+   ============================================================ */
+
 .envelope-design {
-  --stock: #f6f0e2;
-  /* High-fidelity cotton paper grain — 4 octave fractalNoise */
-  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.74' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath d='M0 0h200v200H0z' filter='url(%23n)' opacity='.1'/%3E%3C/svg%3E");
-  --ink: #302c27;
-  --art-ink: #8f775d;
-  --display: 'Cormorant Garamond', Georgia, serif;
-  --mark-size: 3.7cqi;
-  --left: 9%;
-  --right: 9%;
-  --mark-top: 13%;
-  --address-top: 36%;
-  --address-height: 30%;
-  --signature-top: 72%;
+  --stock: #FAF6EE;
+  /* Ultra-fine tactile cotton paper grain */
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath d='M0 0h200v200H0z' filter='url(%23n)' opacity='.09'/%3E%3C/svg%3E");
+  --ink: #2C2621;
+  --art-ink: #8F775D;
+  --display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --margin-x: 10%;
+
   position: absolute;
   inset: 0;
   display: block;
@@ -20,17 +19,19 @@
   container-type: inline-size;
   background:
     var(--paper-grain),
-    linear-gradient(128deg, rgba(255,248,227,.26), transparent 36%, rgba(58,40,16,.07) 100%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 45%, rgba(0, 0, 0, 0.04) 100%),
     var(--stock);
   color: var(--ink);
-  text-align: var(--alignment, left);
-  /* Realistic paper edge lighting — top highlight, left sheen, bottom shadow */
+  text-align: center;
+
+  /* Fine embossed paper edges */
   box-shadow:
-    inset 0  1px 0 rgba(255,248,231,.75),
-    inset 1px 0 0 rgba(255,248,231,.45),
-    inset 0 -1px 0 rgba(64,48,34,.32);
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    inset 1px 0 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22);
 }
 
+/* Background artwork SVG */
 .envelope-design__art {
   position: absolute;
   inset: 0;
@@ -40,227 +41,287 @@
   pointer-events: none;
 }
 
-.envelope-design__mark,
-.envelope-design__address,
-.envelope-design__signature {
+/* Common positioning for zones */
+.envelope-design__crest-zone,
+.envelope-design__title-zone,
+.envelope-design__guest-zone,
+.envelope-design__footer-zone {
   position: absolute;
-  inset-inline: var(--left) var(--right);
+  inset-inline: var(--margin-x);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
   overflow-wrap: anywhere;
 }
 
-.envelope-design__mark {
-  top: var(--mark-top);
-  color: var(--mark-ink, var(--ink));
-  font: var(--mark-weight, 400) var(--mark-size) / 1 var(--display);
+/* ── 1. Top Crest Zone (Save the Date & Monogram) ─────────────── */
+.envelope-design__crest-zone {
+  top: 7%;
+  height: 33%;
+  gap: 1.2cqi;
 }
 
-.envelope-design__address {
-  top: var(--address-top);
-  max-height: var(--address-height);
-  overflow: auto;
-  scrollbar-width: none;
-}
-
-.envelope-design__address > span,
-.envelope-design__signature {
+.envelope-design__date-badge {
   display: block;
-  font-size: 2.55cqi;
-  line-height: 1.3;
-  letter-spacing: .025em;
+  font-family: var(--display);
+  font-size: 1.6cqi;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.7;
 }
 
-.envelope-design__address strong {
+.envelope-design__monogram {
   display: block;
-  margin-top: 1.4cqi;
-  font: var(--name-weight, 400) var(--name-size, 7.7cqi) / 1.05 var(--display);
-}
-
-.envelope-design__signature {
-  top: var(--signature-top);
-  bottom: 5%;
-  overflow: auto;
-  scrollbar-width: none;
-}
-
-.envelope-design__signature > span {
-  display: block;
-}
-
-.envelope-design__signature > span + span {
-  margin-top: .5cqi;
-}
-
-.envelope-design[data-design='royal_velvet'] {
-  --stock: linear-gradient(130deg, #faf4e8, #e9d9c5);
-  --ink: #592836;
-  --art-ink: #824b55;
-  --display: 'Cormorant Garamond', Georgia, serif;
-  --name-size: 9cqi;
-  --name-weight: 600;
-  --alignment: center;
-  --left: 17%;
-  --right: 17%;
-  --mark-top: 15%;
-  --mark-size: 4.2cqi;
-  --address-top: 36%;
-  --signature-top: 78%;
-}
-
-.envelope-design[data-design='korean_chiffon'] {
-  --stock: linear-gradient(140deg, #fbf7f1, #f1e5dc);
-  --ink: #543d39;
-  --art-ink: #865c53;
-  --display: 'Cormorant Garamond', Georgia, serif;
-  --name-size: 9cqi;
-  --name-weight: 600;
-  --left: 11%;
-  --right: 36%;
-  --mark-top: 16%;
-  --address-top: 36%;
-  --signature-top: 73%;
-}
-
-.envelope-design[data-design='korean_chiffon'] .envelope-design__mark {
+  font-family: var(--display);
+  font-size: var(--monogram-size, 8.5cqi);
   font-style: italic;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  color: var(--monogram-ink, var(--ink));
 }
 
+/* ── 2. Formal Invitation Headline ───────────────────────────── */
+.envelope-design__title-zone {
+  top: 43%;
+  height: 10%;
+}
+
+.envelope-design__title-text {
+  display: inline-block;
+  font-family: var(--display);
+  font-size: 2.2cqi;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.82;
+  padding-inline: 1cqi;
+  border-block: 0.5px solid color-mix(in srgb, currentColor 28%, transparent);
+  padding-block: 0.4cqi;
+}
+
+/* ── 3. Guest Salutation & Dotted Leader Line (7799 Signature) ── */
+.envelope-design__guest-zone {
+  top: 55%;
+  height: 27%;
+  gap: 0.6cqi;
+}
+
+.envelope-design__salutation {
+  display: block;
+  font-family: var(--display);
+  font-size: 2.1cqi;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  opacity: 0.78;
+}
+
+.envelope-design__guest-name {
+  display: block;
+  font-family: var(--display);
+  font-size: var(--guest-size, 7.2cqi);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.12;
+  color: var(--guest-ink, var(--ink));
+}
+
+.envelope-design__dotted-line {
+  display: block;
+  width: min(92%, 360px);
+  height: 2px;
+  border-bottom: 1.5px dotted color-mix(in srgb, currentColor 45%, transparent);
+  margin-top: 0.8cqi;
+}
+
+/* ── 4. Couple Footer Signature ──────────────────────────────── */
+.envelope-design__footer-zone {
+  top: 85%;
+  bottom: 4%;
+}
+
+.envelope-design__couple-names {
+  display: block;
+  font-family: var(--display);
+  font-size: 2cqi;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.68;
+}
+
+/* ============================================================
+   PER-PALETTE STYLING & ATMOSPHERE
+   ============================================================ */
+
+/* 1. Korean Pastel Sage & Coral (7799 Storyteller Aesthetic) */
+.envelope-design[data-design='korean_chiffon'] {
+  --stock: linear-gradient(135deg, #F0F6F2 0%, #E3EFE7 50%, #D4E4DA 100%);
+  --ink: #1B382D;
+  --art-ink: #2C5747;
+  --guest-ink: #142C23;
+  --monogram-ink: #204A3B;
+  --margin-x: 10%;
+}
+
+/* 2. Royal Velvet European Atelier */
+.envelope-design[data-design='royal_velvet'] {
+  --stock: linear-gradient(135deg, #FFFDF8 0%, #F5ECDD 50%, #E8D9C0 100%);
+  --ink: #5A1222;
+  --art-ink: #8B243B;
+  --guest-ink: #480C1A;
+  --monogram-ink: #8B243B;
+  --margin-x: 10%;
+}
+
+/* 3. Đỏ Son Truyền Thống */
 .envelope-design[data-design='traditional_silk'] {
-  --stock: linear-gradient(130deg, #a13935, #782824);
-  --ink: #fff0cf;
-  --art-ink: #e6b878;
-  --display: 'Cormorant Garamond', Georgia, serif;
-  --left: 40%;
-  --right: 8%;
-  --alignment: center;
-  --name-size: 8.2cqi;
-  --name-weight: 600;
-  --address-top: 31%;
-  --signature-top: 68%;
+  --stock: linear-gradient(135deg, #B51824 0%, #94101A 50%, #6E0810 100%);
+  --ink: #FFF0D0;
+  --art-ink: #FADB6B;
+  --guest-ink: #FFFFFF;
+  --monogram-ink: #FADB6B;
+  --margin-x: 8%;
 }
-
-.envelope-design[data-design='traditional_silk'] .envelope-design__mark {
-  inset-inline: 12.7% auto;
-  top: 50%;
-  width: 18%;
-  transform: translateY(-50%);
-  font-size: 10cqi;
-}
-
-.envelope-design[data-design='rustic_twine'] {
-  --stock: linear-gradient(120deg, #eee3cb, #cdb693);
-  --ink: #343424;
-  --art-ink: #596143;
-  --display: 'Cormorant Garamond', Georgia, serif;
-  --name-weight: 700;
-  --left: 11%;
-  --right: 30%;
-  --mark-top: 18%;
-  --address-top: 38%;
-}
-
-.envelope-design[data-design='editorial_vellum'] {
-  --stock: #f8f7f2;
-  --ink: #21201f;
-  --art-ink: #242220;
-  --mark-ink: #f8f7f2;
-  --display: 'Inter', Arial, sans-serif;
-  --name-size: 7.1cqi;
-  --name-weight: 700;
-  --left: 30%;
-  --right: 7%;
-  --address-top: 32%;
-  --signature-top: 71%;
-}
-
-.envelope-design[data-design='editorial_vellum'] .envelope-design__mark {
-  top: 50%;
-  inset-inline: 1% auto;
-  width: 23%;
-  padding-inline: 1%;
-  transform: translateY(-50%);
-  text-align: center;
+.envelope-design[data-design='traditional_silk'] .envelope-design__monogram {
+  font-style: normal;
   font-weight: 700;
+  font-size: 9.5cqi;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
+/* 4. Celestial Midnight */
 .envelope-design[data-design='celestial_midnight'] {
-  --stock: radial-gradient(ellipse at 85% 15%, #27395f, #11192e 72%);
-  --ink: #f4eddf;
-  --art-ink: #e4c993;
-  --right: 43%;
-  --mark-top: 17%;
-  --address-top: 40%;
-  --signature-top: 75%;
+  --stock: linear-gradient(135deg, #182650 0%, #0E1838 50%, #060B1E 100%);
+  --ink: #F8FAFC;
+  --art-ink: #FDE68A;
+  --guest-ink: #FFFDF9;
+  --monogram-ink: #FDE68A;
+  --margin-x: 10%;
 }
 
+/* 5. Rustic Twine Botanical */
+.envelope-design[data-design='rustic_twine'] {
+  --stock: linear-gradient(135deg, #EDE5D8 0%, #DDD2C0 50%, #C9BCA6 100%);
+  --ink: #382C1E;
+  --art-ink: #556B48;
+  --guest-ink: #271E14;
+  --monogram-ink: #382C1E;
+  --margin-x: 10%;
+}
+
+/* 6. Editorial Vellum (Vogue Minimalist) */
+.envelope-design[data-design='editorial_vellum'] {
+  --stock: linear-gradient(135deg, #FFFFFF 0%, #F8F8F5 50%, #EDEDE6 100%);
+  --ink: #1C1B1A;
+  --art-ink: #6B6864;
+  --guest-ink: #000000;
+  --monogram-ink: #1C1B1A;
+  --display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --margin-x: 8%;
+  --guest-size: 6.2cqi;
+}
+.envelope-design[data-design='editorial_vellum'] .envelope-design__monogram {
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+.envelope-design[data-design='editorial_vellum'] .envelope-design__title-text {
+  font-weight: 700;
+  letter-spacing: 0.42em;
+}
+
+/* 7. Blush Ribbon Romantic */
 .envelope-design[data-design='blush_ribbon'] {
-  --stock: linear-gradient(145deg, #f6e4e4, #e5b4bf);
-  --ink: #632e41;
-  --art-ink: #ac6679;
-  --left: 23%;
-  --right: 23%;
-  --alignment: center;
-  --mark-top: 33%;
-  --mark-size: 3cqi;
-  --address-top: 43%;
-  --address-height: 22%;
-  --name-size: 6.4cqi;
-  --signature-top: 65%;
+  --stock: linear-gradient(135deg, #FFF7F9 0%, #FDECF0 50%, #F7D8E2 100%);
+  --ink: #612136;
+  --art-ink: #A84564;
+  --guest-ink: #4D1528;
+  --monogram-ink: #7A2440;
+  --margin-x: 12%;
 }
 
+/* 8. Emerald Brass Gatsby */
 .envelope-design[data-design='emerald_brass'] {
-  --stock: linear-gradient(145deg, #244738, #0d281f);
-  --ink: #f5e5b6;
-  --art-ink: #d5ac62;
-  --display: 'Cormorant Garamond', Georgia, serif;
-  --alignment: center;
-  --mark-top: 15%;
-  --mark-size: 3.4cqi;
-  --address-top: 36%;
-  --signature-top: 68%;
-  --name-weight: 700;
+  --stock: linear-gradient(135deg, #1C4535 0%, #133226 50%, #091C15 100%);
+  --ink: #F9EFCF;
+  --art-ink: #E5C368;
+  --guest-ink: #FFFFFF;
+  --monogram-ink: #E5C368;
+  --margin-x: 10%;
 }
 
+/* 9. Indochine Kraft Vintage */
 .envelope-design[data-design='indochine_kraft'] {
-  --stock: radial-gradient(ellipse at 45% 24%, #f4e2bb, #d4b681);
-  --ink: #50372a;
-  --art-ink: #8b4e3b;
-  --left: 9%;
-  --right: 28%;
-  --mark-top: 13%;
-  --address-top: 40%;
-  --signature-top: 76%;
+  --stock: linear-gradient(135deg, #F3E4C8 0%, #E5D0AC 50%, #D2B78B 100%);
+  --ink: #4D2C1A;
+  --art-ink: #8A4624;
+  --guest-ink: #381D0F;
+  --monogram-ink: #8A4624;
+  --margin-x: 9%;
 }
 
+/* 10. Modern Minimalist */
 .envelope-design[data-design='modern_minimal'] {
-  --stock: #f9f7ef;
-  --ink: #2c3931;
-  --art-ink: #6d7a6c;
-  --display: 'Cormorant Garamond', Georgia, serif;
-  --alignment: center;
-  --mark-top: 20%;
-  --mark-size: 3.8cqi;
-  --address-top: 36%;
-  --name-size: 9cqi;
-  --name-weight: 600;
-  --signature-top: 73%;
+  --stock: linear-gradient(135deg, #FFFFFF 0%, #FAF9F6 50%, #F0EEE9 100%);
+  --ink: #242A27;
+  --art-ink: #717B75;
+  --guest-ink: #111412;
+  --monogram-ink: #242A27;
+  --margin-x: 10%;
 }
+
+/* ============================================================
+   WAX SEAL TYPOGRAPHY
+   ============================================================ */
+
+.wedding-envelope__seal-text {
+  position: relative;
+  display: block;
+  width: 70%;
+  text-align: center;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(0.72rem, 2.2vw, 1rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: #FFF2D1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), 0 0 1px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  select-none: none;
+}
+
+.wedding-envelope__seal-text.is-script {
+  font-family: 'Great Vibes', 'Playfair Display', cursive, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(0.82rem, 2.6vw, 1.15rem);
+  letter-spacing: 0.02em;
+  transform: rotate(-4deg);
+}
+
+/* ============================================================
+   STUDIO PICKER (ENVELOPE COLLECTION WORKSPACE)
+   ============================================================ */
 
 .envelope-collection {
   display: grid;
-  grid-template-columns: clamp(226px, 25%, 320px) minmax(0, 1fr);
+  grid-template-columns: clamp(230px, 26%, 330px) minmax(0, 1fr);
   min-width: 0;
-  min-height: 510px;
+  min-height: 520px;
   overflow: hidden;
-  border: 1px solid #dfd6c8;
-  border-radius: 7px;
-  background: #f5f0e6;
-  color: #342f29;
+  border: 1px solid #DFD6C8;
+  border-radius: 8px;
+  background: #F5F0E6;
+  color: #342F29;
 }
 
 .envelope-collection__library {
   padding: 18px 14px;
-  background: #fbf8f1;
-  border-right: 1px solid #e3dacd;
+  background: #FBF8F1;
+  border-right: 1px solid #E3DACD;
 }
 
 .envelope-collection__library-heading,
@@ -278,14 +339,14 @@
 }
 
 .envelope-collection__library-heading h3 {
-  font-size: .86rem;
-  font-weight: 650;
+  font-size: 0.88rem;
+  font-weight: 700;
 }
 
 .envelope-collection__library-heading span,
 .envelope-collection__footer p {
   color: #726559;
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 .envelope-collection__workspace {
@@ -296,21 +357,21 @@
 
 .envelope-collection__toolbar,
 .envelope-collection__footer {
-  padding: 9px 16px;
-  background: #fbf8f1;
+  padding: 10px 16px;
+  background: #FBF8F1;
 }
 
 .envelope-collection__toolbar {
-  border-bottom: 1px solid #e3dacd;
+  border-bottom: 1px solid #E3DACD;
 }
 
 .envelope-collection__footer {
-  border-top: 1px solid #e3dacd;
-  padding-block: 13px;
+  border-top: 1px solid #E3DACD;
+  padding-block: 14px;
 }
 
 .envelope-collection__footer h4 {
-  font: 600 1.38rem / 1.05 "Cormorant Garamond", Georgia, serif;
+  font: 600 1.35rem / 1.1 'Cormorant Garamond', Georgia, serif;
 }
 
 .envelope-collection__sides,
@@ -319,9 +380,9 @@
   align-items: center;
   gap: 2px;
   padding: 3px;
-  border: 1px solid #ded4c5;
+  border: 1px solid #DED4C5;
   border-radius: 6px;
-  background: #f3ede2;
+  background: #F3EDE2;
 }
 
 .envelope-collection__toolbar button,
@@ -332,43 +393,46 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  padding: 0 9px;
+  padding: 0 10px;
   border-radius: 4px;
-  font-size: .76rem;
+  font-size: 0.76rem;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .envelope-collection__toolbar button[aria-pressed='true'],
 .envelope-collection__toolbar button:hover:not(:disabled) {
-  background: #e6dccd;
+  background: #E6DCCD;
 }
 
 .envelope-collection__toolbar button:disabled {
-  opacity: .35;
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 .envelope-collection__footer button {
   min-height: 42px;
-  padding-inline: 14px;
-  background: #53483c;
-  color: #fffaf0;
+  padding-inline: 16px;
+  background: #53483C;
+  color: #FFFAF0;
+  border-radius: 6px;
 }
 
 .envelope-collection__mat {
   display: grid;
-  min-height: 280px;
-  padding: clamp(38px, 7.5vw, 100px) clamp(24px, 6vw, 92px);
+  min-height: 300px;
+  padding: clamp(38px, 7.5vw, 90px) clamp(24px, 6vw, 80px);
   align-content: safe center;
   justify-items: safe center;
   overflow: auto;
-  background: var(--grain), radial-gradient(ellipse at 25% 16%, #f8f0e1, #e5d8c5 58%, #cdbca4);
+  background: var(--grain), radial-gradient(ellipse at 35% 20%, #F8F0E1, #E5D8C5 58%, #CDBCA4);
 }
 
 .envelope-collection__paper {
   position: relative;
   width: calc(min(100%, 640px) * var(--zoom));
   aspect-ratio: 5 / 3;
-  border-radius: 3px;
+  border-radius: 4px;
   isolation: isolate;
 }
 
@@ -381,58 +445,40 @@
 .envelope-picker > button {
   display: grid;
   align-content: start;
-  gap: 5px;
+  gap: 6px;
   min-width: 0;
-  padding: 5px;
-  border: 1px solid #e3dacd;
-  border-radius: 5px;
-  color: #44392e;
+  padding: 6px;
+  border: 1px solid #E3DACD;
+  border-radius: 6px;
+  color: #44392E;
   text-align: left;
+  cursor: pointer;
+  transition: all 120ms ease;
 }
 
 .envelope-picker > button:hover {
-  background: #f1e8da;
+  background: #F1E8DA;
+  border-color: #CDBCA4;
 }
 
 .envelope-picker > button[aria-pressed='true'] {
-  border-color: #53483c;
-  background: #eee1ce;
-}
-
-.envelope-collection button:focus-visible {
-  outline: 2px solid #53483c;
-  outline-offset: 2px;
+  border-color: #53483C;
+  background: #EEE1CE;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 .envelope-picker__sample {
   position: relative;
   display: block;
   aspect-ratio: 5 / 3;
-  border-radius: 2px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .envelope-picker > button > strong {
-  font-size: .69rem;
-  line-height: 1.28;
-}
-
-@media (max-width: 720px) {
-  .envelope-collection {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .envelope-collection__workspace {
-    grid-row: 1;
-  }
-
-  .envelope-collection__library {
-    border-top: 1px solid #e3dacd;
-    border-right: 0;
-  }
-
-  .envelope-picker {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 94px), 1fr));
-  }
+  font-size: 0.72rem;
+  line-height: 1.25;
 }
 
 .envelope-collection__envelope,
@@ -441,14 +487,14 @@
   inset: 0;
   border-radius: inherit;
   box-shadow:
-    0 1px 0 #bda789,
-    0 2px 0 #a78f71,
-    3px 5px 7px -3px #3a241b72,
-    12px 22px 26px -10px #46302265;
+    0 1px 0 #BDA789,
+    0 2px 0 #A78F71,
+    3px 6px 10px -3px rgba(58, 36, 27, 0.35),
+    12px 24px 32px -10px rgba(70, 48, 34, 0.3);
 }
 
 .envelope-collection__envelope {
-  transform: translate(-2%, 6%) rotate(-3deg);
+  transform: translate(-2%, 6%) rotate(-2.5deg);
 }
 
 .envelope-collection__insert {
@@ -458,11 +504,11 @@
   justify-items: center;
   align-content: start;
   padding-top: 5%;
-  border-radius: 2px;
-  background: var(--grain), linear-gradient(130deg, #fffdf7, #e8d8be);
+  border-radius: 3px;
+  background: var(--grain), linear-gradient(130deg, #FFFDF7, #E8D8BE);
   color: var(--letter-ink);
-  box-shadow: 0 1px 0 #b29c7a, 3px 10px 16px -6px #3825176b, inset 0 1px 0 #fff;
-  transform: translate(5%, -12%) rotate(6deg);
+  box-shadow: 0 1px 0 #B29C7A, 3px 10px 16px -6px rgba(56, 37, 23, 0.35), inset 0 1px 0 #FFF;
+  transform: translate(5%, -12%) rotate(5deg);
   container-type: inline-size;
   overflow: hidden;
 }
@@ -471,13 +517,13 @@
   position: absolute;
   inset: 5%;
   border: 1px solid currentColor;
-  opacity: .22;
+  opacity: 0.22;
   content: '';
 }
 
 .envelope-collection__insert .envelope-design__art {
   color: currentColor;
-  opacity: .22;
+  opacity: 0.22;
 }
 
 .envelope-collection__insert > span {
@@ -486,11 +532,21 @@
 }
 
 .envelope-collection__paper > .wedding-envelope__face {
-  transform: rotate(-3deg);
+  transform: rotate(-2.5deg);
 }
 
 @media (max-width: 720px) {
-  .envelope-collection__mat {
-    padding-inline: max(24px, 7%);
+  .envelope-collection {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .envelope-collection__workspace {
+    grid-row: 1;
+  }
+  .envelope-collection__library {
+    border-top: 1px solid #E3DACD;
+    border-right: 0;
+  }
+  .envelope-picker {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 100px), 1fr));
   }
 }
