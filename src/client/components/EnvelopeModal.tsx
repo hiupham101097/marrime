@@ -82,6 +82,19 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
     };
   }, [isOpen]);
 
+  // Keyboard accessibility: Escape key to skip directly to website
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onOpenEnvelope();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onOpenEnvelope]);
+
   useEffect(() => {
     if (isOpen && isFlapOpen) {
       letterActionRef.current?.focus({ preventScroll: true });

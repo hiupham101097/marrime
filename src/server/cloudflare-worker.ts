@@ -68,7 +68,7 @@ export default {
         );
       }
 
-      // 2. Wedding Data (Supports query ?w=slug)
+      // 2. Wedding Data (Supports query ?w=slug with Cloudflare Edge Caching)
       if (pathname === '/api/wedding-info') {
         const querySlug = searchParams.get('w') || searchParams.get('slug') || 'default';
         const project = edgeProjects[querySlug] || (PRESET_WEDDING_PROJECTS[querySlug] ? { data: PRESET_WEDDING_PROJECTS[querySlug] } : null) || edgeProjects['tuan-anh-mai-phuong'];
@@ -78,7 +78,12 @@ export default {
             slug: querySlug,
             data: project ? project.data : edgeWeddingData,
           }),
-          { headers: corsHeaders }
+          {
+            headers: {
+              ...corsHeaders,
+              'Cache-Control': 'public, max-age=30, s-maxage=120, stale-while-revalidate=86400',
+            },
+          }
         );
       }
 
@@ -156,7 +161,7 @@ export default {
         }
       }
 
-      // 4. Get Wedding by Slug
+      // 4. Get Wedding by Slug (With Cloudflare Edge Caching)
       if (pathname.startsWith('/api/weddings/')) {
         const targetSlug = pathname.replace('/api/weddings/', '').trim();
         const project = edgeProjects[targetSlug] || (PRESET_WEDDING_PROJECTS[targetSlug] ? { slug: targetSlug, data: PRESET_WEDDING_PROJECTS[targetSlug] } : null) || edgeProjects['tuan-anh-mai-phuong'];
@@ -167,7 +172,12 @@ export default {
               slug: project.slug || targetSlug,
               data: project.data,
             }),
-            { headers: corsHeaders }
+            {
+              headers: {
+                ...corsHeaders,
+                'Cache-Control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=86400',
+              },
+            }
           );
         }
       }
@@ -231,7 +241,7 @@ export default {
         }
       }
 
-      // 3. Wishes
+      // 3. Wishes (With Edge Cache)
       if (pathname === '/api/wishes') {
         if (request.method === 'GET') {
           return new Response(
@@ -240,7 +250,12 @@ export default {
               total: edgeWishes.length,
               data: edgeWishes,
             }),
-            { headers: corsHeaders }
+            {
+              headers: {
+                ...corsHeaders,
+                'Cache-Control': 'public, max-age=10, s-maxage=30, stale-while-revalidate=120',
+              },
+            }
           );
         }
 

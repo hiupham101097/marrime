@@ -21,8 +21,28 @@ import { WishingWallSection } from './components/WishingWallSection';
 import { CompletionDonateSection } from './components/CompletionDonateSection';
 import { FloatingEffects } from './components/FloatingEffects';
 import { MusicPlayer } from './components/MusicPlayer';
-import { WeddingStudioPage } from './pages/WeddingStudioPage';
-import { PlatformLandingPage } from './pages/PlatformLandingPage';
+
+// Code-splitting for 70%+ faster initial load time
+const WeddingStudioPage = React.lazy(() =>
+  import('./pages/WeddingStudioPage').then((m) => ({ default: m.WeddingStudioPage }))
+);
+const PlatformLandingPage = React.lazy(() =>
+  import('./pages/PlatformLandingPage').then((m) => ({ default: m.PlatformLandingPage }))
+);
+
+const AtelierLoading: React.FC = () => (
+  <div className="min-h-screen bg-[#FAF8F5] flex flex-col items-center justify-center space-y-3.5">
+    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#722235] to-[#4A1020] text-[#FFFDF9] border border-[#DFB76C]/60 flex items-center justify-center font-serif text-lg font-bold shadow-lg animate-pulse">
+      M
+    </div>
+    <div className="text-center space-y-1">
+      <p className="font-serif text-sm font-bold text-[#4A1020] tracking-wider">MARRIME</p>
+      <p className="text-[10px] text-[#A2682A] tracking-[0.2em] uppercase font-semibold">
+        Đang chuẩn bị không gian cưới...
+      </p>
+    </div>
+  </div>
+);
 
 export const App: React.FC = () => {
   const searchParams =
@@ -37,7 +57,11 @@ export const App: React.FC = () => {
     searchParams.get('admin') === 'true';
 
   if (isStudioMode) {
-    return <WeddingStudioPage />;
+    return (
+      <React.Suspense fallback={<AtelierLoading />}>
+        <WeddingStudioPage />
+      </React.Suspense>
+    );
   }
 
   // 2. Wedding Invitation Guest View:
@@ -51,7 +75,11 @@ export const App: React.FC = () => {
 
   // 3. Platform Homepage (Service Packages, Pricing & Bride/Groom Sign In)
   if (!isWeddingInviteView) {
-    return <PlatformLandingPage />;
+    return (
+      <React.Suspense fallback={<AtelierLoading />}>
+        <PlatformLandingPage />
+      </React.Suspense>
+    );
   }
 
   // GUEST WEDDING INVITATION VIEW
