@@ -485,7 +485,7 @@ export const WeddingStudioPage: React.FC = () => {
       {/* MAIN SPLIT SCREEN WORKSPACE */}
       <div className="flex-1 flex overflow-hidden">
         {/* LEFT PANE: 5-STEP GUIDED FORM BUILDER */}
-        <div className={`w-full flex flex-col bg-[#FAF8F5] border-r border-stone-200 overflow-hidden ${currentStep === 5 ? "" : "lg:w-[54%] xl:w-[50%]"}`}>
+        <div className="w-full lg:w-[54%] xl:w-[50%] flex flex-col bg-[#FAF8F5] border-r border-stone-200 overflow-hidden">
           {/* STEPPER PROGRESS BAR (5 Bước Rõ Ràng, Dễ Hiểu) */}
           <div className="bg-white border-b border-stone-200 px-4 py-3 flex items-center justify-between overflow-x-auto no-scrollbar flex-shrink-0">
             {STEPS.map((step) => {
@@ -1374,20 +1374,19 @@ export const WeddingStudioPage: React.FC = () => {
             {currentStep === 5 && (
               <div className="space-y-6 animate-fadeIn">
                 {/* 3D Envelope Selector */}
-                <div className="bg-white p-5 sm:p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
-                  <div className="space-y-1 border-b border-stone-100 pb-3">
-                    <h3 className="font-serif text-base font-bold text-stone-900">Chọn mẫu phong bì</h3>
-
+                <div className="bg-white p-5 sm:p-6 rounded-2xl border border-stone-200 shadow-sm space-y-5">
+                  <div className="border-b border-stone-100 pb-3">
+                    <h3 className="font-serif text-base font-bold text-stone-900 flex items-center space-x-2">
+                      <Mail className="w-4 h-4 text-[#A2682A]" />
+                      <span>Chọn Bao Bì Thư &amp; Con Dấu Sáp Nến 3D</span>
+                    </h3>
+                    <p className="text-xs text-stone-500 mt-0.5">
+                      Trải nghiệm mở thiệp tương tác độc bản đầu tiên khi khách mời bấm vào link cưới
+                    </p>
                   </div>
                   <EnvelopeDesignPicker
                     value={formData.envelopeStyle}
                     onOpenPreview={() => setShowEnvelopePreview(true)}
-                    sample={{
-                      monogram: formData.waxSealMonogram || `${formData.groom.name.charAt(0)} & ${formData.bride.name.charAt(0)}`,
-                      guest: 'Bạn Lan',
-                      couple: `${formData.groom.name} & ${formData.bride.name}`,
-                      date: formData.weddingDateFormatted,
-                    }}
                     onChange={(style) => {
                       setFormData((data) => ({ ...data, envelopeStyle: style }));
                       setPreviewViewMode('envelope');
@@ -1395,16 +1394,24 @@ export const WeddingStudioPage: React.FC = () => {
                     }}
                   />
                   {/* Wax Seal Monogram */}
-                  <div className="pt-2">
-                    <label className="text-xs font-bold text-stone-700 uppercase tracking-wider block mb-1">
-                      Ký Tự Khắc Trên Con Dấu Sáp Nến (Monogram):
-                    </label>
+                  <div className="pt-3 border-t border-stone-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div>
+                      <label className="text-xs font-bold text-stone-800 uppercase tracking-wider block">
+                        Ký Tự Khắc Con Dấu Sáp (Monogram):
+                      </label>
+                      <span className="text-[11px] text-stone-500">
+                        Chữ viết tắt tên Dâu Rể (VD: T &amp; P, H &amp; L) hoặc biểu tượng Song Hỷ (囍)
+                      </span>
+                    </div>
                     <input
                       type="text"
                       value={formData.waxSealMonogram || ''}
-                      onChange={(e) => setFormData({ ...formData, waxSealMonogram: e.target.value })}
-                      placeholder="VD: T & P hoặc 囍"
-                      className="w-full max-w-xs px-3 py-2 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm focus:outline-none focus:border-[#A2682A]"
+                      onChange={(e) => {
+                        setFormData({ ...formData, waxSealMonogram: e.target.value });
+                        setPreviewKey((key) => key + 1);
+                      }}
+                      placeholder="VD: T & P"
+                      className="w-full sm:w-44 px-3.5 py-2 rounded-xl border border-stone-200 bg-white text-stone-900 font-serif font-bold text-sm text-center focus:outline-none focus:border-[#A2682A] focus:ring-2 focus:ring-[#A2682A]/20"
                     />
                   </div>
                 </div>
@@ -1803,7 +1810,7 @@ export const WeddingStudioPage: React.FC = () => {
         </div>
 
         {/* RIGHT PANE: LIVE PREVIEW SIMULATOR */}
-        <div className={`${currentStep === 5 ? "hidden" : "hidden lg:flex"} flex-1 bg-[#F5F3EF] flex-col overflow-hidden items-center justify-center p-4 xl:p-6 relative`}>
+        <div className="hidden lg:flex flex-1 bg-[#F5F3EF] flex-col overflow-hidden items-center justify-center p-4 xl:p-6 relative">
           {/* Top Quick Status Pill */}
           <div className="absolute top-4 left-6 right-6 flex items-center justify-between pointer-events-none z-10">
             <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-stone-200 text-stone-700 text-xs font-bold shadow-xs pointer-events-auto flex items-center space-x-1.5">

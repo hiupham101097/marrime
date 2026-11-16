@@ -4,8 +4,10 @@ import { ArrowRight, ArrowUpRight, Sparkles } from 'lucide-react';
 import { GuestInfo, EnvelopeStyle } from '../../shared/types';
 import { formatGuestSalutation } from '../hooks/useGuestInfo';
 import {
+  EnvelopeArtwork,
   EnvelopeBack,
   EnvelopeDesign,
+  EnvelopeLiner,
   envelopePalettes,
   envelopePaperStyle,
 } from './EnvelopeDesign';
@@ -55,6 +57,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   const actionRef = useRef<HTMLButtonElement>(null);
   const letterActionRef = useRef<HTMLButtonElement>(null);
   const openTimer = useRef<number>(undefined);
+  const autoAdvanceTimer = useRef<number>(undefined);
   const cleanSalutation = formatGuestSalutation(guest);
   const displayMonogram = waxSealMonogram || `${groomName.charAt(0)} & ${brideName.charAt(0)}`;
   const isFlipped = phase !== 'front';
@@ -73,19 +76,27 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
     }
     return () => {
       window.clearTimeout(openTimer.current);
+      window.clearTimeout(autoAdvanceTimer.current);
       openTimer.current = undefined;
+      autoAdvanceTimer.current = undefined;
     };
   }, [isOpen]);
 
   useEffect(() => {
     if (isOpen && isFlapOpen) {
       letterActionRef.current?.focus({ preventScroll: true });
+
+      // In real wedding guest mode (not studio preview), gently auto-advance to site after 3s
+      if (!isPreview) {
+        window.clearTimeout(autoAdvanceTimer.current);
+        autoAdvanceTimer.current = window.setTimeout(() => {
+          onOpenEnvelope();
+        }, 3200);
+      }
     }
-  }, [isOpen, isFlapOpen]);
+  }, [isOpen, isFlapOpen, isPreview, onOpenEnvelope]);
 
-  const openSeal = () => {
-    if (phase !== 'back') return;
-
+  const triggerSealOpen = () => {
     playOpenSound?.();
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setPhase('open');
@@ -93,14 +104,19 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
     }
 
     setPhase('opening');
-    openTimer.current = window.setTimeout(() => setPhase('open'), 180);
+    openTimer.current = window.setTimeout(() => setPhase('open'), 220);
     void confetti({
-      particleCount: 50,
-      spread: 70,
+      particleCount: 55,
+      spread: 75,
       origin: { y: 0.52 },
-      colors: [currentStyle.accentGold, '#FFFDF9', currentStyle.looseSealGrad[1]],
+      colors: [currentStyle.accentGold, '#FFFDF9', currentStyle.looseSealGrad[0]],
       disableForReducedMotion: true,
     })?.catch(() => {});
+  };
+
+  const openSeal = () => {
+    if (phase !== 'back') return;
+    triggerSealOpen();
   };
 
   const flipEnvelope = () => {
@@ -108,13 +124,28 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
     actionRef.current?.focus({ preventScroll: true });
   };
 
+  // 1-Click Smooth Ritual: Tapping envelope on front immediately flips and opens!
+  const handleOpenFlow = () => {
+    if (phase === 'front') {
+      setPhase('back');
+      playOpenSound?.();
+      window.setTimeout(() => {
+        triggerSealOpen();
+      }, 420);
+    } else if (phase === 'back') {
+      openSeal();
+    } else if (phase === 'open') {
+      onOpenEnvelope();
+    }
+  };
+
   if (!isOpen) return null;
 
   const hintTexts: Record<typeof phase, string> = {
-    front: '✦  Chạm phong bì để lật mặt sau',
+    front: '✦  Chạm để mở thiệp cưới cao cấp',
     back: '✦  Chạm con dấu sáp để mở thiệp',
     opening: '✦  Đang mở thiệp cưới…',
-    open: '',
+    open: '✦  Chúc mừng ngày vui trăm năm',
   };
 
   return (
@@ -127,7 +158,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
       style={envelopePaperStyle(design)}
     >
       <div className="wedding-envelope__scene">
-        {/* Bypass / Direct Entrance button in top corner */}
+        {/* Bypass / Direct Entrance button in top corner (Safe on iOS Dynamic Island) */}
         <button
           type="button"
           className="wedding-envelope__skip"
@@ -154,17 +185,15 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
             <circle cx="50" cy="50" r="30" fill="rgba(0,0,0,0.15)" stroke="rgba(255,240,190,0.5)" strokeWidth="1.2" />
           </svg>
           <span className="wedding-envelope__flatlay-seal-text">
-            {currentStyle.sealInscription === 'song_hy' ? '囍' : 'with love'}
+            {displayMonogram || (currentStyle.sealInscription === 'song_hy' ? '囍' : 'with love')}
           </span>
         </div>
 
         <div className="wedding-envelope__layout">
           {/* Animated hint badge */}
-          {phase !== 'open' && (
-            <div className="wedding-envelope__hint" aria-live="polite" aria-atomic="true">
-              <span className="wedding-envelope__hint-badge">{hintTexts[phase]}</span>
-            </div>
-          )}
+          <div className="wedding-envelope__hint" aria-live="polite" aria-atomic="true">
+            <span className="wedding-envelope__hint-badge">{hintTexts[phase]}</span>
+          </div>
 
           <div className="wedding-envelope__stage" data-phase={phase}>
             <div className="wedding-envelope__rotator">
@@ -173,8 +202,8 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                 <button
                   type="button"
                   className="wedding-envelope__front-button"
-                  onClick={flipEnvelope}
-                  title="Nhấn để lật phong bì xem mặt sau"
+                  onClick={handleOpenFlow}
+                  title="Nhấn để mở thiệp cưới"
                 >
                   <EnvelopeDesign
                     style={design}
@@ -183,13 +212,19 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                     couple={`${groomName} & ${brideName}`}
                     date={weddingDateFormatted}
                   />
+
+                  {/* Subtle Interactive Invitation Callout */}
+                  <div className="wedding-envelope__front-tap-cue" aria-hidden="true">
+                    <Sparkles size={13} className="text-amber-300 animate-pulse" />
+                    <span>Chạm để mở thiệp</span>
+                  </div>
                 </button>
               </div>
 
               {/* 2. BACK OF ENVELOPE (WITH WAX SEAL & EXTRACTABLE LETTER) */}
               <div className="wedding-envelope__face wedding-envelope__back" inert={!isFlipped}>
-                {/* 2A. INNER LETTER CARD */}
-                <div className="wedding-envelope__letter" inert={!isFlapOpen}>
+                {/* 2A. INNER LETTER CARD (Completely hidden inside pocket when closed, slides up when open) */}
+                <div className="wedding-envelope__letter" data-open={isFlapOpen}>
                   <div className="wedding-envelope__letter-inner">
                     <p className="wedding-envelope__letter-monogram">{displayMonogram}</p>
                     <p className="wedding-envelope__letter-salutation-label">Trân trọng kính mời</p>
@@ -245,29 +280,59 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
 
           {/* Controls underneath the envelope */}
           <div className="wedding-envelope__controls">
-            <button
-              type="button"
-              ref={actionRef}
-              className="wedding-envelope__action"
-              hidden={isFlapOpen}
-              onClick={isFlipped ? openSeal : flipEnvelope}
-              disabled={phase === 'opening' || isFlapOpen}
-            >
-              {phase === 'front'
-                ? 'Lật xem mặt sau'
-                : phase === 'back'
-                ? 'Nhấn mở dấu sáp'
-                : 'Đang mở thiệp…'}
-              <ArrowRight size={16} aria-hidden="true" />
-            </button>
-            <button
-              type="button"
-              className="wedding-envelope__reverse"
-              onClick={flipEnvelope}
-              hidden={phase !== 'back'}
-            >
-              ← Xem lại mặt trước
-            </button>
+            {phase === 'front' ? (
+              <div className="wedding-envelope__btn-group">
+                <button
+                  type="button"
+                  ref={actionRef}
+                  className="wedding-envelope__action wedding-envelope__action--primary"
+                  onClick={handleOpenFlow}
+                >
+                  <Sparkles size={16} className="text-amber-300" aria-hidden="true" />
+                  <span>Mở Thiệp Cưới</span>
+                  <ArrowRight size={16} aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className="wedding-envelope__reverse"
+                  onClick={flipEnvelope}
+                >
+                  Lật xem mặt sau & dấu sáp →
+                </button>
+              </div>
+            ) : phase === 'back' ? (
+              <div className="wedding-envelope__btn-group">
+                <button
+                  type="button"
+                  ref={actionRef}
+                  className="wedding-envelope__action wedding-envelope__action--primary"
+                  onClick={openSeal}
+                >
+                  <Sparkles size={16} className="text-amber-300" aria-hidden="true" />
+                  <span>Nhấn Mở Dấu Sáp</span>
+                  <ArrowRight size={16} aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className="wedding-envelope__reverse"
+                  onClick={flipEnvelope}
+                >
+                  ← Xem lại mặt trước
+                </button>
+              </div>
+            ) : (
+              <div className="wedding-envelope__btn-group">
+                <button
+                  type="button"
+                  className="wedding-envelope__action wedding-envelope__action--primary"
+                  onClick={onOpenEnvelope}
+                >
+                  <Sparkles size={16} className="text-amber-300" aria-hidden="true" />
+                  <span>{isPreview ? 'Đóng Xem Thử' : 'Bước Vào Không Gian Hôn Lễ'}</span>
+                  <ArrowRight size={16} aria-hidden="true" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

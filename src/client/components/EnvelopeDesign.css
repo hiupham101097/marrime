@@ -810,11 +810,24 @@
     var(--grain),
     linear-gradient(135deg, #F0F6F2 0%, #E3EFE7 50%, #D4E4DA 100%);
   color: #1B382D;
-  padding: 6% 8%;
+  padding: 5% 7%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.korean-sprig-svg {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55%;
+  height: auto;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .korean-top-crest {
@@ -897,22 +910,24 @@
 .envelope-design--royal {
   background:
     var(--grain),
-    linear-gradient(135deg, #FFFDF8 0%, #F5ECDD 50%, #E8D9C0 100%);
-  color: #5A1222;
+    linear-gradient(135deg, #5C0E1F 0%, #3D0814 50%, #24040B 100%);
+  color: #FFFDF9;
   padding: 6% 7%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .royal-corner {
   position: absolute;
   width: 20px;
   height: 20px;
-  border: 1px solid #8B243B;
-  opacity: 0.45;
+  border: 1px solid #E5C368;
+  opacity: 0.55;
 }
 .royal-corner--tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
 .royal-corner--tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
@@ -926,30 +941,38 @@
   gap: 0.4cqi;
 }
 
-.royal-crown { font-size: 4cqi; }
+.royal-crown-svg {
+  width: 28px;
+  height: 18px;
+  color: #E5C368;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+}
 
 .royal-monogram {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 7cqi;
+  font-size: 7.5cqi;
   font-weight: 700;
-  color: #8B243B;
+  color: #E5C368;
   line-height: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .royal-proclamation {
   font-size: 1.6cqi;
   letter-spacing: 0.3em;
   font-weight: 700;
-  opacity: 0.75;
+  color: #E5C368;
+  opacity: 0.85;
 }
 
 .royal-title-bar {
-  border-block: 1px double rgba(139, 36, 59, 0.4);
+  border-block: 1px double rgba(229, 195, 104, 0.55);
   padding-block: 0.6cqi;
   width: 90%;
   font-size: 2.3cqi;
   letter-spacing: 0.35em;
   font-weight: 700;
+  color: #E5C368;
 }
 
 .royal-guest-zone {
@@ -959,15 +982,26 @@
   gap: 0.6cqi;
 }
 
-.royal-salutation { font-size: 2cqi; font-style: italic; opacity: 0.85; }
-.royal-guest-name { font-size: 6.8cqi; font-weight: 700; color: #480C1A; line-height: 1.1; }
-.royal-gold-line { width: 50%; height: 1px; background: #8B243B; opacity: 0.4; }
-.royal-couple-lead { font-size: 2cqi; font-style: italic; opacity: 0.8; }
+.royal-salutation { font-size: 2cqi; font-style: italic; opacity: 0.85; color: #FFFDF9; }
+.royal-guest-name {
+  font-size: 6.8cqi;
+  font-weight: 700;
+  color: #FFFDF9;
+  text-shadow: 0 0 12px rgba(229, 195, 104, 0.4);
+  line-height: 1.1;
+}
+.royal-gold-line {
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #E5C368, transparent);
+}
+.royal-couple-lead { font-size: 2cqi; font-style: italic; opacity: 0.85; color: #FFFDF9; }
 
 .royal-footer {
   font-size: 1.7cqi;
   letter-spacing: 0.22em;
-  opacity: 0.65;
+  color: #E5C368;
+  opacity: 0.8;
 }
 
 /* ============================================================
