@@ -237,7 +237,15 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
               {/* 2. BACK OF ENVELOPE (WITH WAX SEAL & EXTRACTABLE LETTER) */}
               <div className="wedding-envelope__face wedding-envelope__back" inert={!isFlipped}>
                 {/* 2A. INNER LETTER CARD (Completely hidden inside pocket when closed, slides up when open) */}
-                <div className="wedding-envelope__letter" data-open={isFlapOpen}>
+                <div
+                  className="wedding-envelope__letter"
+                  data-open={isFlapOpen}
+                  onClick={isFlapOpen ? onOpenEnvelope : undefined}
+                  role={isFlapOpen ? 'button' : undefined}
+                  tabIndex={isFlapOpen ? 0 : -1}
+                  onKeyDown={isFlapOpen ? (e) => e.key === 'Enter' && onOpenEnvelope() : undefined}
+                  title={isFlapOpen ? 'Chạm lá thiệp để bước vào không gian hôn lễ' : undefined}
+                >
                   <div className="wedding-envelope__letter-inner">
                     <p className="wedding-envelope__letter-monogram">{displayMonogram}</p>
                     <p className="wedding-envelope__letter-salutation-label">Trân trọng kính mời</p>
@@ -271,10 +279,13 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                       ref={letterActionRef}
                       type="button"
                       className="wedding-envelope__letter-cta"
-                      onClick={onOpenEnvelope}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onOpenEnvelope();
+                      }}
                     >
                       <Sparkles size={14} className="text-amber-200" aria-hidden="true" />
-                      <span>{isPreview ? 'Quay Lại Chọn Mẫu' : 'Bước Vào Không Gian Hôn Lễ'}</span>
+                      <span>{isPreview ? 'Đóng Xem Thử' : 'Bước Vào Không Gian Hôn Lễ'}</span>
                       <ArrowRight size={14} aria-hidden="true" />
                     </button>
                   </div>

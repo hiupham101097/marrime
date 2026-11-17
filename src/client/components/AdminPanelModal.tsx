@@ -24,7 +24,12 @@ import {
   CheckCircle2,
   RefreshCw,
   Eye,
+  Star,
+  Flower2,
+  Sparkle,
+  EyeOff,
 } from 'lucide-react';
+import { TemplateAtelierEmblem } from './TemplateAtelierEmblem';
 import {
   WeddingData,
   WeddingTheme,
@@ -838,25 +843,21 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                           id: 'royal',
                           name: 'Hoàng Gia Quý Tộc',
                           desc: 'Hoa văn baroque, vương miện mạ vàng, phong cách dạ tiệc cung đình trang trọng.',
-                          icon: '👑',
                         },
                         {
                           id: 'vintage',
                           name: 'Lãng Mạn Cổ Điển',
                           desc: 'Tông màu ấm áp, ren viền tinh xảo, nét đẹp hoài niệm trữ tình vượt thời gian.',
-                          icon: '🕊️',
                         },
                         {
                           id: 'modern',
                           name: 'Tối Giản Hiện Đại',
                           desc: 'Đường nét thanh mảnh, bố cục tinh tế, sang trọng theo phong cách Bắc Âu.',
-                          icon: '💎',
                         },
                         {
                           id: 'fairytale',
                           name: 'Vườn Hoa Cổ Tích',
                           desc: 'Dây leo hoa lá mộng mơ, cảm giác trong trẻo, hòa mình cùng cỏ cây thiên nhiên.',
-                          icon: '🌸',
                         },
                       ].map((tpl) => (
                         <button
@@ -872,7 +873,9 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                           }`}
                         >
                           <div>
-                            <div className="text-2xl mb-1.5">{tpl.icon}</div>
+                            <div className="mb-2">
+                              <TemplateAtelierEmblem templateId={tpl.id} size="md" withContainer />
+                            </div>
                             <span className="font-serif text-xs font-bold text-stone-900 block">
                               {tpl.name}
                             </span>
@@ -1135,42 +1138,42 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                           id: 'mixed_romance',
                           name: 'Hòa Quyện Lãng Mạn',
                           desc: 'Cánh hoa hồng nhung rơi + Bụi sao hoàng kim lung linh + Trái tim phát sáng.',
-                          icon: '🌟',
+                          icon: <Sparkles className="w-5 h-5 text-amber-500" />,
                           badge: 'Được Yêu Thích Nhất',
                         },
                         {
                           id: 'rose_petals',
                           name: 'Cánh Hoa Hồng Rơi',
                           desc: 'Cơn mưa cánh hoa hồng nhung và hoa trắng rơi chầm chậm dịu dàng.',
-                          icon: '🌸',
+                          icon: <Flower2 className="w-5 h-5 text-rose-500" />,
                           badge: 'Ngọt Ngào Thơ Mộng',
                         },
                         {
                           id: 'golden_stardust',
                           name: 'Bụi Sao Hoàng Kim',
                           desc: 'Những hạt bụi vàng và ngôi sao lấp lánh bay ngược lên như đom đóm trong dạ tiệc 5 sao.',
-                          icon: '✨',
+                          icon: <Star className="w-5 h-5 text-amber-400" />,
                           badge: 'Vương Giả & Sang Trọng',
                         },
                         {
                           id: 'glowing_hearts',
                           name: 'Trái Tim Tình Yêu',
                           desc: 'Những trái tim hồng ửng sáng bay bổng khắp màn hình biểu trưng cho tình yêu đong đầy.',
-                          icon: '💖',
+                          icon: <Heart className="w-5 h-5 text-rose-600" />,
                           badge: 'Tràn Đầy Cảm Xúc',
                         },
                         {
                           id: 'winter_snow',
                           name: 'Tuyết Trắng Pha Lê',
                           desc: 'Những bông tuyết pha lê 6 cánh lung linh rơi dịu dàng trong tiệc cưới mùa đông.',
-                          icon: '❄️',
+                          icon: <Sparkle className="w-5 h-5 text-sky-400" />,
                           badge: 'Tinh Khôi Mùa Đông',
                         },
                         {
                           id: 'none',
                           name: 'Tối Giản Tĩnh Lặng',
                           desc: 'Tắt hiệu ứng bay để tập trung hoàn toàn vào nội dung và hình ảnh trang trọng.',
-                          icon: '🚫',
+                          icon: <EyeOff className="w-5 h-5 text-stone-400" />,
                           badge: 'Tĩnh Lặng',
                         },
                       ].map((eff) => (
@@ -1190,8 +1193,10 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                           }`}
                         >
                           <div>
-                            <div className="flex items-center justify-between mb-1.5">
-                              <span className="text-2xl">{eff.icon}</span>
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="w-8 h-8 rounded-lg bg-stone-50 border border-stone-200/80 flex items-center justify-center">
+                                {eff.icon}
+                              </div>
                               <span className="text-[9px] px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 font-semibold">
                                 {eff.badge}
                               </span>

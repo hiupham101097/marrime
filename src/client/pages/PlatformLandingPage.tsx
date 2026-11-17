@@ -36,6 +36,7 @@ import {
   MasterTemplateItem,
   AUTHOR_DONATE_CONFIG,
 } from '../../shared/defaultData';
+import { TemplateAtelierEmblem } from '../components/TemplateAtelierEmblem';
 
 export const PlatformLandingPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -354,8 +355,8 @@ export const PlatformLandingPage: React.FC = () => {
 
                   {/* Top Badges */}
                   <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/90 backdrop-blur-md text-stone-800 shadow-sm flex items-center space-x-1">
-                      <span>{item.icon}</span>
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/95 backdrop-blur-md text-stone-800 shadow-sm flex items-center space-x-1.5 border border-stone-200/60">
+                      <TemplateAtelierEmblem templateId={item.id} size="sm" />
                       <span>{item.categoryLabel}</span>
                     </span>
                     {item.badge && (
@@ -435,55 +436,58 @@ export const PlatformLandingPage: React.FC = () => {
       {previewTemplate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-5 bg-black/85 backdrop-blur-md animate-fadeIn">
           <div className="bg-[#FFFDF9] border border-stone-300 rounded-3xl max-w-5xl w-full h-[92vh] flex flex-col overflow-hidden shadow-2xl relative">
-            {/* Modal Header (Crisp, luxury bar with zero awkward wrapping) */}
-            <div className="px-4 sm:px-6 py-3 sm:py-3.5 bg-white border-b border-stone-200 flex items-center justify-between flex-shrink-0 gap-3 overflow-x-auto scrollbar-none">
-              <div className="flex items-center space-x-3 shrink-0">
-                <span className="text-2xl sm:text-3xl">{previewTemplate.icon}</span>
-                <div className="whitespace-nowrap">
+            {/* Modal Header (Crisp, luxury bar with zero awkward wrapping & guaranteed visible close button) */}
+            <div className="px-3.5 sm:px-6 py-2.5 sm:py-3.5 bg-white border-b border-stone-200 flex items-center justify-between flex-shrink-0 gap-2 sm:gap-4 z-20">
+              {/* Left: Template Identity */}
+              <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+                <TemplateAtelierEmblem templateId={previewTemplate.id} size="md" withContainer />
+                <div className="min-w-0">
                   <div className="flex items-center space-x-2">
-                    <h4 className="font-serif text-base sm:text-lg font-bold text-stone-900 leading-tight">
+                    <h4 className="font-serif text-sm sm:text-base font-bold text-stone-900 leading-tight truncate">
                       {previewTemplate.name}
                     </h4>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-[#A2682A] border border-amber-200">
+                    <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-[#A2682A] border border-amber-200/80 shrink-0">
                       {previewTemplate.categoryLabel}
                     </span>
                   </div>
-                  <p className="hidden sm:block text-xs text-[#A2682A] font-medium">{previewTemplate.subtitle}</p>
+                  <p className="hidden md:block text-xs text-[#A2682A] font-medium truncate mt-0.5">
+                    {previewTemplate.subtitle}
+                  </p>
                 </div>
               </div>
 
-              {/* View Mode & Device Controls */}
-              <div className="flex items-center space-x-2 sm:space-x-3 shrink-0 whitespace-nowrap">
+              {/* Center: View Mode & Device Controls */}
+              <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
                 {/* Mode Switcher */}
-                <div className="flex items-center p-1 rounded-xl bg-stone-100 border border-stone-200">
+                <div className="flex items-center p-0.5 sm:p-1 rounded-xl bg-stone-100 border border-stone-200">
                   <button
                     type="button"
                     onClick={() => setPreviewMode('website')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer whitespace-nowrap ${
+                    className={`px-2 sm:px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 sm:space-x-1.5 transition-all cursor-pointer whitespace-nowrap ${
                       previewMode === 'website'
                         ? 'bg-white text-stone-900 shadow-sm'
                         : 'text-stone-600 hover:text-stone-900'
                     }`}
                   >
                     <Globe className="w-3.5 h-3.5 text-[#A2682A]" />
-                    <span>Website</span>
+                    <span className="hidden xs:inline">Website</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setPreviewMode('envelope')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer whitespace-nowrap ${
+                    className={`px-2 sm:px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 sm:space-x-1.5 transition-all cursor-pointer whitespace-nowrap ${
                       previewMode === 'envelope'
                         ? 'bg-white text-stone-900 shadow-sm'
                         : 'text-stone-600 hover:text-stone-900'
                     }`}
                   >
                     <Mail className="w-3.5 h-3.5 text-rose-600" />
-                    <span>Bao Thư 3D</span>
+                    <span className="hidden xs:inline">Bao Thư 3D</span>
                   </button>
                 </div>
 
                 {/* Device Switcher (Desktop / Mobile) */}
-                <div className="hidden sm:flex items-center p-1 rounded-xl bg-stone-100 border border-stone-200">
+                <div className="hidden lg:flex items-center p-1 rounded-xl bg-stone-100 border border-stone-200">
                   <button
                     type="button"
                     onClick={() => setPreviewDevice('desktop')}
@@ -511,18 +515,19 @@ export const PlatformLandingPage: React.FC = () => {
                     <span>Mobile</span>
                   </button>
                 </div>
+              </div>
 
-                {/* Studio CTA */}
+              {/* Right: Studio CTA, External Link & Close Button (Always visible & pinned) */}
+              <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
                 <a
                   href={`/studio?template=${previewTemplate.id}`}
-                  className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#8B1A32] to-[#722235] text-white font-bold text-xs shadow-md hover:opacity-95 transition-all flex items-center space-x-1.5 whitespace-nowrap shrink-0"
+                  className="px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-[#8B1A32] to-[#722235] text-white font-bold text-xs shadow-md hover:opacity-95 transition-all flex items-center space-x-1.5 whitespace-nowrap shrink-0"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-200" />
-                  <span className="hidden md:inline">Tạo Bằng Mẫu Này</span>
-                  <span className="md:hidden">Dùng Mẫu</span>
+                  <span className="hidden sm:inline">Tạo Bằng Mẫu Này</span>
+                  <span className="sm:hidden">Dùng Mẫu</span>
                 </a>
 
-                {/* Open in new tab */}
                 <a
                   href={`/?w=${previewTemplate.presetKey}${previewMode === 'website' ? '&preview=true' : ''}`}
                   target="_blank"
@@ -533,12 +538,11 @@ export const PlatformLandingPage: React.FC = () => {
                   <ExternalLink className="w-4 h-4" />
                 </a>
 
-                {/* Close Button */}
                 <button
                   type="button"
                   onClick={() => setPreviewTemplate(null)}
                   className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 flex items-center justify-center cursor-pointer transition-colors shrink-0"
-                  title="Đóng xem trước"
+                  title="Đóng xem trước (Esc)"
                 >
                   <X className="w-4 h-4" />
                 </button>
