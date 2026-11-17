@@ -108,16 +108,22 @@ export function useGuestInfo() {
       const validRole: GuestRole = ROLE_CONFIG[rawRole] ? rawRole : 'ban';
       const cleanName = rawName.trim();
 
+      const rawTable = params.get('table') || params.get('ban') || '';
+      const rawPhone = params.get('phone') || params.get('tel') || '';
+
       if (cleanName) {
         setGuest({
           name: cleanName,
           role: validRole,
+          tableNumber: rawTable ? `Bàn ${rawTable}` : undefined,
+          phone: rawPhone || undefined,
         });
       } else {
         // Default welcoming placeholder
         setGuest({
           name: 'Bạn và Người Thương',
           role: 'ban',
+          tableNumber: rawTable ? `Bàn ${rawTable}` : undefined,
         });
       }
     } catch {

@@ -11,6 +11,12 @@ import {
   envelopePalettes,
   envelopePaperStyle,
 } from './EnvelopeDesign';
+import {
+  playWaxSealCrack,
+  playPaperSlide,
+  triggerHaptic,
+  unlockAudioOnInteraction,
+} from '../utils/soundEffects';
 
 interface EnvelopeModalProps {
   isOpen: boolean;
@@ -153,14 +159,21 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   }, [isOpen, isFlapOpen, isPreview, onOpenEnvelope]);
 
   const triggerSealOpen = () => {
+    playWaxSealCrack();
+    triggerHaptic([25, 45, 20]);
+    unlockAudioOnInteraction();
     playOpenSound?.();
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setPhase('open');
       return;
     }
 
     setPhase('opening');
-    openTimer.current = window.setTimeout(() => setPhase('open'), 220);
+    openTimer.current = window.setTimeout(() => {
+      setPhase('open');
+      playPaperSlide();
+    }, 220);
     void confetti({
       particleCount: 55,
       spread: 75,
@@ -176,6 +189,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   };
 
   const flipEnvelope = () => {
+    playPaperSlide();
     setPhase((previous) => (previous === 'front' ? 'back' : 'front'));
     actionRef.current?.focus({ preventScroll: true });
   };
@@ -183,6 +197,8 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   // 1-Click Smooth Ritual: Tapping envelope on front immediately flips and opens!
   const handleOpenFlow = () => {
     if (phase === 'front') {
+      playPaperSlide();
+      unlockAudioOnInteraction();
       setPhase('back');
       playOpenSound?.();
       window.setTimeout(() => {

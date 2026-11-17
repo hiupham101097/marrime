@@ -11,6 +11,19 @@ export interface GuestInfo {
   role: GuestRole;
   customGreeting?: string;
   tableNumber?: string;
+  tableName?: string;
+  phone?: string;
+}
+
+export interface GuestItem {
+  id: string;
+  name: string;
+  role: GuestRole;
+  phone?: string;
+  tableNumber?: string;
+  tableName?: string;
+  companionsCount?: number;
+  notes?: string;
 }
 
 export interface TimelineMilestone {
@@ -57,6 +70,7 @@ export interface LoveMessage {
 export interface WeddingEventSchedule {
   id: string;
   title: string;
+  description?: string;
   date: string;
   time: string;
   dayOfWeek: string;
@@ -186,6 +200,7 @@ export interface WeddingData {
   };
   sectionsConfig?: WeddingSectionsConfig;
   donateConfig?: WeddingDonateConfig;
+  guestList?: GuestItem[];
 }
 
 export interface PublishedWeddingProject {

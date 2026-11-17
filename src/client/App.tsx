@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles } from 'lucide-react';
+import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles, Table as TableIcon, Globe } from 'lucide-react';
 import { DEFAULT_WEDDING_DATA, PRESET_WEDDING_PROJECTS, DEFAULT_SECTIONS_CONFIG, DEFAULT_DONATE_CONFIG } from '../shared/defaultData';
-import { WeddingData, GuestRole } from '../shared/types';
+import { WeddingData, GuestRole, WishMessage } from '../shared/types';
 import { useGuestInfo } from './hooks/useGuestInfo';
 import { useWeddingAudio } from './hooks/useWeddingAudio';
 
@@ -21,6 +21,7 @@ import { WishingWallSection } from './components/WishingWallSection';
 import { CompletionDonateSection } from './components/CompletionDonateSection';
 import { FloatingEffects } from './components/FloatingEffects';
 import { MusicPlayer } from './components/MusicPlayer';
+import { LiveWishingWallModal } from './components/LiveWishingWallModal';
 
 // Code-splitting for 70%+ faster initial load time
 const WeddingStudioPage = React.lazy(() =>
@@ -89,12 +90,15 @@ export const App: React.FC = () => {
     : DEFAULT_WEDDING_DATA;
 
   const [weddingData, setWeddingData] = useState<WeddingData>(initialWeddingData);
+  const [language, setLanguage] = useState<'vi' | 'en'>('vi');
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(
     searchParams.get('preview') === 'true' || searchParams.get('no_envelope') === 'true' ? false : true
   );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isLiveWallOpen, setIsLiveWallOpen] = useState(searchParams.get('mode') === 'live');
+  const [liveWishes, setLiveWishes] = useState<WishMessage[]>([]);
 
   const sections = weddingData.sectionsConfig || DEFAULT_SECTIONS_CONFIG;
 
@@ -118,6 +122,15 @@ export const App: React.FC = () => {
       .catch(() => {
         // Fallback to DEFAULT_WEDDING_DATA
       });
+
+    fetch('/api/wishes')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.success && data.data) {
+          setLiveWishes(data.data);
+        }
+      })
+      .catch(() => {});
 
     // Listen for real-time live preview updates from Studio parent frame
     const handleLivePreviewMsg = (e: MessageEvent) => {
@@ -292,44 +305,78 @@ export const App: React.FC = () => {
           </button>
 
           {/* Desktop Nav Links (Không bao giờ rớt dòng trên mọi màn hình) */}
-          <nav className="hidden lg:flex items-center space-x-4 xl:space-x-5 text-xs font-semibold text-stone-700 whitespace-nowrap shrink-0">
+          <nav className="hidden lg:flex items-center space-x-3.5 xl:space-x-5 text-xs font-semibold text-stone-700 whitespace-nowrap shrink-0">
             <button
               onClick={() => scrollToSection('invitation-card')}
               className="hover:text-wedding-rose-700 transition-colors cursor-pointer py-1"
             >
-              Thư Mời
+              {language === 'en' ? 'Invitation' : 'Thư Mời'}
             </button>
             <button
               onClick={() => scrollToSection('gallery')}
               className="hover:text-wedding-rose-700 transition-colors cursor-pointer flex items-center space-x-1 py-1"
             >
               <Camera className="w-3.5 h-3.5 text-wedding-gold" />
-              <span>Ảnh Cưới</span>
+              <span>{language === 'en' ? 'Gallery' : 'Ảnh Cưới'}</span>
             </button>
             <button
               onClick={() => scrollToSection('timeline')}
               className="hover:text-wedding-rose-700 transition-colors cursor-pointer py-1"
             >
-              Chặng Đường
+              {language === 'en' ? 'Our Story' : 'Chặng Đường'}
             </button>
             <button
               onClick={() => scrollToSection('event-details')}
               className="hover:text-wedding-rose-700 transition-colors cursor-pointer py-1"
             >
-              Sảnh Cưới & Bản Đồ
+              {language === 'en' ? 'Venue' : 'Sảnh Cưới'}
             </button>
             <button
               onClick={() => scrollToSection('rsvp')}
               className="hover:text-wedding-rose-700 transition-colors cursor-pointer py-1"
             >
-              Xác Nhận Tham Dự
+              {language === 'en' ? 'RSVP' : 'Xác Nhận'}
             </button>
             <button
               onClick={() => scrollToSection('wishes')}
-              className="px-4 py-1.5 rounded-full bg-wedding-rose-50 text-wedding-rose-700 font-bold border border-wedding-rose-300 hover:bg-wedding-rose-100 transition-colors cursor-pointer flex items-center space-x-1 shadow-sm whitespace-nowrap shrink-0"
+              className="px-3.5 py-1.5 rounded-full bg-wedding-rose-50 text-wedding-rose-700 font-bold border border-wedding-rose-300 hover:bg-wedding-rose-100 transition-colors cursor-pointer flex items-center space-x-1 shadow-sm whitespace-nowrap shrink-0"
             >
               <Heart className="w-3.5 h-3.5" />
-              <span>Sổ Lưu Bút</span>
+              <span>{language === 'en' ? 'Guestbook' : 'Sổ Lưu Bút'}</span>
+            </button>
+
+            {/* Language Switcher Pill */}
+            <div className="flex items-center p-0.5 rounded-full bg-stone-100 border border-stone-200 shrink-0">
+              <button
+                type="button"
+                onClick={() => setLanguage('vi')}
+                className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-all cursor-pointer ${
+                  language === 'vi' ? 'bg-[#8B1A32] text-white shadow-xs' : 'text-stone-500 hover:text-stone-900'
+                }`}
+                title="Tiếng Việt"
+              >
+                VI
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage('en')}
+                className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-all cursor-pointer ${
+                  language === 'en' ? 'bg-[#8B1A32] text-white shadow-xs' : 'text-stone-500 hover:text-stone-900'
+                }`}
+                title="English"
+              >
+                EN
+              </button>
+            </div>
+
+            {/* Live Wishing Wall Projection Trigger */}
+            <button
+              type="button"
+              onClick={() => setIsLiveWallOpen(true)}
+              className="p-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-[#8B1A32] border border-amber-200 transition-colors cursor-pointer shrink-0"
+              title="Màn hình LED tiệc cưới trực tiếp (Live Wishing Wall)"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-600 animate-spin" style={{ animationDuration: '6s' }} />
             </button>
           </nav>
 
@@ -400,6 +447,30 @@ export const App: React.FC = () => {
           onExploreClick={() => scrollToSection('timeline')}
           onRsvpClick={() => scrollToSection('rsvp')}
         />
+
+        {/* VIP Smart Table Seating Banner */}
+        {guest.tableNumber && (
+          <div className="max-w-2xl mx-auto px-4 -mt-4 mb-4">
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-50/90 via-[#FFFDF9] to-rose-50/80 border border-amber-300/80 shadow-xs flex items-center justify-between gap-3 animate-fadeIn">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#DFB76C] to-[#9C7328] text-white flex items-center justify-center font-bold shadow-xs shrink-0">
+                  <TableIcon className="w-5 h-5 text-amber-950" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase tracking-widest font-bold text-[#A2682A] block">
+                    {language === 'en' ? 'Your Reserved Table' : 'Vị Trí Chỗ Ngồi Dành Riêng Cho Quý Khách'}
+                  </span>
+                  <h4 className="font-serif text-sm sm:text-base font-bold text-stone-900">
+                    {guest.name}: <span className="text-[#8B1A32]">{guest.tableNumber}</span>
+                  </h4>
+                </div>
+              </div>
+              <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-white text-stone-600 text-xs font-semibold border border-stone-200">
+                {weddingData.events[0]?.venueName}
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* 2. Personalized Guest Invitation Card (Chế độ chỉ đọc cho quan khách) */}
         {sections.showGuestCard !== false && (
@@ -518,6 +589,17 @@ export const App: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* Live Wishing Wall Modal (Màn Hình Chiếu Sảnh Tiệc) */}
+      <LiveWishingWallModal
+        isOpen={isLiveWallOpen}
+        onClose={() => setIsLiveWallOpen(false)}
+        groomName={weddingData.groom.shortName || weddingData.groom.name}
+        brideName={weddingData.bride.shortName || weddingData.bride.name}
+        weddingDateFormatted={weddingData.weddingDateFormatted}
+        wishes={liveWishes}
+        weddingSlug={requestedSlug || 'marrime'}
+      />
     </div>
   );
 };

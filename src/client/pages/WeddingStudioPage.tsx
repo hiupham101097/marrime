@@ -68,12 +68,21 @@ import {
   MASTER_TEMPLATE_CATALOG,
 } from '../../shared/defaultData';
 import { ImageSelector } from '../components/ImageSelector';
+import { GuestCrmManager } from '../components/GuestCrmManager';
+import { AtelierCopywriterModal } from '../components/AtelierCopywriterModal';
+import { LiveWishingWallModal } from '../components/LiveWishingWallModal';
+import { WishMessage } from '../../shared/types';
 
 export const WeddingStudioPage: React.FC = () => {
   // Free & open access: No login gate needed!
   const [editingPin, setEditingPin] = useState('');
   const [copiedPin, setCopiedPin] = useState(false);
   const [copiedAuthorBank, setCopiedAuthorBank] = useState(false);
+
+  // Modals for newly expanded pillars
+  const [isCopywriterOpen, setIsCopywriterOpen] = useState(false);
+  const [isLiveWallOpen, setIsLiveWallOpen] = useState(false);
+  const [wishes, setWishes] = useState<WishMessage[]>([]);
 
   // Lookup existing wedding project modal state
   const [isLookupModalOpen, setIsLookupModalOpen] = useState(false);
@@ -159,12 +168,21 @@ export const WeddingStudioPage: React.FC = () => {
         .catch(() => {});
     }
 
-    // Fetch RSVP list
+    // Fetch RSVP list & Wishes
     fetch('/api/rsvp')
       .then((res) => res.json())
       .then((res) => {
         if (res && res.success && res.data) {
           setRsvps(res.data);
+        }
+      })
+      .catch(() => {});
+
+    fetch('/api/wishes')
+      .then((res) => res.json())
+      .then((res) => {
+        if (res && res.success && res.data) {
+          setWishes(res.data);
         }
       })
       .catch(() => {});
@@ -207,6 +225,24 @@ export const WeddingStudioPage: React.FC = () => {
     } finally {
       setIsLookingUp(false);
     }
+  };
+
+  const handleApplyInvitationCopy = (text: string) => {
+    const updatedEvents = [...formData.events];
+    if (updatedEvents.length > 0) {
+      updatedEvents[0] = {
+        ...updatedEvents[0],
+        description: text,
+      };
+    }
+    setFormData({
+      ...formData,
+      events: updatedEvents,
+      thankYouNote: {
+        ...formData.thankYouNote,
+        message: text,
+      },
+    });
   };
 
   const handleTogglePreviewAudio = (url?: string, trackId?: string) => {
@@ -461,6 +497,16 @@ export const WeddingStudioPage: React.FC = () => {
           >
             <KeyRound className="w-3.5 h-3.5 text-[#A2682A]" />
             <span className="hidden sm:inline">Nhập Mã Sửa Cũ</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsLiveWallOpen(true)}
+            className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-amber-300/70 bg-amber-50/90 text-xs font-bold text-[#8B1A32] hover:bg-amber-100 transition-colors shadow-2xs shrink-0 whitespace-nowrap cursor-pointer"
+            title="Mở màn hình LED trình chiếu lời chúc phúc trực tiếp tại sảnh tiệc"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-600 animate-spin" style={{ animationDuration: '6s' }} />
+            <span>Màn Hình LED Sảnh Tiệc</span>
           </button>
 
           <a
@@ -1059,6 +1105,34 @@ export const WeddingStudioPage: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Atelier AI Copywriter Card */}
+                <div className="bg-gradient-to-r from-amber-50/90 via-[#FFFDF9] to-rose-50/80 p-5 rounded-2xl border border-amber-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8B1A32] to-[#551020] text-amber-200 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                      <Wand2 className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-serif text-sm font-bold text-stone-900 flex items-center space-x-1.5">
+                        <span>Trợ Lý Soạn Lời Mời Cưới (Atelier Copywriter)</span>
+                        <span className="px-2 py-0.5 rounded-full bg-amber-100 text-[10px] text-[#A2682A] font-bold">
+                          5 Phong Cách Chuẩn Mực
+                        </span>
+                      </h4>
+                      <p className="text-xs text-stone-600 mt-0.5">
+                        Tự động gợi ý lời mời cưới trang trọng, lãng mạn, bạn bè thân mật hoặc song ngữ EN/VI
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsCopywriterOpen(true)}
+                    className="px-4 py-2 rounded-xl bg-[#8B1A32] hover:bg-[#722235] text-white text-xs font-bold shadow-sm flex items-center justify-center space-x-1.5 cursor-pointer shrink-0 transition-colors"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-amber-200" />
+                    <span>Mở Trợ Lý Viết Lời Mời</span>
+                  </button>
+                </div>
+
                 {/* Event Schedule List */}
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -1511,6 +1585,15 @@ export const WeddingStudioPage: React.FC = () => {
                     </button>
                   </div>
                 </div>
+
+                {/* 2. GUEST CRM & BULK PERSONALIZED LINK GENERATOR */}
+                <GuestCrmManager
+                  guests={formData.guestList || []}
+                  onUpdateGuests={(updatedGuests) => setFormData({ ...formData, guestList: updatedGuests })}
+                  weddingSlug={weddingSlug}
+                  groomName={formData.groom.shortName || formData.groom.name}
+                  brideName={formData.bride.shortName || formData.bride.name}
+                />
               </div>
             )}
 
@@ -2120,6 +2203,28 @@ export const WeddingStudioPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Atelier Copywriter Modal */}
+      <AtelierCopywriterModal
+        isOpen={isCopywriterOpen}
+        onClose={() => setIsCopywriterOpen(false)}
+        onApply={handleApplyInvitationCopy}
+        groomName={formData.groom.name}
+        brideName={formData.bride.name}
+        weddingDateFormatted={formData.weddingDateFormatted}
+        venueName={formData.events[0]?.venueName || 'Nhà Hàng Tiệc Cưới'}
+      />
+
+      {/* Live Wishing Wall Modal (Màn Hình Chiếu Sảnh Tiệc) */}
+      <LiveWishingWallModal
+        isOpen={isLiveWallOpen}
+        onClose={() => setIsLiveWallOpen(false)}
+        groomName={formData.groom.shortName || formData.groom.name}
+        brideName={formData.bride.shortName || formData.bride.name}
+        weddingDateFormatted={formData.weddingDateFormatted}
+        wishes={wishes}
+        weddingSlug={weddingSlug}
+      />
     </div>
   );
 };
