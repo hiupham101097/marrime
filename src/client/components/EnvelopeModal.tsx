@@ -68,6 +68,49 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
       ? [dayOfWeek, weddingDateFormatted].filter(Boolean).join(', ')
       : weddingDateFormatted;
 
+  // Dynamic 3D interactive spatial parallax & touch swipe
+  const [tilt, setTilt] = useState({ x: 0, y: 0, glareX: 50, glareY: 50 });
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const stage = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - stage.left) / stage.width;
+    const y = (e.clientY - stage.top) / stage.height;
+    const tiltX = (y - 0.5) * -14;
+    const tiltY = (x - 0.5) * 16;
+    setTilt({
+      x: Math.max(-14, Math.min(14, tiltX)),
+      y: Math.max(-16, Math.min(16, tiltY)),
+      glareX: Math.round(x * 100),
+      glareY: Math.round(y * 100),
+    });
+  };
+
+  const handlePointerLeave = () => {
+    setTilt({ x: 0, y: 0, glareX: 50, glareY: 50 });
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    if (touch) {
+      touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartRef.current) return;
+    const touch = e.changedTouches[0];
+    if (touch) {
+      const diffX = touch.clientX - touchStartRef.current.x;
+      const diffY = touch.clientY - touchStartRef.current.y;
+      if (Math.abs(diffX) > 45 && Math.abs(diffY) < 60 && phase !== 'open' && phase !== 'opening') {
+        flipEnvelope();
+      }
+    }
+    touchStartRef.current = null;
+  };
+
   useEffect(() => {
     if (isOpen) {
       actionRef.current?.focus({ preventScroll: true });
@@ -169,7 +212,13 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
       aria-label="Phong bì thiệp cưới cao cấp"
       data-design={design}
       style={envelopePaperStyle(design)}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
     >
+      {/* Living Atmospheric Space (Bóng đổ nắng qua rèm & bụi vàng atelier bay lơ lửng) */}
+      <div className="wedding-envelope__ambient-shadows" aria-hidden="true" />
+      <div className="wedding-envelope__ambient-motes" aria-hidden="true" />
+
       <div className="wedding-envelope__scene">
         {/* Bypass / Direct Entrance button in top corner (Safe on iOS Dynamic Island) */}
         <button
@@ -202,13 +251,45 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
           </span>
         </div>
 
+        {/* Flatlay Antique Brass Letter-Opener / Calligraphy Pen Accessory */}
+        <div className="wedding-envelope__flatlay-tool" aria-hidden="true">
+          <svg viewBox="0 0 32 160" className="wedding-envelope__flatlay-tool-svg">
+            <defs>
+              <linearGradient id="brassToolGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FFF2C6" />
+                <stop offset="35%" stopColor="#DFB76C" />
+                <stop offset="70%" stopColor="#9C7328" />
+                <stop offset="100%" stopColor="#5E4010" />
+              </linearGradient>
+            </defs>
+            {/* Ornate Handle */}
+            <circle cx="16" cy="18" r="10" fill="none" stroke="url(#brassToolGrad)" strokeWidth="3" />
+            <circle cx="16" cy="18" r="4" fill="url(#brassToolGrad)" />
+            <rect x="13" y="28" width="6" height="18" rx="2" fill="url(#brassToolGrad)" />
+            {/* Tapered Blade */}
+            <path d="M13 46 L19 46 L17.5 145 Q16 156 14.5 145 Z" fill="url(#brassToolGrad)" />
+            <line x1="16" y1="46" x2="16" y2="148" stroke="#FFF7DD" strokeWidth="0.8" opacity="0.6" />
+          </svg>
+        </div>
+
         <div className="wedding-envelope__layout">
           {/* Animated hint badge */}
           <div className="wedding-envelope__hint" aria-live="polite" aria-atomic="true">
             <span className="wedding-envelope__hint-badge">{hintTexts[phase]}</span>
           </div>
 
-          <div className="wedding-envelope__stage" data-phase={phase}>
+          <div
+            className="wedding-envelope__stage"
+            data-phase={phase}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            style={{
+              '--tilt-x': `${tilt.x}deg`,
+              '--tilt-y': `${tilt.y}deg`,
+              '--glare-x': `${tilt.glareX}%`,
+              '--glare-y': `${tilt.glareY}%`,
+            } as React.CSSProperties}
+          >
             <div className="wedding-envelope__rotator">
               {/* 1. FRONT OF ENVELOPE */}
               <div className="wedding-envelope__face wedding-envelope__front" inert={isFlipped}>
@@ -247,10 +328,22 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                   title={isFlapOpen ? 'Chạm lá thiệp để bước vào không gian hôn lễ' : undefined}
                 >
                   <div className="wedding-envelope__letter-inner">
+                    {/* Watermark Crest Background */}
+                    <div className="wedding-envelope__letter-watermark" aria-hidden="true">
+                      {displayMonogram}
+                    </div>
+
                     <p className="wedding-envelope__letter-monogram">{displayMonogram}</p>
-                    <p className="wedding-envelope__letter-salutation-label">Trân trọng kính mời</p>
+                    <p className="wedding-envelope__letter-salutation-label">TRÂN TRỌNG KÍNH MỜI QUAN KHÁCH</p>
                     <h2 className="wedding-envelope__letter-guest">{cleanSalutation}</h2>
-                    <p className="wedding-envelope__letter-occasion">Tới dự lễ thành hôn của</p>
+
+                    <div className="wedding-envelope__letter-divider-ornament" aria-hidden="true">
+                      <span className="wedding-envelope__letter-line" />
+                      <span className="wedding-envelope__letter-gem">✦</span>
+                      <span className="wedding-envelope__letter-line" />
+                    </div>
+
+                    <p className="wedding-envelope__letter-occasion">Tới dự lễ thành hôn trăm năm của</p>
 
                     <h3 className="wedding-envelope__letter-couple">
                       {groomName}{' '}

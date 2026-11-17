@@ -124,6 +124,46 @@ html:has(.wedding-envelope) {
     linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, transparent 35%, rgba(0, 0, 0, 0.42) 100%);
 }
 
+/* Dappled Atelier Window Light & Leaf Shadows (Bóng đổ nắng qua rèm cửa sổ & cành lá) */
+.wedding-envelope__ambient-shadows {
+  position: absolute;
+  inset: -10%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  background:
+    radial-gradient(ellipse at 78% 22%, rgba(0, 0, 0, 0.6) 0%, transparent 52%),
+    radial-gradient(ellipse at 22% 78%, rgba(0, 0, 0, 0.45) 0%, transparent 48%),
+    radial-gradient(circle at 55% 45%, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+  animation: atelier-shadow-drift 22s ease-in-out infinite alternate;
+}
+
+@keyframes atelier-shadow-drift {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.03) translate(-1.5%, 1.2%); }
+  100% { transform: scale(0.98) translate(1.2%, -1%); }
+}
+
+/* Floating Stardust Atelier Motes */
+.wedding-envelope__ambient-motes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 18% 25%, rgba(255, 235, 175, 0.45) 50%, transparent 100%),
+    radial-gradient(2px 2px at 72% 38%, rgba(255, 235, 175, 0.55) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 42% 75%, rgba(255, 235, 175, 0.4) 50%, transparent 100%),
+    radial-gradient(2px 2px at 85% 82%, rgba(255, 235, 175, 0.5) 50%, transparent 100%);
+  animation: motes-shimmer 8s ease-in-out infinite alternate;
+}
+
+@keyframes motes-shimmer {
+  0% { opacity: 0.35; transform: translateY(0); }
+  100% { opacity: 0.85; transform: translateY(-8px); }
+}
+
 /* ── Scene layout ─────────────────────────────────────────────── */
 
 .wedding-envelope__scene {
@@ -198,6 +238,30 @@ html:has(.wedding-envelope) {
   user-select: none;
 }
 
+/* ── Flatlay Antique Brass Letter-Opener / Calligraphy Pen Accessory */
+.wedding-envelope__flatlay-tool {
+  position: absolute;
+  top: clamp(20px, 15vh, 120px);
+  right: clamp(16px, 6vw, 80px);
+  width: 28px;
+  height: 140px;
+  pointer-events: none;
+  z-index: 5;
+  transform: rotate(38deg);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.45));
+  opacity: 0.85;
+}
+.wedding-envelope__flatlay-tool-svg {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .wedding-envelope__flatlay-tool {
+    display: none;
+  }
+}
+
 @media (max-width: 560px) {
   .wedding-envelope__flatlay-seal {
     display: none; /* Hide on small screens to prevent overlapping bottom controls */
@@ -245,45 +309,45 @@ html:has(.wedding-envelope) {
   50% { opacity: 0.8; transform: scale(0.98); }
 }
 
-/* ── Envelope Stage with 3D Depth ────────────────────────────── */
+/* ── Envelope Stage with 3D Depth & Interactive Parallax ──────── */
 
 .wedding-envelope__stage {
   position: relative;
   aspect-ratio: 1.62;
-  perspective: 1800px;
+  perspective: 2000px;
   isolation: isolate;
   transition: margin-top 500ms cubic-bezier(0.2, 0.8, 0.25, 1);
 }
 
 .wedding-envelope__stage[data-phase='open'] {
-  margin-top: clamp(32px, 8vh, 65px);
+  margin-top: clamp(28px, 6vh, 52px);
 }
 
-/* Soft ambient shadow below the envelope */
+/* Dynamic ambient shadow beneath envelope responding to tilt */
 .wedding-envelope__stage::before {
   content: '';
   position: absolute;
   z-index: -1;
-  inset: 5% 3% -4%;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.45);
-  filter: blur(18px);
-  transform: translateY(12px);
-  transition: opacity 300ms ease;
+  inset: 6% 4% -5%;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.48);
+  filter: blur(20px);
+  transform: translate(calc(var(--tilt-y, 0deg) * -1.8px), calc(14px + var(--tilt-x, 0deg) * 1.5px));
+  transition: transform 120ms ease-out, opacity 300ms ease;
 }
 
-/* ── 3D Rotator ───────────────────────────────────────────────── */
+/* ── 3D Rotator with Interactive Tilt Tracking ────────────────── */
 
 .wedding-envelope__rotator {
   position: absolute;
   inset: 0;
   transform-style: preserve-3d;
   will-change: transform;
-  transform: translateZ(0);
-  transition: transform 680ms cubic-bezier(0.25, 0.7, 0.22, 1);
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(0);
+  transition: transform 120ms ease-out;
 }
 .wedding-envelope__stage:not([data-phase='front']) .wedding-envelope__rotator {
-  transform: rotateY(180deg);
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(calc(180deg + var(--tilt-y, 0deg))) translateZ(0);
 }
 
 /* ── Face (Front & Back) ─────────────────────────────────────── */
@@ -574,6 +638,45 @@ html:has(.wedding-envelope) {
   text-align: center;
   padding: clamp(14px, 3vw, 26px) clamp(16px, 3.2vw, 28px);
   gap: clamp(3px, 1vw, 8px);
+}
+
+/* Watermark Monogram Background Relief */
+.wedding-envelope__letter-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(4rem, 15vw, 7.5rem);
+  font-style: italic;
+  font-weight: 700;
+  opacity: 0.05;
+  color: currentColor;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Regal Divider Ornament with Gem */
+.wedding-envelope__letter-divider-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 60%;
+  max-width: 220px;
+  margin-block: 2px;
+  color: var(--foil, #DFB76C);
+}
+.wedding-envelope__letter-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0.7;
+}
+.wedding-envelope__letter-gem {
+  font-size: 0.8rem;
+  line-height: 1;
 }
 
 .wedding-envelope__letter-monogram {

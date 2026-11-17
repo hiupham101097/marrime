@@ -331,6 +331,71 @@ export interface EnvelopeDesignProps {
 }
 
 /**
+ * Authentic Haute-Couture Baroque Filigree Corner Ornament
+ */
+function BaroqueFiligreeCorner({ pos }: { pos: 'tl' | 'tr' | 'bl' | 'br' }) {
+  const transforms = {
+    tl: undefined,
+    tr: 'scaleX(-1)',
+    bl: 'scaleY(-1)',
+    br: 'scale(-1, -1)',
+  };
+
+  return (
+    <svg
+      className={`royal-corner-filigree royal-corner-filigree--${pos}`}
+      viewBox="0 0 50 50"
+      fill="none"
+      stroke="#E5C368"
+      strokeWidth="1.2"
+      aria-hidden="true"
+      style={transforms[pos] ? { transform: transforms[pos] } : undefined}
+    >
+      <path d="M2 2 L48 2 M2 2 L2 48" strokeWidth="1.4" opacity="0.9" />
+      <path d="M2 6 L6 2 M2 10 L10 2 M2 14 L14 2" strokeWidth="0.8" opacity="0.6" />
+      <path
+        d="M6 6 C12 6, 16 10, 16 16 C16 12, 22 8, 28 8 C20 16, 22 24, 24 28 C18 22, 12 24, 10 30 C10 20, 8 14, 2 12"
+        fill="#E5C368"
+        fillOpacity="0.25"
+      />
+      <circle cx="2" cy="2" r="2.5" fill="#E5C368" />
+    </svg>
+  );
+}
+
+/**
+ * Authentic Imperial Cloud Corner (Vân Mây Cung Đình Huế)
+ */
+function ImperialCloudCorner({ pos }: { pos: 'tl' | 'tr' | 'bl' | 'br' }) {
+  const transforms = {
+    tl: undefined,
+    tr: 'scaleX(-1)',
+    bl: 'scaleY(-1)',
+    br: 'scale(-1, -1)',
+  };
+
+  return (
+    <svg
+      className={`trad-corner-cloud trad-corner-cloud--${pos}`}
+      viewBox="0 0 50 50"
+      fill="none"
+      stroke="#FADB6B"
+      strokeWidth="1.2"
+      aria-hidden="true"
+      style={transforms[pos] ? { transform: transforms[pos] } : undefined}
+    >
+      <path d="M2 2 L48 2 M2 2 L2 48" strokeWidth="1.4" opacity="0.85" />
+      <path
+        d="M6 6 C12 3, 20 5, 22 10 C26 7, 34 8, 34 16 C28 16, 24 20, 18 18 C16 24, 8 24, 6 18 Z"
+        fill="#FADB6B"
+        fillOpacity="0.3"
+      />
+      <circle cx="2" cy="2" r="2.5" fill="#FADB6B" />
+    </svg>
+  );
+}
+
+/**
  * 10 PHONG CÁCH MẶT TRƯỚC BAO THIỆP — HAUTE COUTURE STATIONERY (KHÔNG EMOJI)
  */
 export function EnvelopeDesign({ style, monogram, guest, couple, date }: EnvelopeDesignProps) {
@@ -379,25 +444,33 @@ export function EnvelopeDesign({ style, monogram, guest, couple, date }: Envelop
   if (style === 'traditional_silk') {
     return (
       <span className="envelope-design envelope-design--traditional" data-design={style}>
-        <div className="trad-wave-border trad-wave-border--top" />
-        <div className="trad-wave-border trad-wave-border--bottom" />
+        <ImperialCloudCorner pos="tl" />
+        <ImperialCloudCorner pos="tr" />
+        <ImperialCloudCorner pos="bl" />
+        <ImperialCloudCorner pos="br" />
+
+        <div className="trad-inner-frame" aria-hidden="true" />
 
         <div className="trad-layout">
           <div className="trad-medallion-box">
             <div className="trad-medallion">
               <span className="trad-songhy">囍</span>
-              <span className="trad-sub-blessing">TRĂM NĂM HẠNH PHÚC</span>
+              <span className="trad-sub-blessing">LOAN PHỤNG HÒA MINH</span>
             </div>
           </div>
 
           <div className="trad-text-box">
-            <span className="trad-headline">THIỆP HỒNG BÁO HỶ</span>
-            <span className="trad-salutation">Kính mời quan khách danh dự:</span>
-            <strong className="trad-guest-name">{guest}</strong>
-            <span className="trad-gold-line" />
+            <div className="trad-badge-title">
+              <span>CUNG CHÚC TÂN HỶ · THIỆP HỒNG BÁO HỶ</span>
+            </div>
+            <span className="trad-salutation">Kính mời Quan khách Danh dự:</span>
+            <div className="trad-guest-cartouche">
+              <strong className="trad-guest-name">{guest}</strong>
+            </div>
+            <div className="trad-gold-line" />
             <div className="trad-footer-info">
-              <span>HÔN LỄ: {couple}</span>
-              {date && <span>NGÀY LÀNH: {date}</span>}
+              <span className="trad-couple-sign">HÔN LỄ TRĂM NĂM: {couple}</span>
+              {date && <span className="trad-date-sign">NGÀY LÀNH: {date}</span>}
             </div>
           </div>
         </div>
@@ -632,22 +705,27 @@ export function EnvelopeDesign({ style, monogram, guest, couple, date }: Envelop
   // ── 10 (DEFAULT): ROYAL VELVET (HOÀNG GIA QUÝ TỘC CHÂU ÂU) ──
   return (
     <span className="envelope-design envelope-design--royal" data-design={style}>
-      <span className="royal-corner royal-corner--tl" />
-      <span className="royal-corner royal-corner--tr" />
-      <span className="royal-corner royal-corner--bl" />
-      <span className="royal-corner royal-corner--br" />
+      <BaroqueFiligreeCorner pos="tl" />
+      <BaroqueFiligreeCorner pos="tr" />
+      <BaroqueFiligreeCorner pos="bl" />
+      <BaroqueFiligreeCorner pos="br" />
+
+      {/* Gold Hairline Inner Frame */}
+      <div className="royal-inner-frame" aria-hidden="true" />
 
       {/* Royal Crown Vector Emblem */}
       <div className="royal-crest-box">
-        <svg className="royal-crown-svg" viewBox="0 0 36 24" fill="currentColor">
-          <path d="M4 20 L32 20 L30 10 L23 16 L18 6 L13 16 L6 10 Z" />
-          <circle cx="6" cy="8" r="1.5" />
-          <circle cx="18" cy="4" r="2" />
-          <circle cx="30" cy="8" r="1.5" />
-          <rect x="4" y="21" width="28" height="2" rx="1" opacity="0.8" />
+        <svg className="royal-crown-svg" viewBox="0 0 48 30" fill="none" stroke="#E5C368" strokeWidth="1.2" aria-hidden="true">
+          <path d="M4 25 L44 25 L40 12 L30 18 L24 6 L18 18 L8 12 Z" fill="rgba(229, 195, 104, 0.25)" />
+          <circle cx="24" cy="4" r="2.2" fill="#FDE68A" />
+          <circle cx="8" cy="10" r="1.8" fill="#FDE68A" />
+          <circle cx="40" cy="10" r="1.8" fill="#FDE68A" />
+          <circle cx="18" cy="16" r="1.3" fill="#FDE68A" />
+          <circle cx="30" cy="16" r="1.3" fill="#FDE68A" />
+          <rect x="4" y="25" width="40" height="2.5" rx="1.2" fill="#E5C368" />
         </svg>
         <span className="royal-monogram">{monogram}</span>
-        <span className="royal-proclamation">HOÀNG GIA CHÂU ÂU · ATELIER</span>
+        <span className="royal-proclamation">HOÀNG GIA CHÂU ÂU · ATELIER ĐỘC BẢN</span>
       </div>
 
       <div className="royal-title-bar">
@@ -655,17 +733,22 @@ export function EnvelopeDesign({ style, monogram, guest, couple, date }: Envelop
       </div>
 
       <div className="royal-guest-zone">
-        <span className="royal-salutation">Trân trọng kính mời Quan khách Quý tộc:</span>
-        <strong className="royal-guest-name">{guest}</strong>
-        <div className="royal-gold-line" />
-        <span className="royal-couple-lead">
-          Tham dự lễ cưới hoàng gia của {couple}
-        </span>
+        <span className="royal-salutation">TRÂN TRỌNG KÍNH MỜI QUÝ QUAN KHÁCH</span>
+        <div className="royal-guest-cartouche">
+          <strong className="royal-guest-name">{guest}</strong>
+        </div>
+        <div className="royal-ornament-line" aria-hidden="true">
+          <span className="royal-ornament-leaf">❧</span>
+          <span className="royal-ornament-gem">✦</span>
+          <span className="royal-ornament-leaf">☙</span>
+        </div>
+        <p className="royal-invitation-lead">TỚI DỰ HÔN LỄ HOÀNG GIA CỦA</p>
+        <h3 className="royal-couple-names">{couple}</h3>
       </div>
 
       {date && (
         <div className="royal-footer">
-          <span>{date} · GRAND BALLROOM</span>
+          <span>✧ {date} · GRAND BALLROOM ✧</span>
         </div>
       )}
     </span>
