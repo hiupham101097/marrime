@@ -13,6 +13,7 @@ import {
 import confetti from 'canvas-confetti';
 import { GuestDropPhotoItem } from '../../shared/types';
 import { triggerHaptic } from '../utils/soundEffects';
+import { WeddingPolaroidModal } from './WeddingPolaroidModal';
 
 interface GuestPhotoDropSectionProps {
   photos: GuestDropPhotoItem[];
@@ -37,6 +38,7 @@ export const GuestPhotoDropSection: React.FC<GuestPhotoDropSectionProps> = ({
   const [uploaderTable, setUploaderTable] = useState(tableNumber);
   const [caption, setCaption] = useState('');
   const [likedMap, setLikedMap] = useState<Record<string, boolean>>({});
+  const [activePolaroidPhoto, setActivePolaroidPhoto] = useState<GuestDropPhotoItem | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -169,6 +171,19 @@ export const GuestPhotoDropSection: React.FC<GuestPhotoDropSectionProps> = ({
                       <span>{currentLikes}</span>
                     </span>
                   </div>
+
+                  {/* Polaroid Frame Action */}
+                  <div className="pt-2 border-t border-stone-100 flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setActivePolaroidPhoto(item)}
+                      className="w-full py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#8B1A32] border border-amber-200 text-[10px] font-bold flex items-center justify-center space-x-1 cursor-pointer transition-colors"
+                      title="Lồng ảnh vào khung Polaroid mạ vàng để tải về hoặc in ấn"
+                    >
+                      <Camera className="w-3 h-3 text-amber-600" />
+                      <span>Khung Polaroid Mạ Vàng</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             );
@@ -287,6 +302,20 @@ export const GuestPhotoDropSection: React.FC<GuestPhotoDropSectionProps> = ({
             </form>
           </div>
         </div>
+      )}
+
+      {/* Wedding Polaroid Frame Modal */}
+      {activePolaroidPhoto && (
+        <WeddingPolaroidModal
+          isOpen={true}
+          onClose={() => setActivePolaroidPhoto(null)}
+          imageUrl={activePolaroidPhoto.url}
+          groomName={groomName}
+          brideName={brideName}
+          defaultUploader={activePolaroidPhoto.uploaderName}
+          defaultTable={activePolaroidPhoto.tableNumber}
+          defaultCaption={activePolaroidPhoto.caption}
+        />
       )}
     </section>
   );

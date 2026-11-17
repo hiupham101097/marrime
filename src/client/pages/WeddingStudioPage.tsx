@@ -51,6 +51,8 @@ import {
   Globe,
   HelpCircle,
   HeartHandshake,
+  Wallet,
+  BookOpen,
 } from 'lucide-react';
 import {
   WeddingData,
@@ -67,6 +69,7 @@ import {
   LinerPatternKey,
   MonogramStyleKey,
   LoveMessage,
+  BudgetItem,
 } from '../../shared/types';
 import {
   DEFAULT_WEDDING_DATA,
@@ -80,6 +83,8 @@ import {
   MASTER_TEMPLATE_CATALOG,
   DEFAULT_TRIVIA_QUESTIONS,
   INITIAL_SONG_REQUESTS,
+  DEFAULT_BUDGET_ITEMS,
+  INITIAL_GUEST_DROP_PHOTOS,
 } from '../../shared/defaultData';
 import { ImageSelector } from '../components/ImageSelector';
 import { GuestCrmManager } from '../components/GuestCrmManager';
@@ -87,6 +92,8 @@ import { AtelierCopywriterModal } from '../components/AtelierCopywriterModal';
 import { StageLedWallModal } from '../components/StageLedWallModal';
 import { AiVowsGeneratorModal } from '../components/AiVowsGeneratorModal';
 import { PartnerCoEditModal } from '../components/PartnerCoEditModal';
+import { WeddingBudgetManager } from '../components/WeddingBudgetManager';
+import { WeddingKeepsakeBookModal } from '../components/WeddingKeepsakeBookModal';
 import { WishMessage } from '../../shared/types';
 
 export const WeddingStudioPage: React.FC = () => {
@@ -100,6 +107,7 @@ export const WeddingStudioPage: React.FC = () => {
   const [isAiVowsOpen, setIsAiVowsOpen] = useState(false);
   const [isCoEditOpen, setIsCoEditOpen] = useState(false);
   const [isLiveWallOpen, setIsLiveWallOpen] = useState(false);
+  const [isKeepsakeBookOpen, setIsKeepsakeBookOpen] = useState(false);
   const [wishes, setWishes] = useState<WishMessage[]>([]);
 
   // Lookup existing wedding project modal state
@@ -116,7 +124,7 @@ export const WeddingStudioPage: React.FC = () => {
   // Step 5: Bao Thư 3D & Chia Sẻ Lời Mời Zalo
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
-  const [advancedTab, setAdvancedTab] = useState<'timeline' | 'vows' | 'builder' | 'animation' | 'rsvp'>('timeline');
+  const [advancedTab, setAdvancedTab] = useState<'timeline' | 'vows' | 'budget' | 'builder' | 'animation' | 'rsvp'>('timeline');
 
   // Preview device & view mode
   const [previewDevice, setPreviewDevice] = useState<'mobile' | 'desktop'>('mobile');
@@ -542,6 +550,16 @@ export const WeddingStudioPage: React.FC = () => {
           >
             <Wand2 className="w-3.5 h-3.5 text-amber-600" />
             <span>Lời Thề Nguyện AI</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsKeepsakeBookOpen(true)}
+            className="hidden xl:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-purple-300 bg-purple-50 text-xs font-bold text-purple-900 hover:bg-purple-100 transition-colors shadow-2xs shrink-0 whitespace-nowrap cursor-pointer"
+            title="Mở tạp chí kỷ yếu cưới hoàng gia (có thể in ấn hoặc lưu PDF)"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-purple-700" />
+            <span>Kỷ Yếu Cưới PDF</span>
           </button>
 
           <button
@@ -1929,6 +1947,7 @@ export const WeddingStudioPage: React.FC = () => {
                     {[
                       { id: 'timeline', label: 'Cột Mốc Kỷ Niệm', icon: Heart },
                       { id: 'vows', label: 'Lời Hẹn Ước', icon: Sparkles },
+                      { id: 'budget', label: 'Ngân Sách & Vendors', icon: Wallet },
                       { id: 'builder', label: 'Bật/Tắt Các Khối', icon: Layers },
                       { id: 'animation', label: 'Hiệu Ứng Bay', icon: Wand2 },
                       { id: 'rsvp', label: 'Khách RSVP', icon: Users },
@@ -2050,6 +2069,14 @@ export const WeddingStudioPage: React.FC = () => {
                         </div>
                       ))}
                     </div>
+                  )}
+
+                  {/* Sub-tab: Wedding Budget & Vendors */}
+                  {advancedTab === 'budget' && (
+                    <WeddingBudgetManager
+                      budgetItems={formData.budgetItems || DEFAULT_BUDGET_ITEMS}
+                      onUpdateBudget={(updatedBudget) => setFormData({ ...formData, budgetItems: updatedBudget })}
+                    />
                   )}
 
                   {/* Sub-tab 3: Section Toggles */}
@@ -2569,6 +2596,15 @@ export const WeddingStudioPage: React.FC = () => {
         weddingSlug={weddingSlug}
         groomName={formData.groom.shortName || formData.groom.name}
         brideName={formData.bride.shortName || formData.bride.name}
+      />
+
+      {/* Royal Wedding Keepsake Booklet Modal */}
+      <WeddingKeepsakeBookModal
+        isOpen={isKeepsakeBookOpen}
+        onClose={() => setIsKeepsakeBookOpen(false)}
+        weddingData={formData}
+        wishes={wishes}
+        guestPhotos={INITIAL_GUEST_DROP_PHOTOS}
       />
     </div>
   );

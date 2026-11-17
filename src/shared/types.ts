@@ -218,6 +218,7 @@ export interface WeddingData {
   guestList?: GuestItem[];
   postWeddingConfig?: PostWeddingConfig;
   guestDropPhotos?: GuestDropPhotoItem[];
+  budgetItems?: BudgetItem[];
 }
 
 export interface PublishedWeddingProject {
@@ -299,6 +300,30 @@ export interface PostWeddingConfig {
   thankYouCardTitle?: string;
   thankYouCardNote?: string;
   weddingAnniversaryDate?: string;
+}
+
+export type BudgetCategoryKey =
+  | 'banquet'
+  | 'attire'
+  | 'photo'
+  | 'decor'
+  | 'jewelry'
+  | 'music'
+  | 'stationery'
+  | 'other';
+
+export interface BudgetItem {
+  id: string;
+  category: BudgetCategoryKey;
+  title: string;
+  estimatedCost: number; // in VND
+  actualCost: number; // in VND
+  paidAmount: number; // in VND
+  vendorName?: string;
+  vendorPhone?: string;
+  dueDate?: string;
+  notes?: string;
+  isCompleted?: boolean;
 }
 
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles, Table as TableIcon, Globe, MapPin, Disc3, Trophy, Gift } from 'lucide-react';
+import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles, Table as TableIcon, Globe, MapPin, Disc3, Trophy, Gift, BookOpen } from 'lucide-react';
 import {
   DEFAULT_WEDDING_DATA,
   PRESET_WEDDING_PROJECTS,
@@ -39,6 +39,7 @@ import { BallroomSeatingMapModal } from './components/BallroomSeatingMapModal';
 import { StageLedWallModal } from './components/StageLedWallModal';
 import { WeddingJukeboxModal } from './components/WeddingJukeboxModal';
 import { CoupleTriviaModal } from './components/CoupleTriviaModal';
+import { WeddingKeepsakeBookModal } from './components/WeddingKeepsakeBookModal';
 
 // Code-splitting for 70%+ faster initial load time
 const WeddingStudioPage = React.lazy(() =>
@@ -131,6 +132,7 @@ export const App: React.FC = () => {
   const [songRequests, setSongRequests] = useState<SongRequestItem[]>(INITIAL_SONG_REQUESTS);
   const [guestDropPhotos, setGuestDropPhotos] = useState<GuestDropPhotoItem[]>(INITIAL_GUEST_DROP_PHOTOS);
   const [isThankYouPostcardOpen, setIsThankYouPostcardOpen] = useState(false);
+  const [isKeepsakeBookOpen, setIsKeepsakeBookOpen] = useState(false);
 
   const sections = weddingData.sectionsConfig || DEFAULT_SECTIONS_CONFIG;
 
@@ -575,10 +577,20 @@ export const App: React.FC = () => {
                 type="button"
                 onClick={() => setIsThankYouPostcardOpen(true)}
                 className="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold flex items-center space-x-1.5 cursor-pointer transition-colors"
-                title="Xem bưu thiếp cảm ơn và lời tri ân từ Dâu & Rể"
+                title="Xem bưu thiếp cảm ơn và lời tri nhân từ Dâu & Rể"
               >
                 <Heart className="w-3.5 h-3.5 text-emerald-600 fill-emerald-600" />
                 <span>Bưu Thiếp Tri Ân</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsKeepsakeBookOpen(true)}
+                className="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 text-xs font-bold flex items-center space-x-1.5 cursor-pointer transition-colors"
+                title="Mở cuốn tạp chí kỷ yếu cưới hoàng gia (có thể in ấn hoặc lưu PDF)"
+              >
+                <BookOpen className="w-3.5 h-3.5 text-purple-700" />
+                <span>Kỷ Yếu Cưới PDF</span>
               </button>
             </div>
           </div>
@@ -794,6 +806,15 @@ export const App: React.FC = () => {
         venueName={weddingData.events[0]?.venueName}
         guestName={guest.name}
         heroImage={weddingData.heroImage}
+      />
+
+      {/* Royal Wedding Keepsake Booklet Modal */}
+      <WeddingKeepsakeBookModal
+        isOpen={isKeepsakeBookOpen}
+        onClose={() => setIsKeepsakeBookOpen(false)}
+        weddingData={weddingData}
+        wishes={liveWishes}
+        guestPhotos={guestDropPhotos}
       />
     </div>
   );
