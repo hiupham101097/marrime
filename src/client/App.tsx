@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles, Table as TableIcon, Globe, MapPin } from 'lucide-react';
-import { DEFAULT_WEDDING_DATA, PRESET_WEDDING_PROJECTS, DEFAULT_SECTIONS_CONFIG, DEFAULT_DONATE_CONFIG } from '../shared/defaultData';
-import { WeddingData, GuestRole, WishMessage } from '../shared/types';
+import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles, Table as TableIcon, Globe, MapPin, Disc3, Trophy } from 'lucide-react';
+import {
+  DEFAULT_WEDDING_DATA,
+  PRESET_WEDDING_PROJECTS,
+  DEFAULT_SECTIONS_CONFIG,
+  DEFAULT_DONATE_CONFIG,
+  DEFAULT_TRIVIA_QUESTIONS,
+  INITIAL_SONG_REQUESTS,
+  INITIAL_WISHES,
+} from '../shared/defaultData';
+import { WeddingData, GuestRole, WishMessage, SongRequestItem } from '../shared/types';
 import { useGuestInfo } from './hooks/useGuestInfo';
 import { useWeddingAudio } from './hooks/useWeddingAudio';
 
@@ -24,6 +32,9 @@ import { FloatingEffects } from './components/FloatingEffects';
 import { MusicPlayer } from './components/MusicPlayer';
 import { LiveWishingWallModal } from './components/LiveWishingWallModal';
 import { BallroomSeatingMapModal } from './components/BallroomSeatingMapModal';
+import { StageLedWallModal } from './components/StageLedWallModal';
+import { WeddingJukeboxModal } from './components/WeddingJukeboxModal';
+import { CoupleTriviaModal } from './components/CoupleTriviaModal';
 
 // Code-splitting for 70%+ faster initial load time
 const WeddingStudioPage = React.lazy(() =>
@@ -67,14 +78,22 @@ export const App: React.FC = () => {
     );
   }
 
+  // 1.5. Dedicated Ballroom Stage LED Wall Projection Route
+  const isLiveWallRoute =
+    pathname.startsWith('/live-wall') ||
+    pathname.startsWith('/led') ||
+    searchParams.get('live_wall') === 'true' ||
+    searchParams.get('mode') === 'live_wall';
+
   // 2. Wedding Invitation Guest View:
-  // Triggered when opening a couple's unique link (e.g. ?w=slug OR ?guest=name OR /w/slug)
+  // Triggered when opening a couple's unique link (e.g. ?w=slug OR ?guest=name OR /w/slug OR /live-wall)
   const isWeddingInviteView =
     searchParams.has('w') ||
     searchParams.has('slug') ||
     searchParams.has('guest') ||
     searchParams.has('role') ||
-    pathname.startsWith('/w/');
+    pathname.startsWith('/w/') ||
+    isLiveWallRoute;
 
   // 3. Platform Homepage (Service Packages, Pricing & Bride/Groom Sign In)
   if (!isWeddingInviteView) {
@@ -94,14 +113,18 @@ export const App: React.FC = () => {
   const [weddingData, setWeddingData] = useState<WeddingData>(initialWeddingData);
   const [language, setLanguage] = useState<'vi' | 'en'>('vi');
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(
-    searchParams.get('preview') === 'true' || searchParams.get('no_envelope') === 'true' ? false : true
+    isLiveWallRoute || searchParams.get('preview') === 'true' || searchParams.get('no_envelope') === 'true' ? false : true
   );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isLiveWallOpen, setIsLiveWallOpen] = useState(searchParams.get('mode') === 'live');
+  const [isStageLedOpen, setIsStageLedOpen] = useState(isLiveWallRoute);
   const [isSeatingMapOpen, setIsSeatingMapOpen] = useState(false);
-  const [liveWishes, setLiveWishes] = useState<WishMessage[]>([]);
+  const [isJukeboxOpen, setIsJukeboxOpen] = useState(false);
+  const [isTriviaOpen, setIsTriviaOpen] = useState(false);
+  const [liveWishes, setLiveWishes] = useState<WishMessage[]>(INITIAL_WISHES);
+  const [songRequests, setSongRequests] = useState<SongRequestItem[]>(INITIAL_SONG_REQUESTS);
 
   const sections = weddingData.sectionsConfig || DEFAULT_SECTIONS_CONFIG;
 
@@ -502,6 +525,49 @@ export const App: React.FC = () => {
           </div>
         )}
 
+        {/* Interactive Ballroom Experience Bar (Jukebox, Trivia & Stage LED) */}
+        <div className="max-w-2xl mx-auto px-4 -mt-1 mb-4">
+          <div className="p-3 sm:p-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-[#DFB76C]/60 shadow-xs flex flex-wrap items-center justify-between gap-2.5">
+            <div className="flex items-center space-x-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+              <span className="text-[11px] uppercase tracking-wider font-bold text-stone-800">
+                Tương Tác Trực Tiếp Cùng Hôn Lễ:
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setIsJukeboxOpen(true)}
+                className="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#8B1A32] border border-amber-200 text-xs font-bold flex items-center space-x-1.5 cursor-pointer transition-colors"
+                title="Gửi bài hát muốn nghe trong tiệc cưới cho ban nhạc & MC"
+              >
+                <Disc3 className="w-3.5 h-3.5 text-amber-600 animate-spin" style={{ animationDuration: '8s' }} />
+                <span>Yêu Cầu Bài Hát</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsTriviaOpen(true)}
+                className="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-[#8B1A32] border border-rose-200 text-xs font-bold flex items-center space-x-1.5 cursor-pointer transition-colors"
+                title="Chơi đố vui thử tài hiểu biết chuyện tình Dâu & Rể"
+              >
+                <Trophy className="w-3.5 h-3.5 text-[#8B1A32]" />
+                <span>Đố Vui Tình Yêu</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsStageLedOpen(true)}
+                className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#8B1A32] to-[#722235] text-amber-100 hover:text-white text-xs font-bold flex items-center space-x-1.5 cursor-pointer shadow-xs transition-all border border-[#DFB76C]/40"
+                title="Mở màn hình chiếu LED sân khấu tiệc cưới"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <span>Màn Chiếu LED</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* 2. Personalized Guest Invitation Card (Chế độ chỉ đọc cho quan khách) */}
         {sections.showGuestCard !== false && (
           <div id="invitation-card">
@@ -646,6 +712,42 @@ export const App: React.FC = () => {
         hallName={weddingData.events[0]?.hallName}
         groomName={weddingData.groom.name}
         brideName={weddingData.bride.name}
+      />
+
+      {/* Flagship Ballroom Stage LED Projection Wall Hub */}
+      <StageLedWallModal
+        isOpen={isStageLedOpen}
+        onClose={() => setIsStageLedOpen(false)}
+        groomName={weddingData.groom.shortName || weddingData.groom.name}
+        brideName={weddingData.bride.shortName || weddingData.bride.name}
+        weddingDateFormatted={weddingData.weddingDateFormatted}
+        venueName={weddingData.events[0]?.venueName}
+        hallName={weddingData.events[0]?.hallName}
+        weddingSlug={requestedSlug || 'marrime'}
+        wishes={liveWishes}
+        guests={weddingData.guestList || []}
+        songRequests={songRequests}
+        triviaQuestions={DEFAULT_TRIVIA_QUESTIONS}
+        galleryPhotos={weddingData.gallery || []}
+      />
+
+      {/* Wedding Jukebox Modal (Song Requests) */}
+      <WeddingJukeboxModal
+        isOpen={isJukeboxOpen}
+        onClose={() => setIsJukeboxOpen(false)}
+        guestName={guest.name}
+        tableNumber={guest.tableNumber}
+        recentRequests={songRequests}
+        onAddSongRequest={(newReq) => setSongRequests((prev) => [newReq, ...prev])}
+      />
+
+      {/* Couple Trivia Minigame Modal */}
+      <CoupleTriviaModal
+        isOpen={isTriviaOpen}
+        onClose={() => setIsTriviaOpen(false)}
+        groomName={weddingData.groom.shortName || weddingData.groom.name}
+        brideName={weddingData.bride.shortName || weddingData.bride.name}
+        questions={DEFAULT_TRIVIA_QUESTIONS}
       />
     </div>
   );

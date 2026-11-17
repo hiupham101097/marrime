@@ -151,3 +151,75 @@ export function unlockAudioOnInteraction(audioElement?: HTMLAudioElement | null)
     // Ignore
   }
 }
+
+/**
+ * Mechanical ratchet click for Lucky Draw roulette spinning
+ */
+export function playRouletteTick(): void {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(320, now + 0.025);
+
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.028);
+
+    triggerHaptic([12]);
+  } catch (err) {
+    console.debug('Roulette tick audio failed:', err);
+  }
+}
+
+/**
+ * Royal brass fanfare celebration when winning Lucky Draw or scoring high in Trivia
+ */
+export function playCelebrationFanfare(): void {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const now = ctx.currentTime;
+    const notes = [
+      { freq: 523.25, time: 0.0, dur: 0.12 }, // C5
+      { freq: 659.25, time: 0.12, dur: 0.12 }, // E5
+      { freq: 783.99, time: 0.24, dur: 0.14 }, // G5
+      { freq: 1046.5, time: 0.38, dur: 0.65 }, // C6
+    ];
+
+    notes.forEach(({ freq, time, dur }) => {
+      const start = now + time;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, start);
+
+      gain.gain.setValueAtTime(0.001, start);
+      gain.gain.linearRampToValueAtTime(0.22, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(start);
+      osc.stop(start + dur + 0.05);
+    });
+
+    triggerHaptic([40, 80, 50, 100]);
+  } catch (err) {
+    console.debug('Fanfare audio failed:', err);
+  }
+}

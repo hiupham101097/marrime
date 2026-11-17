@@ -249,3 +249,33 @@ export interface WishMessage {
   badge?: string;
 }
 
+export interface SongRequestItem {
+  id: string;
+  songTitle: string;
+  artist: string;
+  guestName: string;
+  tableNumber?: string;
+  dedicationMessage?: string;
+  createdAt: string;
+  status?: 'queued' | 'played';
+  votes?: number;
+}
+
+export interface TriviaQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string;
+}
+
+export interface LuckyDrawWinner {
+  id: string;
+  guestId: string;
+  guestName: string;
+  tableNumber?: string;
+  prizeName: string;
+  drawnAt: string;
+}
+
+

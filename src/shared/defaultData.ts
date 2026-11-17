@@ -1,6 +1,8 @@
 import {
   WeddingData,
   WishMessage,
+  SongRequestItem,
+  TriviaQuestion,
   WeddingMusicConfig,
   GalleryPhotoItem,
   WeddingSectionsConfig,
@@ -1653,5 +1655,104 @@ export const INITIAL_WISHES: WishMessage[] = [
     createdAt: 'Hôm qua lúc 19:40',
     heartCount: 24,
     badge: 'Bạn thân',
+  },
+];
+
+export const DEFAULT_TRIVIA_QUESTIONS: TriviaQuestion[] = [
+  {
+    id: 't-1',
+    question: 'Chú rể và Cô dâu gặp gỡ nhau lần đầu tiên trong hoàn cảnh nào?',
+    options: [
+      'Tại một quán cà phê sách ven hồ Tây vào chiều thu',
+      'Trong chuyến leo núi Fansipan cùng nhóm bạn chung',
+      'Tại buổi workshop thiết kế kiến trúc tại Sài Gòn',
+      'Được hai bà mẹ mai mối gặp mặt',
+    ],
+    correctIndex: 0,
+    explanation: 'Hai bạn tình cờ ngồi chung bàn tại quán cà phê sách nhỏ ven hồ Tây vì quán hết chỗ vào tháng 10/2021!',
+  },
+  {
+    id: 't-2',
+    question: 'Ai là người chủ động tỏ tình trước và ở đâu?',
+    options: [
+      'Cô dâu ngỏ lời trong ngày sinh nhật chú rể',
+      'Chú rể tỏ tình dưới ánh hoàng hôn biển Phú Quốc',
+      'Cả hai cùng nhắn tin ngỏ lời vào đúng giao thừa',
+      'Chú rể nhờ bạn bè giăng băng rôn bất ngờ',
+    ],
+    correctIndex: 1,
+    explanation: 'Chú rể đã bí mật chuẩn bị hoa và chiếc nhẫn bạc tỏ tình dưới ánh hoàng hôn bãi Sao, Phú Quốc!',
+  },
+  {
+    id: 't-3',
+    question: 'Món ăn yêu thích nhất mà chú rể thường nấu cho cô dâu là gì?',
+    options: [
+      'Bò bít tết sốt tiêu đen kèm rượu vang',
+      'Phở bò gia truyền hầm 8 tiếng',
+      'Mì Ý hải sản sốt kem nấm truffle',
+      'Bún chả Hà Nội nướng than hoa',
+    ],
+    correctIndex: 2,
+    explanation: 'Món tủ của chú rể chính là Mì Ý sốt kem nấm truffle mà cô dâu mê mẩn không dứt!',
+  },
+  {
+    id: 't-4',
+    question: 'Chuyến du lịch nào để lại nhiều kỷ niệm đáng nhớ nhất của hai bạn?',
+    options: [
+      'Chuyến đi phượt Hà Giang săn mây mùa hoa tam giác mạch',
+      'Hành trình ngắm cực quang tại Na Uy',
+      'Chuyến nghỉ dưỡng tại Bali, Indonesia',
+      'Hành trình trekking cung đường Tà Năng - Phan Dũng',
+    ],
+    correctIndex: 0,
+    explanation: 'Chuyến đi phượt Hà Giang bằng xe máy dưới mưa phùn và cùng nhau ngắm hoa tam giác mạch tại Mã Pí Lèng!',
+  },
+  {
+    id: 't-5',
+    question: 'Điểm đến trong mơ cho kỳ nghỉ tuần trăng mật của cặp đôi là đâu?',
+    options: [
+      'Thành phố tình yêu Venice & bờ biển Amalfi, Ý',
+      'Quần đảo Maldives thơ mộng',
+      'Paris hoa lệ & tháp Eiffel',
+      'Thị trấn cổ tích Hallstatt, Áo',
+    ],
+    correctIndex: 0,
+    explanation: 'Hai bạn đã lên kế hoạch khám phá Venice bằng thuyền Gondola và lái xe dọc bờ biển Amalfi!',
+  },
+];
+
+export const INITIAL_SONG_REQUESTS: SongRequestItem[] = [
+  {
+    id: 'sr-1',
+    songTitle: 'Ánh Nắng Của Anh',
+    artist: 'Đức Phúc',
+    guestName: 'Anh Minh Tuấn',
+    tableNumber: '02',
+    dedicationMessage: 'Chúc hai bạn mãi mãi là ánh nắng ấm áp sưởi ấm trái tim nhau qua mọi mùa!',
+    createdAt: 'Hôm nay lúc 11:20',
+    status: 'queued',
+    votes: 8,
+  },
+  {
+    id: 'sr-2',
+    songTitle: 'Until I Found You',
+    artist: 'Stephen Sanchez',
+    guestName: 'Nhóm Bạn Cấp 3',
+    tableNumber: '08',
+    dedicationMessage: 'Tặng đôi bạn trẻ bài hát slow dance lãng mạn nhất tiệc cưới tối nay!',
+    createdAt: 'Hôm nay lúc 11:35',
+    status: 'queued',
+    votes: 14,
+  },
+  {
+    id: 'sr-3',
+    songTitle: 'Qua Đêm Nay',
+    artist: 'Hà Anh Tuấn & Phương Linh',
+    guestName: 'Chị Mai Linh',
+    tableNumber: 'VIP 01',
+    dedicationMessage: 'Chúc hai em đêm nay và ngàn đêm sau luôn nắm chặt tay nhau hạnh phúc viên mãn.',
+    createdAt: 'Hôm nay lúc 11:42',
+    status: 'queued',
+    votes: 6,
   },
 ];

@@ -76,11 +76,13 @@ import {
   AUTHOR_DONATE_CONFIG,
   PRESET_WEDDING_PROJECTS,
   MASTER_TEMPLATE_CATALOG,
+  DEFAULT_TRIVIA_QUESTIONS,
+  INITIAL_SONG_REQUESTS,
 } from '../../shared/defaultData';
 import { ImageSelector } from '../components/ImageSelector';
 import { GuestCrmManager } from '../components/GuestCrmManager';
 import { AtelierCopywriterModal } from '../components/AtelierCopywriterModal';
-import { LiveWishingWallModal } from '../components/LiveWishingWallModal';
+import { StageLedWallModal } from '../components/StageLedWallModal';
 import { WishMessage } from '../../shared/types';
 
 export const WeddingStudioPage: React.FC = () => {
@@ -2472,15 +2474,21 @@ export const WeddingStudioPage: React.FC = () => {
         venueName={formData.events[0]?.venueName || 'Nhà Hàng Tiệc Cưới'}
       />
 
-      {/* Live Wishing Wall Modal (Màn Hình Chiếu Sảnh Tiệc) */}
-      <LiveWishingWallModal
+      {/* Flagship Ballroom Stage LED Projection Wall Hub */}
+      <StageLedWallModal
         isOpen={isLiveWallOpen}
         onClose={() => setIsLiveWallOpen(false)}
         groomName={formData.groom.shortName || formData.groom.name}
         brideName={formData.bride.shortName || formData.bride.name}
         weddingDateFormatted={formData.weddingDateFormatted}
-        wishes={wishes}
+        venueName={formData.events[0]?.venueName}
+        hallName={formData.events[0]?.hallName}
         weddingSlug={weddingSlug}
+        wishes={wishes}
+        guests={formData.guestList || []}
+        songRequests={INITIAL_SONG_REQUESTS}
+        triviaQuestions={DEFAULT_TRIVIA_QUESTIONS}
+        galleryPhotos={formData.gallery || []}
       />
     </div>
   );
