@@ -50,6 +50,7 @@ import {
   KeyRound,
   Globe,
   HelpCircle,
+  HeartHandshake,
 } from 'lucide-react';
 import {
   WeddingData,
@@ -65,6 +66,7 @@ import {
   WaxSealColorKey,
   LinerPatternKey,
   MonogramStyleKey,
+  LoveMessage,
 } from '../../shared/types';
 import {
   DEFAULT_WEDDING_DATA,
@@ -83,6 +85,8 @@ import { ImageSelector } from '../components/ImageSelector';
 import { GuestCrmManager } from '../components/GuestCrmManager';
 import { AtelierCopywriterModal } from '../components/AtelierCopywriterModal';
 import { StageLedWallModal } from '../components/StageLedWallModal';
+import { AiVowsGeneratorModal } from '../components/AiVowsGeneratorModal';
+import { PartnerCoEditModal } from '../components/PartnerCoEditModal';
 import { WishMessage } from '../../shared/types';
 
 export const WeddingStudioPage: React.FC = () => {
@@ -93,6 +97,8 @@ export const WeddingStudioPage: React.FC = () => {
 
   // Modals for newly expanded pillars
   const [isCopywriterOpen, setIsCopywriterOpen] = useState(false);
+  const [isAiVowsOpen, setIsAiVowsOpen] = useState(false);
+  const [isCoEditOpen, setIsCoEditOpen] = useState(false);
   const [isLiveWallOpen, setIsLiveWallOpen] = useState(false);
   const [wishes, setWishes] = useState<WishMessage[]>([]);
 
@@ -254,6 +260,27 @@ export const WeddingStudioPage: React.FC = () => {
         ...formData.thankYouNote,
         message: text,
       },
+    });
+  };
+
+  const handleApplyVowToStudio = (author: string, quote: string) => {
+    const groomTitle = formData.groom.shortName || formData.groom.name;
+    const brideTitle = formData.bride.shortName || formData.bride.name;
+    const recipient = author === groomTitle ? brideTitle : groomTitle;
+    const newVow: LoveMessage = {
+      author,
+      recipient,
+      content: quote,
+      quote,
+      dateStr: formData.weddingDateFormatted,
+    };
+    const updatedMessages = [
+      newVow,
+      ...formData.loveStoryMessages,
+    ];
+    setFormData({
+      ...formData,
+      loveStoryMessages: updatedMessages,
     });
   };
 
@@ -497,6 +524,26 @@ export const WeddingStudioPage: React.FC = () => {
 
         {/* Right Action Buttons */}
         <div className="flex items-center space-x-2 shrink-0 whitespace-nowrap">
+          <button
+            type="button"
+            onClick={() => setIsCoEditOpen(true)}
+            className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-emerald-300 bg-emerald-50 text-xs font-bold text-emerald-800 hover:bg-emerald-100 transition-colors shadow-2xs shrink-0 whitespace-nowrap cursor-pointer"
+            title="Mời bạn đời cùng vào chỉnh sửa thiệp cưới qua mã bí mật hoặc quét mã QR"
+          >
+            <HeartHandshake className="w-3.5 h-3.5 text-emerald-600" />
+            <span className="hidden sm:inline">Cùng Sửa Thiệp</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsAiVowsOpen(true)}
+            className="hidden lg:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-[#DFB76C]/60 bg-amber-50/90 text-xs font-bold text-[#8B1A32] hover:bg-amber-100 transition-colors shadow-2xs shrink-0 whitespace-nowrap cursor-pointer"
+            title="Mở trợ lý AI Gemini soạn bài phát biểu và lời thề nguyện lễ đường"
+          >
+            <Wand2 className="w-3.5 h-3.5 text-amber-600" />
+            <span>Lời Thề Nguyện AI</span>
+          </button>
+
           <button
             type="button"
             onClick={() => {
@@ -1963,9 +2010,19 @@ export const WeddingStudioPage: React.FC = () => {
                   {/* Sub-tab 2: Vows */}
                   {advancedTab === 'vows' && (
                     <div className="space-y-3">
-                      <span className="text-xs font-bold text-stone-800 block">
-                        Lời Hẹn Ước Của Dâu Rể:
-                      </span>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-2">
+                        <span className="text-xs font-bold text-stone-800 block">
+                          Lời Hẹn Ước Của Dâu Rể:
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setIsAiVowsOpen(true)}
+                          className="px-3 py-1 rounded-xl bg-gradient-to-r from-[#8B1A32] to-[#722235] text-amber-100 hover:text-white text-xs font-bold flex items-center space-x-1.5 shadow-2xs cursor-pointer border border-[#DFB76C]/40 transition-all self-start sm:self-auto"
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                          <span>Soạn Bằng AI Gemini (Có In Thẻ)</span>
+                        </button>
+                      </div>
                       {formData.loveStoryMessages.map((vow, idx) => (
                         <div key={idx} className="p-3 bg-stone-50 rounded-xl space-y-2 text-xs">
                           <input
@@ -2489,6 +2546,27 @@ export const WeddingStudioPage: React.FC = () => {
         songRequests={INITIAL_SONG_REQUESTS}
         triviaQuestions={DEFAULT_TRIVIA_QUESTIONS}
         galleryPhotos={formData.gallery || []}
+      />
+
+      {/* AI Wedding Vows & Speech Generator */}
+      <AiVowsGeneratorModal
+        isOpen={isAiVowsOpen}
+        onClose={() => setIsAiVowsOpen(false)}
+        groomName={formData.groom.shortName || formData.groom.name}
+        brideName={formData.bride.shortName || formData.bride.name}
+        weddingDateFormatted={formData.weddingDateFormatted}
+        venueName={formData.events[0]?.venueName}
+        onApplyVowToStudio={handleApplyVowToStudio}
+      />
+
+      {/* Co-Editing Partner Collaboration Modal */}
+      <PartnerCoEditModal
+        isOpen={isCoEditOpen}
+        onClose={() => setIsCoEditOpen(false)}
+        secretPin={editingPin}
+        weddingSlug={weddingSlug}
+        groomName={formData.groom.shortName || formData.groom.name}
+        brideName={formData.bride.shortName || formData.bride.name}
       />
     </div>
   );
