@@ -359,33 +359,37 @@ export const WeddingStudioPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-stone-900 flex flex-col font-sans">
       {/* GLOBAL STUDIO HEADER (Luminous Bridal Bar) */}
-      <header className="h-16 bg-white border-b border-stone-200 px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-30 shadow-xs">
+      <header className="h-16 bg-white border-b border-[#E8DEC8]/80 px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-30 shadow-[0_2px_10px_rgba(74,16,32,0.03)] gap-3 relative">
+        {/* Subtle Top Gold Hairline */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#DFB76C]/60 to-transparent pointer-events-none" />
+
         {/* Left: Brand & Bride-Groom Monogram */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 shrink-0 min-w-0">
           <a
             href="/"
-            className="w-9 h-9 rounded-full bg-gradient-to-br from-[#8B1A32] to-[#722235] text-amber-100 border border-amber-300/40 flex items-center justify-center font-serif text-xs font-bold shadow-sm hover:opacity-90 transition-opacity"
+            className="w-9 h-9 rounded-full bg-gradient-to-br from-[#8B1A32] to-[#722235] text-amber-100 border border-amber-300/50 flex items-center justify-center font-serif text-xs font-bold shadow-sm hover:opacity-90 transition-opacity shrink-0 relative overflow-hidden"
             title="Về Trang Chủ"
           >
-            M
+            <span className="absolute inset-[1px] rounded-full border border-amber-300/25 pointer-events-none" />
+            <span className="relative z-10">M</span>
           </a>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center space-x-2">
-              <span className="font-serif font-bold text-sm text-stone-900">
+              <span className="font-serif font-bold text-sm text-stone-900 truncate">
                 Marrime Studio • {formData.groom.shortName || 'Chú Rể'} & {formData.bride.shortName || 'Cô Dâu'}
               </span>
-              <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[10px] text-emerald-700 font-bold">
+              <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[10px] text-emerald-700 font-bold shrink-0">
                 Miễn Phí • Độc Bản
               </span>
             </div>
-            <span className="text-[10px] text-stone-500 font-mono hidden sm:block">
+            <span className="text-[10px] text-stone-500 font-mono hidden sm:block truncate">
               Đường dẫn: /{weddingSlug} {editingPin ? `• Mã quản trị: ${editingPin}` : ''}
             </span>
           </div>
         </div>
 
         {/* Center: Live Simulator View Mode Controls */}
-        <div className="hidden lg:flex items-center bg-stone-100 border border-stone-200 rounded-xl p-1 space-x-1">
+        <div className="hidden lg:flex items-center bg-stone-100 border border-stone-200 rounded-xl p-1 space-x-1 shrink-0 whitespace-nowrap">
           {/* View Mode Toggle: Website vs 3D Envelope */}
           <button
             type="button"
@@ -444,7 +448,7 @@ export const WeddingStudioPage: React.FC = () => {
         </div>
 
         {/* Right Action Buttons */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 shrink-0 whitespace-nowrap">
           <button
             type="button"
             onClick={() => {
@@ -452,7 +456,7 @@ export const WeddingStudioPage: React.FC = () => {
               setLookupError('');
               setIsLookupModalOpen(true);
             }}
-            className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-stone-200 bg-stone-50 text-xs font-semibold text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
+            className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-stone-200 bg-stone-50 text-xs font-semibold text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer shrink-0 whitespace-nowrap"
             title="Nhập mã bí mật để chỉnh sửa thiệp đã tạo trước đó"
           >
             <KeyRound className="w-3.5 h-3.5 text-[#A2682A]" />
@@ -463,7 +467,7 @@ export const WeddingStudioPage: React.FC = () => {
             href={`/?w=${weddingSlug}`}
             target="_blank"
             rel="noreferrer"
-            className="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-stone-200 bg-white text-xs font-semibold text-stone-700 hover:text-[#722235] hover:border-stone-300 transition-colors shadow-xs"
+            className="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-stone-200 bg-white text-xs font-semibold text-stone-700 hover:text-[#722235] hover:border-stone-300 transition-colors shadow-xs shrink-0 whitespace-nowrap"
             title="Mở xem thử trang web thực tế của khách"
           >
             <Eye className="w-3.5 h-3.5 text-stone-500" />
@@ -474,7 +478,7 @@ export const WeddingStudioPage: React.FC = () => {
             type="button"
             onClick={handlePublish}
             disabled={isPublishing}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#8B1A32] to-[#722235] text-white font-bold text-xs shadow-md hover:opacity-95 transition-all cursor-pointer flex items-center space-x-1.5"
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#8B1A32] to-[#722235] text-white font-bold text-xs shadow-md hover:opacity-95 transition-all cursor-pointer flex items-center space-x-1.5 shrink-0 whitespace-nowrap"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-200" />
             <span>{isPublishing ? 'Đang Lưu...' : 'Lưu Thiệp & Nhận Mã'}</span>

@@ -87,63 +87,67 @@ export const PlatformLandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-stone-800 font-sans selection:bg-rose-200 selection:text-rose-900">
       {/* 1. TOP NAVBAR (ATELIER CƯỚI SANG TRỌNG, TINH TẾ & CHUẨN MỰC) */}
-      <header className="sticky top-0 z-40 bg-[#FFFDF9]/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs">
+      <header className="sticky top-0 z-40 bg-[#FFFDF9]/95 backdrop-blur-md border-b border-[#E8DEC8]/80 shadow-[0_2px_12px_rgba(74,16,32,0.03)]">
+        {/* Atelier Hairline Gold Accent */}
+        <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#DFB76C]/70 to-transparent" />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
-          {/* Brand Logo */}
-          <a href="/" className="flex items-center space-x-3 shrink-0">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#722235] to-[#4A1020] text-[#FFFDF9] border border-[#DFB76C]/60 flex items-center justify-center font-serif text-sm font-bold shadow-md shrink-0">
-              M
+          {/* Brand Logo & Atelier Monogram */}
+          <a href="/" className="flex items-center space-x-3 shrink-0 group">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#722235] via-[#5A1222] to-[#3B0A16] text-[#FFFDF9] border border-[#DFB76C]/70 flex items-center justify-center font-serif text-sm font-bold shadow-md shrink-0 relative overflow-hidden group-hover:scale-105 transition-transform">
+              <span className="absolute inset-[1.5px] rounded-full border border-[#DFB76C]/30 pointer-events-none" />
+              <span className="relative z-10 text-amber-100 font-serif tracking-wider">M</span>
             </div>
             <div className="whitespace-nowrap">
-              <span className="font-serif text-xl font-bold text-[#4A1020] tracking-wider block leading-tight">
+              <span className="font-serif text-xl font-bold text-[#4A1020] tracking-[0.12em] block leading-tight">
                 MARRIME
               </span>
-              <span className="text-[9px] text-[#A2682A] tracking-[0.2em] uppercase font-bold block">
-                ATELIER THIỆP CƯỚI ĐỘC BẢN
+              <span className="text-[9px] text-[#A2682A] tracking-[0.22em] uppercase font-bold block mt-0.5">
+                XƯỞNG THIỆP CƯỚI NGHỆ THUẬT
               </span>
             </div>
           </a>
 
-          {/* Desktop Nav Links (Gọn gàng, chuẩn phong cách cưới, không rớt dòng chữ) */}
-          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8 text-xs font-semibold text-stone-600 whitespace-nowrap">
+          {/* Desktop Nav Links (Gọn gàng, chuẩn phong cách cưới, không bao giờ rớt dòng) */}
+          <nav className="hidden lg:flex items-center space-x-4 xl:space-x-7 text-xs font-semibold text-stone-600 whitespace-nowrap shrink-0">
             <button
               type="button"
               onClick={() => scrollToSection('templates')}
-              className="hover:text-[#722235] transition-colors cursor-pointer flex items-center space-x-1.5"
+              className="hover:text-[#722235] transition-colors cursor-pointer flex items-center space-x-1.5 py-1"
             >
-              <span>Mẫu Thiệp Cưới</span>
-              <span className="px-2 py-0.5 rounded-full bg-rose-100 text-[10px] text-rose-800 font-bold">
+              <span>Bộ Sưu Tập Thiệp</span>
+              <span className="px-2 py-0.5 rounded-full bg-rose-50 text-[10px] text-[#8B1A32] font-bold border border-rose-200/60 shadow-2xs">
                 10 Mẫu
               </span>
             </button>
             <button
               type="button"
               onClick={() => scrollToSection('features')}
-              className="hover:text-[#722235] transition-colors cursor-pointer"
+              className="hover:text-[#722235] transition-colors cursor-pointer py-1"
             >
-              Tính Năng Nổi Bật
+              Tính Năng Tự Thiết Kế
             </button>
             <a
               href="/?w=korean_pastel"
               target="_blank"
               rel="noreferrer"
-              className="text-[#722235] hover:text-rose-700 transition-colors flex items-center space-x-1"
+              className="hidden xl:inline-flex text-[#722235] hover:text-[#8B1A32] transition-colors items-center space-x-1.5 py-1"
             >
-              <Eye className="w-3.5 h-3.5" />
-              <span>Xem Mẫu Trực Tiếp</span>
+              <Eye className="w-3.5 h-3.5 text-[#DFB76C]" />
+              <span>Xem Thiệp Mẫu Thực Tế</span>
             </a>
           </nav>
 
           {/* Header Action Buttons & Mobile Hamburger */}
-          <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
+          <div className="flex items-center space-x-2 sm:space-x-3 shrink-0 whitespace-nowrap">
             <button
               type="button"
               onClick={() => scrollToSection('lookup-portal')}
-              className="hidden md:inline-flex px-3.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs border border-stone-200 transition-colors cursor-pointer items-center space-x-1.5 whitespace-nowrap"
+              className="hidden md:inline-flex px-3.5 py-2 rounded-xl bg-stone-100/80 hover:bg-stone-200 text-stone-700 font-semibold text-xs border border-stone-200 transition-colors cursor-pointer items-center space-x-1.5 whitespace-nowrap"
               title="Tra cứu hoặc sửa thiệp đã tạo bằng Mã Bí Mật"
             >
               <KeyRound className="w-3.5 h-3.5 text-[#A2682A]" />
-              <span>Tra Cứu Mã Thiệp</span>
+              <span>Nhập Mã Sửa Thiệp</span>
             </button>
 
             <a
@@ -151,7 +155,7 @@ export const PlatformLandingPage: React.FC = () => {
               className="px-4 sm:px-5 py-2.5 rounded-full bg-gradient-to-r from-[#8B1A32] via-[#722235] to-[#551020] text-white font-bold text-xs shadow-md hover:shadow-lg hover:opacity-95 transition-all cursor-pointer border border-[#DFB76C]/40 flex items-center space-x-1.5 whitespace-nowrap"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-200" />
-              <span>Tạo Thiệp Cưới</span>
+              <span>Vào Studio Tạo Thiệp</span>
             </a>
 
             {/* Mobile Hamburger Button */}

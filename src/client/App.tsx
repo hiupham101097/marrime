@@ -268,59 +268,65 @@ export const App: React.FC = () => {
       </div>
 
       {/* Navigation Bar */}
-      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-wedding-gold/30 shadow-sm transition-all">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-[#E8DEC8]/80 shadow-[0_2px_10px_rgba(74,16,32,0.03)] transition-all">
+        {/* Subtle Atelier Hairline Accent */}
+        <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#DFB76C]/60 to-transparent" />
+
+        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
           {/* Logo / Monogram */}
           <button
             type="button"
             onClick={scrollToTop}
-            className="flex items-center space-x-2 font-serif text-lg font-bold text-wedding-burgundy cursor-pointer"
+            className="flex items-center space-x-2 font-serif text-lg font-bold text-wedding-burgundy cursor-pointer shrink-0"
           >
-            <span className="w-8 h-8 rounded-full bg-gradient-to-br from-wedding-burgundy to-[#4A1020] text-wedding-gold-light flex items-center justify-center text-xs font-serif font-bold border border-wedding-gold/50 shadow-sm shrink-0">
-              {(weddingData.groom.shortName || weddingData.groom.name || 'G').charAt(0)}&{(weddingData.bride.shortName || weddingData.bride.name || 'B').charAt(0)}
+            <span className="w-8 h-8 rounded-full bg-gradient-to-br from-wedding-burgundy via-[#68182B] to-[#4A1020] text-wedding-gold-light flex items-center justify-center text-xs font-serif font-bold border border-wedding-gold/60 shadow-sm shrink-0 relative overflow-hidden">
+              <span className="absolute inset-[1px] rounded-full border border-wedding-gold/30 pointer-events-none" />
+              <span className="relative z-10">
+                {(weddingData.groom.shortName || weddingData.groom.name || 'G').charAt(0)}&{(weddingData.bride.shortName || weddingData.bride.name || 'B').charAt(0)}
+              </span>
             </span>
-            <span className="tracking-wide">
+            <span className="tracking-wide whitespace-nowrap">
               {weddingData.groom.shortName || weddingData.groom.name} &{' '}
               {weddingData.bride.shortName || weddingData.bride.name}
             </span>
           </button>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center space-x-5 text-xs font-semibold text-stone-700">
+          {/* Desktop Nav Links (Không bao giờ rớt dòng trên mọi màn hình) */}
+          <nav className="hidden lg:flex items-center space-x-4 xl:space-x-5 text-xs font-semibold text-stone-700 whitespace-nowrap shrink-0">
             <button
               onClick={() => scrollToSection('invitation-card')}
-              className="hover:text-wedding-rose-700 transition-colors cursor-pointer"
+              className="hover:text-wedding-rose-700 transition-colors cursor-pointer py-1"
             >
               Thư Mời
             </button>
             <button
               onClick={() => scrollToSection('gallery')}
-              className="hover:text-wedding-rose-700 transition-colors cursor-pointer flex items-center space-x-1"
+              className="hover:text-wedding-rose-700 transition-colors cursor-pointer flex items-center space-x-1 py-1"
             >
               <Camera className="w-3.5 h-3.5 text-wedding-gold" />
               <span>Ảnh Cưới</span>
             </button>
             <button
               onClick={() => scrollToSection('timeline')}
-              className="hover:text-wedding-rose-700 transition-colors cursor-pointer"
+              className="hover:text-wedding-rose-700 transition-colors cursor-pointer py-1"
             >
               Chặng Đường
             </button>
             <button
               onClick={() => scrollToSection('event-details')}
-              className="hover:text-wedding-rose-700 transition-colors cursor-pointer"
+              className="hover:text-wedding-rose-700 transition-colors cursor-pointer py-1"
             >
               Sảnh Cưới & Bản Đồ
             </button>
             <button
               onClick={() => scrollToSection('rsvp')}
-              className="hover:text-wedding-rose-700 transition-colors cursor-pointer"
+              className="hover:text-wedding-rose-700 transition-colors cursor-pointer py-1"
             >
               Xác Nhận Tham Dự
             </button>
             <button
               onClick={() => scrollToSection('wishes')}
-              className="px-4 py-1.5 rounded-full bg-wedding-rose-50 text-wedding-rose-700 font-bold border border-wedding-rose-300 hover:bg-wedding-rose-100 transition-colors cursor-pointer flex items-center space-x-1 shadow-sm"
+              className="px-4 py-1.5 rounded-full bg-wedding-rose-50 text-wedding-rose-700 font-bold border border-wedding-rose-300 hover:bg-wedding-rose-100 transition-colors cursor-pointer flex items-center space-x-1 shadow-sm whitespace-nowrap shrink-0"
             >
               <Heart className="w-3.5 h-3.5" />
               <span>Sổ Lưu Bút</span>
