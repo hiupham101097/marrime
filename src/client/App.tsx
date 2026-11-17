@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles, Table as TableIcon, Globe, MapPin, Disc3, Trophy } from 'lucide-react';
+import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles, Table as TableIcon, Globe, MapPin, Disc3, Trophy, Gift } from 'lucide-react';
 import {
   DEFAULT_WEDDING_DATA,
   PRESET_WEDDING_PROJECTS,
@@ -8,8 +8,9 @@ import {
   DEFAULT_TRIVIA_QUESTIONS,
   INITIAL_SONG_REQUESTS,
   INITIAL_WISHES,
+  INITIAL_GUEST_DROP_PHOTOS,
 } from '../shared/defaultData';
-import { WeddingData, GuestRole, WishMessage, SongRequestItem } from '../shared/types';
+import { WeddingData, GuestRole, WishMessage, SongRequestItem, GuestDropPhotoItem } from '../shared/types';
 import { useGuestInfo } from './hooks/useGuestInfo';
 import { useWeddingAudio } from './hooks/useWeddingAudio';
 
@@ -28,6 +29,9 @@ import { EventDetailsSection } from './components/EventDetailsSection';
 import { RSVPSection } from './components/RSVPSection';
 import { WishingWallSection } from './components/WishingWallSection';
 import { CompletionDonateSection } from './components/CompletionDonateSection';
+import { GuestPhotoDropSection } from './components/GuestPhotoDropSection';
+import { AnniversaryCapsuleSection } from './components/AnniversaryCapsuleSection';
+import { ThankYouPostcardModal } from './components/ThankYouPostcardModal';
 import { FloatingEffects } from './components/FloatingEffects';
 import { MusicPlayer } from './components/MusicPlayer';
 import { LiveWishingWallModal } from './components/LiveWishingWallModal';
@@ -125,6 +129,8 @@ export const App: React.FC = () => {
   const [isTriviaOpen, setIsTriviaOpen] = useState(false);
   const [liveWishes, setLiveWishes] = useState<WishMessage[]>(INITIAL_WISHES);
   const [songRequests, setSongRequests] = useState<SongRequestItem[]>(INITIAL_SONG_REQUESTS);
+  const [guestDropPhotos, setGuestDropPhotos] = useState<GuestDropPhotoItem[]>(INITIAL_GUEST_DROP_PHOTOS);
+  const [isThankYouPostcardOpen, setIsThankYouPostcardOpen] = useState(false);
 
   const sections = weddingData.sectionsConfig || DEFAULT_SECTIONS_CONFIG;
 
@@ -564,6 +570,16 @@ export const App: React.FC = () => {
                 <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                 <span>Màn Chiếu LED</span>
               </button>
+
+              <button
+                type="button"
+                onClick={() => setIsThankYouPostcardOpen(true)}
+                className="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold flex items-center space-x-1.5 cursor-pointer transition-colors"
+                title="Xem bưu thiếp cảm ơn và lời tri ân từ Dâu & Rể"
+              >
+                <Heart className="w-3.5 h-3.5 text-emerald-600 fill-emerald-600" />
+                <span>Bưu Thiếp Tri Ân</span>
+              </button>
             </div>
           </div>
         </div>
@@ -657,6 +673,24 @@ export const App: React.FC = () => {
             isCompleted={isCompleted}
           />
         )}
+
+        {/* 13. Guest Photo Drop Section (Album ảnh do quan khách tự tải lên) */}
+        <GuestPhotoDropSection
+          photos={guestDropPhotos}
+          onUploadPhoto={(newPhoto) => setGuestDropPhotos((prev) => [newPhoto, ...prev])}
+          groomName={weddingData.groom.shortName || weddingData.groom.name}
+          brideName={weddingData.bride.shortName || weddingData.bride.name}
+          guestName={guest.name}
+          tableNumber={guest.tableNumber}
+        />
+
+        {/* 14. Anniversary Capsule Section (Hộp Ký Ức Trăm Năm) */}
+        <AnniversaryCapsuleSection
+          weddingDateIso={weddingData.weddingDate}
+          weddingDateFormatted={weddingData.weddingDateFormatted}
+          groomName={weddingData.groom.shortName || weddingData.groom.name}
+          brideName={weddingData.bride.shortName || weddingData.bride.name}
+        />
       </main>
 
       {/* Scroll to top button */}
@@ -748,6 +782,18 @@ export const App: React.FC = () => {
         groomName={weddingData.groom.shortName || weddingData.groom.name}
         brideName={weddingData.bride.shortName || weddingData.bride.name}
         questions={DEFAULT_TRIVIA_QUESTIONS}
+      />
+
+      {/* Thank You Postcard Modal */}
+      <ThankYouPostcardModal
+        isOpen={isThankYouPostcardOpen}
+        onClose={() => setIsThankYouPostcardOpen(false)}
+        groomName={weddingData.groom.shortName || weddingData.groom.name}
+        brideName={weddingData.bride.shortName || weddingData.bride.name}
+        weddingDateFormatted={weddingData.weddingDateFormatted}
+        venueName={weddingData.events[0]?.venueName}
+        guestName={guest.name}
+        heroImage={weddingData.heroImage}
       />
     </div>
   );

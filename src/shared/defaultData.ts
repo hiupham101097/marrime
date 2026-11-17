@@ -3,6 +3,7 @@ import {
   WishMessage,
   SongRequestItem,
   TriviaQuestion,
+  GuestDropPhotoItem,
   WeddingMusicConfig,
   GalleryPhotoItem,
   WeddingSectionsConfig,
@@ -1754,5 +1755,44 @@ export const INITIAL_SONG_REQUESTS: SongRequestItem[] = [
     createdAt: 'Hôm nay lúc 11:42',
     status: 'queued',
     votes: 6,
+  },
+];
+
+export const INITIAL_GUEST_DROP_PHOTOS: GuestDropPhotoItem[] = [
+  {
+    id: 'gdp-1',
+    url: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop',
+    uploaderName: 'Nhóm Bạn Cấp 3',
+    tableNumber: '08',
+    caption: 'Bắt trọn nụ cười rạng rỡ của cô dâu lúc bước vào lễ đường!',
+    uploadedAt: 'Hôm nay lúc 12:45',
+    likesCount: 19,
+  },
+  {
+    id: 'gdp-2',
+    url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1000&auto=format&fit=crop',
+    uploaderName: 'Anh Hoàng Nam',
+    tableNumber: 'VIP 02',
+    caption: 'Khoảnh khắc trao nhẫn thiêng liêng và xúc động nhất!',
+    uploadedAt: 'Hôm nay lúc 12:52',
+    likesCount: 27,
+  },
+  {
+    id: 'gdp-3',
+    url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1000&auto=format&fit=crop',
+    uploaderName: 'Hội Chị Em Nhà Gái',
+    tableNumber: '06',
+    caption: 'Tập thể hội chị em quẩy hết mình cùng cô dâu!',
+    uploadedAt: 'Hôm nay lúc 13:10',
+    likesCount: 34,
+  },
+  {
+    id: 'gdp-4',
+    url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=1000&auto=format&fit=crop',
+    uploaderName: 'Bác Ba & Gia Đình',
+    tableNumber: 'Họ Trai 01',
+    caption: 'Hai bên thông gia cùng nâng ly chúc mừng đôi trẻ!',
+    uploadedAt: 'Hôm nay lúc 13:25',
+    likesCount: 15,
   },
 ];

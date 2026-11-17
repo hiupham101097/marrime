@@ -170,6 +170,8 @@ export interface WeddingSectionsConfig {
   showRSVP: boolean;
   showWishes: boolean;
   showDonateBox: boolean;
+  showGuestPhotoDrop?: boolean;
+  showAnniversaryCapsule?: boolean;
 }
 
 export interface WeddingDonateConfig {
@@ -214,6 +216,8 @@ export interface WeddingData {
   sectionsConfig?: WeddingSectionsConfig;
   donateConfig?: WeddingDonateConfig;
   guestList?: GuestItem[];
+  postWeddingConfig?: PostWeddingConfig;
+  guestDropPhotos?: GuestDropPhotoItem[];
 }
 
 export interface PublishedWeddingProject {
@@ -276,6 +280,25 @@ export interface LuckyDrawWinner {
   tableNumber?: string;
   prizeName: string;
   drawnAt: string;
+}
+
+export interface GuestDropPhotoItem {
+  id: string;
+  url: string;
+  uploaderName: string;
+  tableNumber?: string;
+  caption?: string;
+  uploadedAt: string;
+  likesCount?: number;
+}
+
+export interface PostWeddingConfig {
+  isPostWeddingMode?: boolean; // Mode switch: When true, transforms site to Post-Wedding Memory Capsule
+  enablePhotoDrop?: boolean;
+  thankYouCardImage?: string;
+  thankYouCardTitle?: string;
+  thankYouCardNote?: string;
+  weddingAnniversaryDate?: string;
 }
 
 

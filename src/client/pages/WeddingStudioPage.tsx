@@ -2068,6 +2068,8 @@ export const WeddingStudioPage: React.FC = () => {
                         { key: 'showRSVP' as const, label: 'Xác Nhận Tham Dự (RSVP)' },
                         { key: 'showWishes' as const, label: 'Sổ Lưu Bút Lời Chúc' },
                         { key: 'showDonateBox' as const, label: 'Hộp Mừng Cưới Chúc Phúc' },
+                        { key: 'showGuestPhotoDrop' as const, label: 'Góc Tải Ảnh Tiệc Cưới Cho Khách' },
+                        { key: 'showAnniversaryCapsule' as const, label: 'Hộp Ký Ức Trăm Năm (Kỷ Vật Sau Cưới)' },
                       ].map((item) => {
                         const currentSections = formData.sectionsConfig || DEFAULT_SECTIONS_CONFIG;
                         const isEnabled = currentSections[item.key] !== false;
