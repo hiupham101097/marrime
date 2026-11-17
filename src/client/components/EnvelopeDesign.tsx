@@ -1,6 +1,12 @@
 import { useId, type CSSProperties } from 'react';
 import { Check, Play } from 'lucide-react';
-import type { EnvelopeStyle } from '../../shared/types';
+import type {
+  EnvelopeStyle,
+  WaxSealColorKey,
+  LinerPatternKey,
+  MonogramStyleKey,
+} from '../../shared/types';
+import { InterlockingMonogram } from './InterlockingMonogram';
 import './EnvelopeDesign.css';
 import './EnvelopeModal.css';
 
@@ -19,6 +25,121 @@ export interface StylePalette {
   letterInk: string;
   linerBg: string;
 }
+
+export const WAX_SEAL_PALETTES: Record<
+  WaxSealColorKey,
+  {
+    name: string;
+    tag: string;
+    grad: [string, string, string];
+    accentFoil: string;
+    border: string;
+  }
+> = {
+  royal_garnet: {
+    name: 'Đỏ Rượu Garnet',
+    tag: 'Bordeaux Hoàng Gia',
+    grad: ['#F57585', '#9E1328', '#450610'],
+    accentFoil: '#FADB6B',
+    border: '#B81E38',
+  },
+  imperial_gold: {
+    name: 'Vàng Kim Đế Vương',
+    tag: 'Dát Vàng 24K',
+    grad: ['#FFEAA8', '#D4A33B', '#634509'],
+    accentFoil: '#FFFFFF',
+    border: '#D4A33B',
+  },
+  emerald_green: {
+    name: 'Xanh Ngọc Emerald',
+    tag: 'Lục Bảo Quý Phái',
+    grad: ['#7BE2B5', '#1B6B46', '#092A1A'],
+    accentFoil: '#FADB6B',
+    border: '#1B6B46',
+  },
+  blush_rose: {
+    name: 'Hồng Phấn Thạch Anh',
+    tag: 'Rose Quartz Nhã Nhặn',
+    grad: ['#FFD1DC', '#DF738E', '#6B1B32'],
+    accentFoil: '#FFF7E6',
+    border: '#DF738E',
+  },
+  antique_brass: {
+    name: 'Đồng Cổ Điển',
+    tag: 'Antique Brass Vintage',
+    grad: ['#E6C098', '#996C3D', '#4A3013'],
+    accentFoil: '#FFE4B5',
+    border: '#996C3D',
+  },
+  celestial_midnight: {
+    name: 'Xanh Đêm Dạ Nguyệt',
+    tag: 'Sapphire Ánh Sao',
+    grad: ['#8BAFFF', '#274296', '#0D1740'],
+    accentFoil: '#FDE68A',
+    border: '#274296',
+  },
+  obsidian_noir: {
+    name: 'Đá Núi Lửa Noir',
+    tag: 'Haute Couture Đen Nhám',
+    grad: ['#666666', '#222222', '#0A0A0A'],
+    accentFoil: '#DFB76C',
+    border: '#333333',
+  },
+};
+
+export const LINER_PATTERNS_CONFIG: Record<
+  LinerPatternKey,
+  {
+    name: string;
+    tag: string;
+    desc: string;
+    stroke: string;
+    bg: string;
+  }
+> = {
+  baroque_damask: {
+    name: 'Gấm Baroque Versailles',
+    tag: 'Hoàng Triều Châu Âu',
+    desc: 'Hoa văn gấm Damask dập nổi ánh kim vương giả phong cách Cung Điện Versailles',
+    stroke: '#E5C368',
+    bg: '#32060F',
+  },
+  botanical_olive: {
+    name: 'Cành Lá Olive & Khuynh Diệp',
+    tag: 'Vườn Địa Đàng Tự Nhiên',
+    desc: 'Cành ô-liu và lá khuynh diệp vẽ tay phong cách nghệ thuật màu nước',
+    stroke: '#2D5A47',
+    bg: '#EAF3ED',
+  },
+  imperial_cloud: {
+    name: 'Vân Mây Cung Đình Huế',
+    tag: 'Cung Đình Cát Tường',
+    desc: 'Vân mây tản cát tường thiếp vàng truyền thống cung đình Việt Nam',
+    stroke: '#FADB6B',
+    bg: '#59060C',
+  },
+  celestial_stars: {
+    name: 'Bản Đồ Ngân Hà & Tinh Tú',
+    tag: 'Đêm Vũ Trụ Huyền Bí',
+    desc: 'Bản đồ thiên văn và các chòm sao định mệnh dát nhũ vàng bạc',
+    stroke: '#FDE68A',
+    bg: '#091026',
+  },
+  art_deco_fan: {
+    name: 'Cung Quạt Kim Tuyến Gatsby',
+    tag: 'Art Deco Thập Niên 1920',
+    desc: 'Những cánh cung quạt xếp tầng hình học đối xứng phong cách Gatsby lộng lẫy',
+    stroke: '#E5C368',
+    bg: '#0C2018',
+  },
+  classic_linen: {
+    name: 'Sợi Dệt Mộc Linen Bắc Âu',
+    tag: 'Tối Giản Ấm Áp',
+    desc: 'Bề mặt sợi vải linen tự nhiên đan chéo mang lại cảm giác ấm áp, mộc mạc',
+    stroke: '#C5A059',
+    bg: '#F8F6F0',
+  },
+};
 
 export const envelopePalettes: Record<EnvelopeStyle, StylePalette> = {
   // 1. Korean Pastel Mint & Coral (Chuẩn 100% phong cách 7799 Wedding Storyteller)
@@ -203,80 +324,106 @@ export const envelopeDesigns: { id: EnvelopeStyle; name: string; tag: string; de
 /**
  * Bespoke Artistic Interior Lining Pattern per Envelope Style
  */
-export function EnvelopeLiner({ style }: { style: EnvelopeStyle }) {
-  const palette = envelopePalettes[style] || envelopePalettes.royal_velvet;
+export function EnvelopeLiner({
+  style,
+  pattern,
+}: {
+  style?: EnvelopeStyle;
+  pattern?: LinerPatternKey;
+}) {
+  const currentStyle = style || 'royal_velvet';
+  const palette = envelopePalettes[currentStyle] || envelopePalettes.royal_velvet;
+  const patternId = useId();
 
-  if (style === 'royal_velvet') {
+  // Resolve which pattern key to use:
+  const activePattern: LinerPatternKey =
+    pattern ||
+    (currentStyle === 'royal_velvet'
+      ? 'baroque_damask'
+      : currentStyle === 'korean_chiffon' || currentStyle === 'rustic_twine'
+      ? 'botanical_olive'
+      : currentStyle === 'traditional_silk' || currentStyle === 'indochine_kraft'
+      ? 'imperial_cloud'
+      : currentStyle === 'celestial_midnight'
+      ? 'celestial_stars'
+      : currentStyle === 'emerald_brass'
+      ? 'art_deco_fan'
+      : 'classic_linen');
+
+  const config = LINER_PATTERNS_CONFIG[activePattern];
+  const bgColor = pattern ? config.bg : palette.linerBg;
+
+  if (activePattern === 'baroque_damask') {
     return (
-      <div className="envelope-liner envelope-liner--royal" style={{ backgroundColor: palette.linerBg }}>
-        <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke="#E5C368" opacity="0.25">
-          <pattern id="liner-royal-damask" width="25" height="25" patternUnits="userSpaceOnUse">
+      <div className="envelope-liner envelope-liner--royal" style={{ backgroundColor: bgColor }}>
+        <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke={config.stroke} opacity="0.28">
+          <pattern id={`${patternId}-damask`} width="25" height="25" patternUnits="userSpaceOnUse">
             <path d="M12.5 2 C8 6 4 10 4 15 C4 20 8 22 12.5 22 C17 22 21 20 21 15 C21 10 17 6 12.5 2 Z" strokeWidth="0.8" />
             <path d="M12.5 6 C10 9 7 12 7 15 C7 18 10 19 12.5 19 C15 19 18 18 18 15 C18 12 15 9 12.5 6 Z" strokeWidth="0.5" />
-            <circle cx="12.5" cy="12.5" r="1.5" fill="#E5C368" />
+            <circle cx="12.5" cy="12.5" r="1.5" fill={config.stroke} />
           </pattern>
-          <rect width="100%" height="100%" fill="url(#liner-royal-damask)" />
+          <rect width="100%" height="100%" fill={`url(#${patternId}-damask)`} />
         </svg>
       </div>
     );
   }
 
-  if (style === 'korean_chiffon') {
+  if (activePattern === 'botanical_olive') {
     return (
-      <div className="envelope-liner envelope-liner--korean" style={{ backgroundColor: palette.linerBg }}>
-        <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke="#2D5A47" opacity="0.2">
-          <pattern id="liner-korean-leaves" width="30" height="30" patternUnits="userSpaceOnUse">
+      <div className="envelope-liner envelope-liner--korean" style={{ backgroundColor: bgColor }}>
+        <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke={config.stroke} opacity="0.25">
+          <pattern id={`${patternId}-olive`} width="30" height="30" patternUnits="userSpaceOnUse">
             <path d="M5 25 Q15 15 25 5" strokeWidth="0.8" strokeLinecap="round" />
-            <path d="M12 18 Q8 12 12 8 Q16 12 12 18 Z" fill="#2D5A47" opacity="0.3" />
-            <path d="M18 12 Q22 6 26 10 Q22 16 18 12 Z" fill="#2D5A47" opacity="0.3" />
+            <path d="M12 18 Q8 12 12 8 Q16 12 12 8 Z" fill={config.stroke} opacity="0.3" />
+            <path d="M18 12 Q22 6 26 10 Q22 16 18 12 Z" fill={config.stroke} opacity="0.3" />
           </pattern>
-          <rect width="100%" height="100%" fill="url(#liner-korean-leaves)" />
+          <rect width="100%" height="100%" fill={`url(#${patternId}-olive)`} />
         </svg>
       </div>
     );
   }
 
-  if (style === 'traditional_silk') {
+  if (activePattern === 'imperial_cloud') {
     return (
-      <div className="envelope-liner envelope-liner--trad" style={{ backgroundColor: palette.linerBg }}>
-        <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke="#FADB6B" opacity="0.25">
-          <pattern id="liner-trad-cloud" width="30" height="30" patternUnits="userSpaceOnUse">
+      <div className="envelope-liner envelope-liner--trad" style={{ backgroundColor: bgColor }}>
+        <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke={config.stroke} opacity="0.28">
+          <pattern id={`${patternId}-cloud`} width="30" height="30" patternUnits="userSpaceOnUse">
             <path d="M6 18 A 6 6 0 0 1 18 18 A 6 6 0 0 1 24 18 A 3 3 0 0 1 21 24 L 9 24 A 3 3 0 0 1 6 18 Z" strokeWidth="0.8" />
-            <circle cx="15" cy="15" r="1" fill="#FADB6B" />
+            <circle cx="15" cy="15" r="1" fill={config.stroke} />
           </pattern>
-          <rect width="100%" height="100%" fill="url(#liner-trad-cloud)" />
+          <rect width="100%" height="100%" fill={`url(#${patternId}-cloud)`} />
         </svg>
       </div>
     );
   }
 
-  if (style === 'celestial_midnight') {
+  if (activePattern === 'celestial_stars') {
     return (
-      <div className="envelope-liner envelope-liner--celestial" style={{ backgroundColor: palette.linerBg }}>
-        <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke="#FDE68A" opacity="0.25">
-          <pattern id="liner-celestial-stars" width="35" height="35" patternUnits="userSpaceOnUse">
-            <circle cx="8" cy="8" r="1.2" fill="#FDE68A" />
+      <div className="envelope-liner envelope-liner--celestial" style={{ backgroundColor: bgColor }}>
+        <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke={config.stroke} opacity="0.28">
+          <pattern id={`${patternId}-stars`} width="35" height="35" patternUnits="userSpaceOnUse">
+            <circle cx="8" cy="8" r="1.2" fill={config.stroke} />
             <circle cx="28" cy="22" r="1.5" fill="#FFF" />
-            <circle cx="18" cy="30" r="0.8" fill="#FDE68A" />
+            <circle cx="18" cy="30" r="0.8" fill={config.stroke} />
             <line x1="8" y1="8" x2="28" y2="22" strokeWidth="0.4" strokeDasharray="1 2" opacity="0.5" />
           </pattern>
-          <rect width="100%" height="100%" fill="url(#liner-celestial-stars)" />
+          <rect width="100%" height="100%" fill={`url(#${patternId}-stars)`} />
         </svg>
       </div>
     );
   }
 
-  if (style === 'emerald_brass') {
+  if (activePattern === 'art_deco_fan') {
     return (
-      <div className="envelope-liner envelope-liner--emerald" style={{ backgroundColor: palette.linerBg }}>
-        <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke="#E5C368" opacity="0.25">
-          <pattern id="liner-deco-fan" width="24" height="24" patternUnits="userSpaceOnUse">
+      <div className="envelope-liner envelope-liner--emerald" style={{ backgroundColor: bgColor }}>
+        <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke={config.stroke} opacity="0.28">
+          <pattern id={`${patternId}-deco`} width="24" height="24" patternUnits="userSpaceOnUse">
             <path d="M0 24 A 12 12 0 0 1 24 24" strokeWidth="0.7" />
             <path d="M3 24 A 9 9 0 0 1 21 24" strokeWidth="0.5" />
             <path d="M6 24 A 6 6 0 0 1 18 24" strokeWidth="0.5" />
             <line x1="12" y1="24" x2="12" y2="12" strokeWidth="0.5" />
           </pattern>
-          <rect width="100%" height="100%" fill="url(#liner-deco-fan)" />
+          <rect width="100%" height="100%" fill={`url(#${patternId}-deco)`} />
         </svg>
       </div>
     );
@@ -284,12 +431,12 @@ export function EnvelopeLiner({ style }: { style: EnvelopeStyle }) {
 
   // Default subtle fine-linen liner pattern
   return (
-    <div className="envelope-liner envelope-liner--classic" style={{ backgroundColor: palette.linerBg }}>
-      <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke="currentColor" opacity="0.12">
-        <pattern id="liner-classic-grid" width="16" height="16" patternUnits="userSpaceOnUse">
-          <circle cx="8" cy="8" r="0.8" fill="currentColor" />
+    <div className="envelope-liner envelope-liner--classic" style={{ backgroundColor: bgColor }}>
+      <svg viewBox="0 0 100 100" className="envelope-liner__svg" fill="none" stroke={config.stroke} opacity="0.18">
+        <pattern id={`${patternId}-linen`} width="16" height="16" patternUnits="userSpaceOnUse">
+          <circle cx="8" cy="8" r="0.8" fill={config.stroke} />
         </pattern>
-        <rect width="100%" height="100%" fill="url(#liner-classic-grid)" />
+        <rect width="100%" height="100%" fill={`url(#${patternId}-linen)`} />
       </svg>
     </div>
   );
@@ -771,21 +918,59 @@ export function envelopePaperStyle(style: EnvelopeStyle): CSSProperties {
 /**
  * 3D Physical Envelope Back Pocket & Flap with Monogram Wax Seal
  */
+export interface EnvelopeBackProps {
+  style: EnvelopeStyle;
+  monogram?: string;
+  waxSealColor?: WaxSealColorKey;
+  linerPattern?: LinerPatternKey;
+  monogramStyle?: MonogramStyleKey;
+  initialGroom?: string;
+  initialBride?: string;
+  onOpen?: () => void;
+  sealed?: boolean;
+}
+
 export function EnvelopeBack({
   style,
   monogram,
+  waxSealColor,
+  linerPattern,
+  monogramStyle,
+  initialGroom,
+  initialBride,
   onOpen,
   sealed = true,
-}: {
-  style: EnvelopeStyle;
-  monogram?: string;
-  onOpen?: () => void;
-  sealed?: boolean;
-}) {
+}: EnvelopeBackProps) {
   const palette = envelopePalettes[style] || envelopePalettes.royal_velvet;
   const sealGradientId = useId();
   const sealShineId = useId();
   const Seal = onOpen ? 'button' : 'span';
+
+  // Wax seal color custom palette or fallback
+  const customSealPalette =
+    waxSealColor && WAX_SEAL_PALETTES[waxSealColor] ? WAX_SEAL_PALETTES[waxSealColor] : null;
+  const sealGrad = customSealPalette ? customSealPalette.grad : palette.looseSealGrad;
+  const foilColor = customSealPalette ? customSealPalette.accentFoil : palette.accentGold;
+
+  // Resolve Groom & Bride Initials for vector monogram
+  let gInitial = initialGroom || '';
+  let bInitial = initialBride || '';
+  if (!gInitial || !bInitial) {
+    if (monogram && monogram.includes('&')) {
+      const parts = monogram.split('&');
+      gInitial = gInitial || parts[0]?.trim().charAt(0) || 'T';
+      bInitial = bInitial || parts[1]?.trim().charAt(0) || 'P';
+    } else if (monogram && monogram.trim().length >= 2) {
+      gInitial = gInitial || monogram.trim().charAt(0);
+      bInitial = bInitial || monogram.trim().charAt(monogram.trim().length - 1);
+    } else if (monogram && monogram.trim().length === 1) {
+      gInitial = gInitial || monogram.trim().charAt(0);
+      bInitial = bInitial || 'P';
+    } else {
+      gInitial = gInitial || 'T';
+      bInitial = bInitial || 'P';
+    }
+  }
 
   // Monogram priority: If user or couple has a monogram, proudly display it!
   const displayInscription =
@@ -799,10 +984,24 @@ export function EnvelopeBack({
       ? '❧'
       : 'with love';
 
+  const shouldUseMonogram =
+    Boolean(monogramStyle) ||
+    monogramStyle === 'song_hy' ||
+    displayInscription === '囍' ||
+    (palette.sealInscription === 'monogram' && !monogram?.toLowerCase().includes('with love'));
+
+  const activeMonogramStyle: MonogramStyleKey =
+    monogramStyle ||
+    (displayInscription === '囍' || palette.sealInscription === 'song_hy'
+      ? 'song_hy'
+      : palette.sealInscription === 'olive'
+      ? 'botanical'
+      : 'interlocking');
+
   return (
     <div className="wedding-envelope__back-assembly" data-design={style}>
       {/* 1. Inside Back Wall Lining Pattern (revealed when flap opens) */}
-      <EnvelopeLiner style={style} />
+      <EnvelopeLiner style={style} pattern={linerPattern} />
 
       {/* 2. Solid Front Pocket (Completely conceals letter card when closed) */}
       <div className="wedding-envelope__pocket" aria-hidden="true">
@@ -816,7 +1015,7 @@ export function EnvelopeBack({
       <div className="wedding-envelope__flap" aria-hidden="true">
         <div className="wedding-envelope__flap-paper" />
         <div className="wedding-envelope__flap-lining">
-          <EnvelopeLiner style={style} />
+          <EnvelopeLiner style={style} pattern={linerPattern} />
         </div>
       </div>
 
@@ -831,10 +1030,10 @@ export function EnvelopeBack({
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <defs>
             <radialGradient id={sealGradientId} cx="34%" cy="25%" r="78%">
-              <stop offset="0%" stopColor={palette.looseSealGrad[0]} />
-              <stop offset="42%" stopColor={palette.looseSealGrad[1]} />
-              <stop offset="85%" stopColor={palette.looseSealGrad[2]} />
-              <stop offset="100%" stopColor={palette.looseSealGrad[2]} stopOpacity="0.85" />
+              <stop offset="0%" stopColor={sealGrad[0]} />
+              <stop offset="42%" stopColor={sealGrad[1]} />
+              <stop offset="85%" stopColor={sealGrad[2]} />
+              <stop offset="100%" stopColor={sealGrad[2]} stopOpacity="0.85" />
             </radialGradient>
             <radialGradient id={sealShineId} cx="32%" cy="22%" r="48%">
               <stop offset="0%" stopColor="rgba(255, 255, 255, 0.75)" />
@@ -875,23 +1074,33 @@ export function EnvelopeBack({
           />
         </svg>
 
-        {/* Embossed inscription inside wax coin */}
-        <span
-          className={`wedding-envelope__seal-text ${
-            displayInscription === 'with love' ? 'is-script' : ''
-          }`}
-          aria-hidden="true"
-        >
-          {displayInscription}
-        </span>
+        {/* Embossed inscription or interlocking monogram inside wax coin */}
+        {shouldUseMonogram ? (
+          <div className="wedding-envelope__seal-monogram-wrap absolute inset-0 flex items-center justify-center pointer-events-none">
+            <InterlockingMonogram
+              initialGroom={gInitial}
+              initialBride={bInitial}
+              style={activeMonogramStyle}
+              color={foilColor}
+              size={36}
+            />
+          </div>
+        ) : (
+          <span
+            className={`wedding-envelope__seal-text ${
+              displayInscription === 'with love' ? 'is-script' : ''
+            }`}
+            aria-hidden="true"
+            style={{ color: foilColor }}
+          >
+            {displayInscription}
+          </span>
+        )}
       </Seal>
     </div>
   );
 }
 
-/**
- * Modern High-End Envelope Style Gallery (Studio Step 5 & Admin Panel)
- */
 export function EnvelopeDesignPicker({
   value,
   onChange,

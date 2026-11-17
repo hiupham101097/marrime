@@ -180,11 +180,18 @@ export interface WeddingDonateConfig {
   thankYouMessage: string;
 }
 
+export type WaxSealColorKey = 'royal_garnet' | 'imperial_gold' | 'emerald_green' | 'blush_rose' | 'antique_brass' | 'celestial_midnight' | 'obsidian_noir';
+export type LinerPatternKey = 'baroque_damask' | 'botanical_olive' | 'imperial_cloud' | 'celestial_stars' | 'art_deco_fan' | 'classic_linen';
+export type MonogramStyleKey = 'interlocking' | 'crest' | 'calligraphy' | 'song_hy' | 'botanical';
+
 export interface WeddingData {
   theme: WeddingTheme;
   template: WeddingTemplate;
   envelopeStyle: EnvelopeStyle;
   waxSealMonogram?: string;
+  waxSealColor?: WaxSealColorKey;
+  linerPattern?: LinerPatternKey;
+  monogramStyle?: MonogramStyleKey;
   typographyFont?: TypographyFont;
   animationEffect?: AnimationEffect;
   enableMouseTrail?: boolean;

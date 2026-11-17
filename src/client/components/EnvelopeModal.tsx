@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { ArrowRight, ArrowUpRight, Sparkles } from 'lucide-react';
-import { GuestInfo, EnvelopeStyle } from '../../shared/types';
+import {
+  GuestInfo,
+  EnvelopeStyle,
+  WaxSealColorKey,
+  LinerPatternKey,
+  MonogramStyleKey,
+} from '../../shared/types';
 import { formatGuestSalutation } from '../hooks/useGuestInfo';
 import {
   EnvelopeArtwork,
@@ -11,6 +17,7 @@ import {
   envelopePalettes,
   envelopePaperStyle,
 } from './EnvelopeDesign';
+import { InterlockingMonogram } from './InterlockingMonogram';
 import {
   playWaxSealCrack,
   playPaperSlide,
@@ -37,6 +44,9 @@ interface EnvelopeModalProps {
   playOpenSound?: () => void;
   envelopeStyle?: EnvelopeStyle;
   waxSealMonogram?: string;
+  waxSealColor?: WaxSealColorKey;
+  linerPattern?: LinerPatternKey;
+  monogramStyle?: MonogramStyleKey;
 }
 
 export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
@@ -56,6 +66,9 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   playOpenSound,
   envelopeStyle = 'royal_velvet',
   waxSealMonogram,
+  waxSealColor,
+  linerPattern,
+  monogramStyle,
 }) => {
   const design = Object.hasOwn(envelopePalettes, envelopeStyle) ? envelopeStyle : 'royal_velvet';
   const currentStyle = envelopePalettes[design];
@@ -74,12 +87,63 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
       ? [dayOfWeek, weddingDateFormatted].filter(Boolean).join(', ')
       : weddingDateFormatted;
 
-  // Dynamic 3D interactive spatial parallax & touch swipe
+  // Dynamic 3D interactive spatial parallax, mobile gyroscope & touch swipe
   const [tilt, setTilt] = useState({ x: 0, y: 0, glareX: 50, glareY: 50 });
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const isPointerActiveRef = useRef(false);
+
+  // Mobile Device Orientation Gyroscope Tilt
+  useEffect(() => {
+    if (!isOpen) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let targetX = 0;
+    let targetY = 0;
+    let animId: number;
+
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      if (e.beta === null || e.gamma === null) return;
+      // Normal reading pitch when holding phone is ~45°
+      const deltaBeta = (e.beta - 45) * 0.4;
+      const deltaGamma = e.gamma * 0.45;
+      targetX = Math.max(-14, Math.min(14, -deltaBeta));
+      targetY = Math.max(-16, Math.min(16, deltaGamma));
+    };
+
+    const updateTiltLoop = () => {
+      if (!isPointerActiveRef.current) {
+        setTilt((prev) => {
+          const newX = prev.x + (targetX - prev.x) * 0.15;
+          const newY = prev.y + (targetY - prev.y) * 0.15;
+          const glareX = Math.round(50 + newY * 2.5);
+          const glareY = Math.round(50 - newX * 2.5);
+          return {
+            x: Math.round(newX * 100) / 100,
+            y: Math.round(newY * 100) / 100,
+            glareX: Math.max(10, Math.min(90, glareX)),
+            glareY: Math.max(10, Math.min(90, glareY)),
+          };
+        });
+      }
+      animId = requestAnimationFrame(updateTiltLoop);
+    };
+
+    if (typeof window !== 'undefined' && 'DeviceOrientationEvent' in window) {
+      window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+      animId = requestAnimationFrame(updateTiltLoop);
+    }
+
+    return () => {
+      if (typeof window !== 'undefined' && 'DeviceOrientationEvent' in window) {
+        window.removeEventListener('deviceorientation', handleOrientation);
+      }
+      cancelAnimationFrame(animId);
+    };
+  }, [isOpen]);
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    isPointerActiveRef.current = true;
     const stage = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - stage.left) / stage.width;
     const y = (e.clientY - stage.top) / stage.height;
@@ -94,6 +158,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   };
 
   const handlePointerLeave = () => {
+    isPointerActiveRef.current = false;
     setTilt({ x: 0, y: 0, glareX: 50, glareY: 50 });
   };
 
@@ -345,11 +410,26 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                 >
                   <div className="wedding-envelope__letter-inner">
                     {/* Watermark Crest Background */}
-                    <div className="wedding-envelope__letter-watermark" aria-hidden="true">
-                      {displayMonogram}
+                    <div className="wedding-envelope__letter-watermark flex items-center justify-center" aria-hidden="true">
+                      <InterlockingMonogram
+                        initialGroom={groomName.charAt(0)}
+                        initialBride={brideName.charAt(0)}
+                        style={monogramStyle || 'interlocking'}
+                        color={currentStyle.accentGold}
+                        size={120}
+                        className="opacity-15"
+                      />
                     </div>
 
-                    <p className="wedding-envelope__letter-monogram">{displayMonogram}</p>
+                    <div className="wedding-envelope__letter-crest flex justify-center pb-1">
+                      <InterlockingMonogram
+                        initialGroom={groomName.charAt(0)}
+                        initialBride={brideName.charAt(0)}
+                        style={monogramStyle || 'interlocking'}
+                        color={currentStyle.accentGold}
+                        size={40}
+                      />
+                    </div>
                     <p className="wedding-envelope__letter-salutation-label">TRÂN TRỌNG KÍNH MỜI QUAN KHÁCH</p>
                     <h2 className="wedding-envelope__letter-guest">{cleanSalutation}</h2>
 
@@ -406,6 +486,11 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                 <EnvelopeBack
                   style={design}
                   monogram={displayMonogram}
+                  waxSealColor={waxSealColor}
+                  linerPattern={linerPattern}
+                  monogramStyle={monogramStyle}
+                  initialGroom={groomName.charAt(0)}
+                  initialBride={brideName.charAt(0)}
                   onOpen={openSeal}
                   sealed={phase === 'back'}
                 />

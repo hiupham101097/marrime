@@ -367,6 +367,25 @@ html:has(.wedding-envelope) {
     0 24px 48px -12px rgba(0, 0, 0, 0.42);
 }
 
+/* Specular Metallic Foil & Glare Reflection tracking device orientation and cursor tilt */
+.wedding-envelope__face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    circle 420px at var(--glare-x, 50%) var(--glare-y, 50%),
+    rgba(255, 255, 255, 0.24) 0%,
+    rgba(255, 245, 210, 0.08) 35%,
+    transparent 68%
+  );
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  transition: opacity 250ms ease;
+  z-index: 25;
+}
+
 .wedding-envelope__front-button {
   position: relative;
   display: block;

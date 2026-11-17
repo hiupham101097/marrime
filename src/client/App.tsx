@@ -249,6 +249,9 @@ export const App: React.FC = () => {
         playOpenSound={playEnvelopeOpeningSound}
         envelopeStyle={weddingData.envelopeStyle}
         waxSealMonogram={weddingData.waxSealMonogram}
+        waxSealColor={weddingData.waxSealColor}
+        linerPattern={weddingData.linerPattern}
+        monogramStyle={weddingData.monogramStyle}
       />
 
       {/* Floating Rose Petals & Golden Stardust & Mouse Trail Canvas */}

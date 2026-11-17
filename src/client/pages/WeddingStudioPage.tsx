@@ -1,6 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { EnvelopeDesignPicker } from '../components/EnvelopeDesign';
+import {
+  EnvelopeDesignPicker,
+  EnvelopeLiner,
+  WAX_SEAL_PALETTES,
+  LINER_PATTERNS_CONFIG,
+} from '../components/EnvelopeDesign';
 import { EnvelopeModal } from '../components/EnvelopeModal';
+import { InterlockingMonogram, MONOGRAM_STYLES } from '../components/InterlockingMonogram';
 import {
   Sparkles,
   Smartphone,
@@ -36,6 +42,7 @@ import {
   ArrowLeft,
   Users,
   Layers,
+  Crown,
   Gift,
   ShieldCheck,
   SlidersHorizontal,
@@ -55,6 +62,9 @@ import {
   RSVPRecord,
   WeddingSectionsConfig,
   WeddingDonateConfig,
+  WaxSealColorKey,
+  LinerPatternKey,
+  MonogramStyleKey,
 } from '../../shared/types';
 import {
   DEFAULT_WEDDING_DATA,
@@ -1474,26 +1484,267 @@ export const WeddingStudioPage: React.FC = () => {
                       setPreviewKey((key) => key + 1);
                     }}
                   />
-                  {/* Wax Seal Monogram */}
+                </div>
+
+                {/* 1. ATELIER MONOGRAM GENERATOR (T2.1) */}
+                <div className="bg-white p-5 sm:p-6 rounded-2xl border border-stone-200 shadow-sm space-y-5">
+                  <div className="border-b border-stone-100 pb-3 flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h3 className="font-serif text-base font-bold text-stone-900 flex items-center space-x-2">
+                        <Crown className="w-4 h-4 text-[#A2682A]" />
+                        <span>Biểu Tượng Monogram Hoàng Gia &amp; Khắc Con Dấu (T2.1)</span>
+                      </h3>
+                      <p className="text-xs text-stone-500 mt-0.5">
+                        Thiết kế chữ cái lồng nhau độc bản của Dâu &amp; Rể xuất hiện trên con dấu sáp và chìm trên nền thiệp
+                      </p>
+                    </div>
+                    {/* Live Preview Monogram Badge */}
+                    <div className="flex items-center space-x-2.5 px-3 py-1.5 rounded-xl bg-stone-50 border border-stone-200 shadow-2xs">
+                      <InterlockingMonogram
+                        initialGroom={formData.groom.name.trim().charAt(0) || 'T'}
+                        initialBride={formData.bride.name.trim().charAt(0) || 'P'}
+                        style={formData.monogramStyle || 'interlocking'}
+                        color="#B8860B"
+                        size={32}
+                      />
+                      <span className="text-[11px] font-bold text-stone-700">Xem trước Monogram</span>
+                    </div>
+                  </div>
+
+                  {/* 5 Monogram Styles Selector */}
+                  <div>
+                    <label className="text-xs font-bold text-stone-700 uppercase tracking-wider block mb-2.5">
+                      Chọn Kiểu Dáng Monogram:
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                      {(
+                        Object.entries(MONOGRAM_STYLES) as [
+                          MonogramStyleKey,
+                          { label: string; desc: string },
+                        ][]
+                      ).map(([styleKey, info]) => {
+                        const isSelected = (formData.monogramStyle || 'interlocking') === styleKey;
+                        return (
+                          <button
+                            key={styleKey}
+                            type="button"
+                            onClick={() => {
+                              setFormData((prev) => ({ ...prev, monogramStyle: styleKey }));
+                              setPreviewKey((k) => k + 1);
+                            }}
+                            className={`p-3 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center justify-between relative group ${
+                              isSelected
+                                ? 'border-[#722235] bg-rose-50/50 ring-2 ring-[#722235]/30 shadow-xs'
+                                : 'border-stone-200 hover:border-stone-300 bg-white hover:bg-stone-50/60'
+                            }`}
+                          >
+                            <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-stone-50 group-hover:bg-white mb-2 shadow-2xs border border-stone-200/60 transition-transform group-hover:scale-105">
+                              <InterlockingMonogram
+                                initialGroom={formData.groom.name.trim().charAt(0) || 'T'}
+                                initialBride={formData.bride.name.trim().charAt(0) || 'P'}
+                                style={styleKey}
+                                color={isSelected ? '#722235' : '#8C6D37'}
+                                size={36}
+                              />
+                            </div>
+                            <span className="font-serif text-xs font-bold text-stone-900 block truncate w-full">
+                              {info.label}
+                            </span>
+                            <span className="text-[10px] text-stone-500 line-clamp-2 mt-0.5 leading-snug">
+                              {info.desc}
+                            </span>
+                            {isSelected && (
+                              <div className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#722235]" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Custom Inscription / Initials */}
                   <div className="pt-3 border-t border-stone-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div>
                       <label className="text-xs font-bold text-stone-800 uppercase tracking-wider block">
-                        Ký Tự Khắc Con Dấu Sáp (Monogram):
+                        Ký Tự Con Dấu Sáp Tùy Chỉnh (Monogram Text):
                       </label>
                       <span className="text-[11px] text-stone-500">
-                        Chữ viết tắt tên Dâu Rể (VD: T &amp; P, H &amp; L) hoặc biểu tượng Song Hỷ (囍)
+                        Chữ cái khắc trên dấu sáp (Mặc định tự động đồng bộ tên Dâu &amp; Rể)
                       </span>
                     </div>
-                    <input
-                      type="text"
-                      value={formData.waxSealMonogram || ''}
-                      onChange={(e) => {
-                        setFormData({ ...formData, waxSealMonogram: e.target.value });
-                        setPreviewKey((key) => key + 1);
-                      }}
-                      placeholder="VD: T & P"
-                      className="w-full sm:w-44 px-3.5 py-2 rounded-xl border border-stone-200 bg-white text-stone-900 font-serif font-bold text-sm text-center focus:outline-none focus:border-[#A2682A] focus:ring-2 focus:ring-[#A2682A]/20"
-                    />
+                    <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const g = formData.groom.name.trim().charAt(0).toUpperCase() || 'T';
+                          const b = formData.bride.name.trim().charAt(0).toUpperCase() || 'P';
+                          setFormData((prev) => ({ ...prev, waxSealMonogram: `${g} & ${b}` }));
+                          setPreviewKey((k) => k + 1);
+                        }}
+                        className="px-2.5 py-1.5 rounded-lg border border-stone-200 bg-stone-50 text-[11px] font-bold text-stone-600 hover:bg-stone-100 cursor-pointer shadow-2xs"
+                        title="Tự động ghép chữ cái đầu tên dâu rể"
+                      >
+                        Chữ Cái Đầu (Initials)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFormData((prev) => ({
+                            ...prev,
+                            waxSealMonogram: '囍',
+                            monogramStyle: 'song_hy',
+                          }));
+                          setPreviewKey((k) => k + 1);
+                        }}
+                        className="px-2.5 py-1.5 rounded-lg border border-stone-200 bg-stone-50 text-[11px] font-bold text-stone-600 hover:bg-stone-100 cursor-pointer shadow-2xs"
+                        title="Dấu Song Hỷ cát tường"
+                      >
+                        囍 Song Hỷ
+                      </button>
+                      <input
+                        type="text"
+                        value={formData.waxSealMonogram || ''}
+                        onChange={(e) => {
+                          setFormData({ ...formData, waxSealMonogram: e.target.value });
+                          setPreviewKey((key) => key + 1);
+                        }}
+                        placeholder="VD: T & P"
+                        className="w-28 px-3 py-1.5 rounded-xl border border-stone-200 bg-white text-stone-900 font-serif font-bold text-sm text-center focus:outline-none focus:border-[#A2682A] focus:ring-2 focus:ring-[#A2682A]/20"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. WAX SEAL COLOR PALETTE (T2.2) */}
+                <div className="bg-white p-5 sm:p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
+                  <div className="border-b border-stone-100 pb-3 flex items-center justify-between">
+                    <div>
+                      <h3 className="font-serif text-base font-bold text-stone-900 flex items-center space-x-2">
+                        <Palette className="w-4 h-4 text-[#A2682A]" />
+                        <span>Bảng Màu Sáp Nến Dán Phong Bì (7 Sắc Ngọc Quý) (T2.2)</span>
+                      </h3>
+                      <p className="text-xs text-stone-500 mt-0.5">
+                        Tùy chọn sắc màu sáp nến niêm phong với chất liệu dập nổi 3D và ánh quang chân thực
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+                    {(
+                      Object.entries(WAX_SEAL_PALETTES) as [
+                        WaxSealColorKey,
+                        (typeof WAX_SEAL_PALETTES)[WaxSealColorKey],
+                      ][]
+                    ).map(([colorKey, info]) => {
+                      const isSelected = (formData.waxSealColor || 'royal_garnet') === colorKey;
+                      return (
+                        <button
+                          key={colorKey}
+                          type="button"
+                          onClick={() => {
+                            setFormData((prev) => ({ ...prev, waxSealColor: colorKey }));
+                            setPreviewKey((k) => k + 1);
+                          }}
+                          className={`p-3 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center justify-between relative group ${
+                            isSelected
+                              ? 'border-[#722235] bg-rose-50/40 ring-2 ring-[#722235]/30 shadow-xs'
+                              : 'border-stone-200 hover:border-stone-300 bg-white hover:bg-stone-50/50'
+                          }`}
+                        >
+                          {/* Realistic circular 3D wax seal swatch */}
+                          <div
+                            className="w-10 h-10 rounded-full shadow-md flex items-center justify-center text-[10px] font-bold text-white relative mb-2 transition-transform group-hover:scale-105"
+                            style={{
+                              background: `radial-gradient(circle at 35% 30%, ${info.grad[0]}, ${info.grad[1]} 60%, ${info.grad[2]})`,
+                              border: `1.5px solid rgba(255, 255, 255, 0.45)`,
+                              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.22)',
+                            }}
+                          >
+                            <span style={{ color: info.accentFoil }}>✦</span>
+                          </div>
+                          <span className="font-serif text-xs font-bold text-stone-900 block truncate w-full">
+                            {info.name}
+                          </span>
+                          <span className="text-[10px] text-stone-500 truncate w-full mt-0.5">
+                            {info.tag}
+                          </span>
+                          {isSelected && (
+                            <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#722235] text-white flex items-center justify-center text-[9px] shadow-xs">
+                              <Check size={10} strokeWidth={3} />
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 3. ENVELOPE LINER PATTERN CUSTOMIZER (T2.2) */}
+                <div className="bg-white p-5 sm:p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
+                  <div className="border-b border-stone-100 pb-3 flex items-center justify-between">
+                    <div>
+                      <h3 className="font-serif text-base font-bold text-stone-900 flex items-center space-x-2">
+                        <Layers className="w-4 h-4 text-[#A2682A]" />
+                        <span>Hoa Văn Lót Mặt Trong Phong Bì (Envelope Liner) (T2.2)</span>
+                      </h3>
+                      <p className="text-xs text-stone-500 mt-0.5">
+                        Chiêm ngưỡng bức họa gấm hoa văn hoàng gia xuất hiện khi con dấu sáp tách mở
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {(
+                      Object.entries(LINER_PATTERNS_CONFIG) as [
+                        LinerPatternKey,
+                        (typeof LINER_PATTERNS_CONFIG)[LinerPatternKey],
+                      ][]
+                    ).map(([patternKey, info]) => {
+                      const isSelected = (formData.linerPattern || 'baroque_damask') === patternKey;
+                      return (
+                        <button
+                          key={patternKey}
+                          type="button"
+                          onClick={() => {
+                            setFormData((prev) => ({ ...prev, linerPattern: patternKey }));
+                            setPreviewKey((k) => k + 1);
+                          }}
+                          className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex items-start space-x-3 relative group ${
+                            isSelected
+                              ? 'border-[#722235] bg-rose-50/40 ring-2 ring-[#722235]/30 shadow-xs'
+                              : 'border-stone-200 hover:border-stone-300 bg-white hover:bg-stone-50/50'
+                          }`}
+                        >
+                          {/* Mini Swatch Box */}
+                          <div
+                            className="w-14 h-14 rounded-lg shrink-0 border border-stone-200 shadow-xs relative overflow-hidden flex items-center justify-center"
+                            style={{ backgroundColor: info.bg }}
+                          >
+                            <div className="w-full h-full">
+                              <EnvelopeLiner pattern={patternKey} />
+                            </div>
+                          </div>
+
+                          <div className="min-w-0 flex-1">
+                            <h4 className="font-serif text-xs font-bold text-stone-900 truncate">
+                              {info.name}
+                            </h4>
+                            <span className="text-[10px] text-[#A2682A] font-bold block mt-0.5">
+                              {info.tag}
+                            </span>
+                            <p className="text-[11px] text-stone-500 line-clamp-2 mt-1 leading-snug">
+                              {info.desc}
+                            </p>
+                          </div>
+
+                          {isSelected && (
+                            <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-[#722235] text-white flex items-center justify-center text-[9px] shadow-xs">
+                              <Check size={10} strokeWidth={3} />
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -2002,6 +2253,9 @@ export const WeddingStudioPage: React.FC = () => {
           lunarDate={formData.events[0]?.lunarDate}
           envelopeStyle={formData.envelopeStyle}
           waxSealMonogram={formData.waxSealMonogram}
+          waxSealColor={formData.waxSealColor}
+          linerPattern={formData.linerPattern}
+          monogramStyle={formData.monogramStyle}
         />
       )}
 
