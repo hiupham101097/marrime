@@ -13,6 +13,7 @@ import { CoupleSection } from './components/CoupleSection';
 import { RoyalGallerySection } from './components/RoyalGallerySection';
 import { TimelineSection } from './components/TimelineSection';
 import { LoveMessagesSection } from './components/LoveMessagesSection';
+import { VoiceVowsPlayer } from './components/VoiceVowsPlayer';
 import { DresscodeEtiquetteSection } from './components/DresscodeEtiquetteSection';
 import { ThankYouSection } from './components/ThankYouSection';
 import { EventDetailsSection } from './components/EventDetailsSection';
@@ -533,6 +534,9 @@ export const App: React.FC = () => {
           <LoveMessagesSection messages={weddingData.loveStoryMessages} />
         )}
 
+        {/* 6B. Audio Voice Vows Player (Lời thì thầm đôi lứa với waveform hiện đại) */}
+        <VoiceVowsPlayer groom={weddingData.groom} bride={weddingData.bride} />
+
         {/* 7. Dresscode & 5-Star Program (Trang phục gợi ý & lịch trình tiệc) */}
         {sections.showDresscode !== false && <DresscodeEtiquetteSection />}
 
@@ -543,11 +547,12 @@ export const App: React.FC = () => {
           signatures={weddingData.thankYouNote.signatures}
         />
 
-        {/* 9. Event Details & Wedding Hall (Thời gian, địa điểm, sảnh cưới, Google Maps) */}
+        {/* 9. Event Details & Wedding Hall (Thời gian, địa điểm, sảnh cưới, Google Maps & Grab) */}
         {sections.showEvents !== false && (
           <EventDetailsSection
             events={weddingData.events}
             template={weddingData.template}
+            weddingDateIso={weddingData.weddingDate}
           />
         )}
 
