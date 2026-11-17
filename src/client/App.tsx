@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles, Table as TableIcon, Globe } from 'lucide-react';
+import { Mail, Heart, Menu, X, ArrowUp, Crown, Camera, Sparkles, Table as TableIcon, Globe, MapPin } from 'lucide-react';
 import { DEFAULT_WEDDING_DATA, PRESET_WEDDING_PROJECTS, DEFAULT_SECTIONS_CONFIG, DEFAULT_DONATE_CONFIG } from '../shared/defaultData';
 import { WeddingData, GuestRole, WishMessage } from '../shared/types';
 import { useGuestInfo } from './hooks/useGuestInfo';
@@ -23,6 +23,7 @@ import { CompletionDonateSection } from './components/CompletionDonateSection';
 import { FloatingEffects } from './components/FloatingEffects';
 import { MusicPlayer } from './components/MusicPlayer';
 import { LiveWishingWallModal } from './components/LiveWishingWallModal';
+import { BallroomSeatingMapModal } from './components/BallroomSeatingMapModal';
 
 // Code-splitting for 70%+ faster initial load time
 const WeddingStudioPage = React.lazy(() =>
@@ -99,6 +100,7 @@ export const App: React.FC = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isLiveWallOpen, setIsLiveWallOpen] = useState(searchParams.get('mode') === 'live');
+  const [isSeatingMapOpen, setIsSeatingMapOpen] = useState(false);
   const [liveWishes, setLiveWishes] = useState<WishMessage[]>([]);
 
   const sections = weddingData.sectionsConfig || DEFAULT_SECTIONS_CONFIG;
@@ -469,9 +471,17 @@ export const App: React.FC = () => {
                   </h4>
                 </div>
               </div>
-              <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-white text-stone-600 text-xs font-semibold border border-stone-200">
-                {weddingData.events[0]?.venueName}
-              </span>
+              <div className="flex items-center space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setIsSeatingMapOpen(true)}
+                  className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#8B1A32] to-[#722235] text-white text-xs font-bold shadow-xs hover:opacity-95 transition-all flex items-center space-x-1 cursor-pointer shrink-0"
+                  title="Mở sơ đồ vị trí bàn tiệc trong hội trường"
+                >
+                  <MapPin size={12} className="text-amber-300" />
+                  <span>Sơ Đồ Bàn Tiệc</span>
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -623,6 +633,19 @@ export const App: React.FC = () => {
         weddingDateFormatted={weddingData.weddingDateFormatted}
         wishes={liveWishes}
         weddingSlug={requestedSlug || 'marrime'}
+      />
+
+      {/* Interactive Ballroom Seating Map Modal */}
+      <BallroomSeatingMapModal
+        isOpen={isSeatingMapOpen}
+        onClose={() => setIsSeatingMapOpen(false)}
+        guestName={guest.name}
+        guestTable={guest.tableNumber}
+        guestSide={guest.side}
+        venueName={weddingData.events[0]?.venueName}
+        hallName={weddingData.events[0]?.hallName}
+        groomName={weddingData.groom.name}
+        brideName={weddingData.bride.name}
       />
     </div>
   );

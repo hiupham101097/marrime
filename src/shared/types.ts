@@ -1,6 +1,6 @@
 export type GuestRole = 'ban' | 'anh' | 'chi' | 'em' | 'co' | 'chu' | 'bac' | 'dong_nghiep' | 'gia_dinh';
 export type WeddingSide = 'groom' | 'bride' | 'both';
-export type GuestInviteStatus = 'pending' | 'sent' | 'viewed' | 'confirmed' | 'declined';
+export type GuestInviteStatus = 'pending' | 'sent' | 'viewed' | 'confirmed' | 'declined' | 'checked_in';
 
 export interface GuestGreetingConfig {
   prefix: string;
@@ -29,6 +29,7 @@ export interface GuestItem {
   tableName?: string;
   companionsCount?: number;
   notes?: string;
+  checkedInAt?: string;
 }
 
 export interface TimelineMilestone {

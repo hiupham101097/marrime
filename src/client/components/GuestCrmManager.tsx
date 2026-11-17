@@ -18,10 +18,12 @@ import {
   Clock,
   Heart,
   ChevronDown,
+  QrCode,
 } from 'lucide-react';
 import { GuestItem, GuestRole, WeddingSide, GuestInviteStatus } from '../../shared/types';
 import { ROLE_CONFIG } from '../hooks/useGuestInfo';
 import { downloadInviteCard } from '../utils/inviteCardCanvas';
+import { ReceptionCheckInModal } from './ReceptionCheckInModal';
 
 interface GuestCrmManagerProps {
   guests: GuestItem[];
@@ -39,6 +41,7 @@ export const STATUS_CONFIG: Record<GuestInviteStatus, { label: string; badgeClas
   sent: { label: 'Đã Gửi', badgeClass: 'bg-blue-50 text-blue-700 border-blue-200' },
   viewed: { label: 'Đã Xem', badgeClass: 'bg-amber-50 text-amber-700 border-amber-200' },
   confirmed: { label: 'Sẽ Đi', badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+  checked_in: { label: 'Đã Đến Tiệc', badgeClass: 'bg-teal-600 text-white border-teal-700 font-bold shadow-2xs' },
   declined: { label: 'Báo Bận', badgeClass: 'bg-rose-50 text-rose-700 border-rose-200' },
 };
 
@@ -59,7 +62,7 @@ export const GuestCrmManager: React.FC<GuestCrmManagerProps> = ({
   hallName = 'Sảnh Grand Ballroom',
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState<'all' | 'groom' | 'bride' | 'pending' | 'confirmed'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'groom' | 'bride' | 'pending' | 'confirmed' | 'checked_in'>('all');
   const [newName, setNewName] = useState('');
   const [newRole, setNewRole] = useState<GuestRole>('ban');
   const [newSide, setNewSide] = useState<WeddingSide>('both');
@@ -70,12 +73,14 @@ export const GuestCrmManager: React.FC<GuestCrmManagerProps> = ({
   const [renderingImageId, setRenderingImageId] = useState<string | null>(null);
   const [showBulkModal, setShowBulkModal] = useState(false);
   const [bulkInput, setBulkInput] = useState('');
+  const [isReceptionModalOpen, setIsReceptionModalOpen] = useState(false);
 
   const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://marrime.pages.dev';
 
   const generateGuestUrl = (guest: GuestItem): string => {
     const params = new URLSearchParams();
     params.set('w', weddingSlug);
+    params.set('gid', guest.id);
     params.set('guest', guest.name);
     params.set('role', guest.role);
     if (guest.side && guest.side !== 'both') params.set('side', guest.side);
@@ -112,7 +117,7 @@ export const GuestCrmManager: React.FC<GuestCrmManagerProps> = ({
   };
 
   const handleToggleStatus = (guestId: string) => {
-    const statusCycle: GuestInviteStatus[] = ['pending', 'sent', 'confirmed', 'declined'];
+    const statusCycle: GuestInviteStatus[] = ['pending', 'sent', 'confirmed', 'checked_in', 'declined'];
     const updated = guests.map((g) => {
       if (g.id === guestId) {
         const curStatus = g.status || 'pending';
@@ -257,6 +262,7 @@ export const GuestCrmManager: React.FC<GuestCrmManagerProps> = ({
   const groomGuests = guests.filter((g) => g.side === 'groom').length;
   const brideGuests = guests.filter((g) => g.side === 'bride').length;
   const confirmedGuests = guests.filter((g) => g.status === 'confirmed').length;
+  const checkedInGuests = guests.filter((g) => g.status === 'checked_in').length;
   const pendingGuests = guests.filter((g) => !g.status || g.status === 'pending').length;
 
   const filteredGuests = guests.filter((g) => {
@@ -269,6 +275,7 @@ export const GuestCrmManager: React.FC<GuestCrmManagerProps> = ({
     if (activeTab === 'bride') return g.side === 'bride';
     if (activeTab === 'pending') return !g.status || g.status === 'pending';
     if (activeTab === 'confirmed') return g.status === 'confirmed';
+    if (activeTab === 'checked_in') return g.status === 'checked_in';
     return true;
   });
 
@@ -290,7 +297,17 @@ export const GuestCrmManager: React.FC<GuestCrmManagerProps> = ({
         </div>
 
         {/* Quick Action Buttons */}
-        <div className="flex items-center space-x-2 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => setIsReceptionModalOpen(true)}
+            className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-800 hover:to-emerald-800 text-white text-xs font-bold flex items-center space-x-1.5 cursor-pointer shadow-xs transition-all"
+            title="Mở camera quét mã QR đón khách tại cổng sảnh tiệc"
+          >
+            <QrCode className="w-3.5 h-3.5 text-amber-300" />
+            <span>Bàn Lễ Tân Đón Khách (QR)</span>
+          </button>
+
           <button
             type="button"
             onClick={handleLoadSampleGuests}
@@ -326,7 +343,7 @@ export const GuestCrmManager: React.FC<GuestCrmManagerProps> = ({
       </div>
 
       {/* Pipeline Status Counters */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
         <button
           type="button"
           onClick={() => setActiveTab('all')}
@@ -369,6 +386,17 @@ export const GuestCrmManager: React.FC<GuestCrmManagerProps> = ({
         >
           <span className="text-[10px] font-bold uppercase tracking-wider block opacity-80">Đã Xác Nhận Đi</span>
           <span className="text-xl font-bold font-serif">{confirmedGuests}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab('checked_in')}
+          className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+            activeTab === 'checked_in' ? 'bg-teal-700 text-white border-teal-700' : 'bg-teal-50/60 border-teal-200 hover:bg-teal-100 text-teal-900'
+          }`}
+        >
+          <span className="text-[10px] font-bold uppercase tracking-wider block opacity-80">Đã Check-in</span>
+          <span className="text-xl font-bold font-serif">{checkedInGuests}</span>
         </button>
       </div>
 
@@ -665,6 +693,18 @@ export const GuestCrmManager: React.FC<GuestCrmManagerProps> = ({
           </div>
         </div>
       )}
+
+      {/* Smart Reception Check-in Desk Modal */}
+      <ReceptionCheckInModal
+        isOpen={isReceptionModalOpen}
+        onClose={() => setIsReceptionModalOpen(false)}
+        guests={guests}
+        onUpdateGuests={onUpdateGuests}
+        groomName={groomName}
+        brideName={brideName}
+        venueName={venueName}
+        hallName={hallName}
+      />
     </div>
   );
 };
