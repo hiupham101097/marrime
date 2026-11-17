@@ -359,7 +359,9 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                       <span className="wedding-envelope__letter-line" />
                     </div>
 
-                    <p className="wedding-envelope__letter-occasion">Tới dự lễ thành hôn trăm năm của</p>
+                    <p className="wedding-envelope__letter-occasion">
+                      {guest.side === 'bride' ? 'Tới dự lễ vu quy của' : 'Tới dự lễ thành hôn trăm năm của'}
+                    </p>
 
                     <h3 className="wedding-envelope__letter-couple">
                       {groomName}{' '}

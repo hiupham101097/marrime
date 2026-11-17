@@ -1,4 +1,6 @@
 export type GuestRole = 'ban' | 'anh' | 'chi' | 'em' | 'co' | 'chu' | 'bac' | 'dong_nghiep' | 'gia_dinh';
+export type WeddingSide = 'groom' | 'bride' | 'both';
+export type GuestInviteStatus = 'pending' | 'sent' | 'viewed' | 'confirmed' | 'declined';
 
 export interface GuestGreetingConfig {
   prefix: string;
@@ -13,12 +15,15 @@ export interface GuestInfo {
   tableNumber?: string;
   tableName?: string;
   phone?: string;
+  side?: WeddingSide;
 }
 
 export interface GuestItem {
   id: string;
   name: string;
   role: GuestRole;
+  side?: WeddingSide;
+  status?: GuestInviteStatus;
   phone?: string;
   tableNumber?: string;
   tableName?: string;

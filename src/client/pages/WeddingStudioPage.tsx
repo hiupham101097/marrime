@@ -1593,6 +1593,9 @@ export const WeddingStudioPage: React.FC = () => {
                   weddingSlug={weddingSlug}
                   groomName={formData.groom.shortName || formData.groom.name}
                   brideName={formData.bride.shortName || formData.bride.name}
+                  weddingDateFormatted={formData.weddingDateFormatted}
+                  venueName={formData.events[0]?.venueName}
+                  hallName={formData.events[0]?.hallName}
                 />
               </div>
             )}

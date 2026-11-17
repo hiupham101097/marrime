@@ -472,6 +472,22 @@ export const App: React.FC = () => {
           </div>
         )}
 
+        {/* Side Badge Indicator (Nhà Trai / Nhà Gái) */}
+        {guest.side && guest.side !== 'both' && (
+          <div className="max-w-2xl mx-auto px-4 -mt-2 mb-3 flex items-center justify-center animate-fadeIn">
+            <span className={`px-3 py-1 rounded-full text-xs font-bold border shadow-2xs flex items-center space-x-1.5 ${
+              guest.side === 'bride'
+                ? 'bg-amber-50 text-[#A2682A] border-amber-200'
+                : 'bg-rose-50 text-[#8B1A32] border-rose-200'
+            }`}>
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>
+                {guest.side === 'bride' ? 'Thiệp Mời Lễ Vu Quy (Đại Diện Họ Nhà Gái)' : 'Thiệp Mời Lễ Thành Hôn (Đại Diện Họ Nhà Trai)'}
+              </span>
+            </span>
+          </div>
+        )}
+
         {/* 2. Personalized Guest Invitation Card (Chế độ chỉ đọc cho quan khách) */}
         {sections.showGuestCard !== false && (
           <div id="invitation-card">

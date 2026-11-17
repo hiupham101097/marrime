@@ -110,6 +110,8 @@ export function useGuestInfo() {
 
       const rawTable = params.get('table') || params.get('ban') || '';
       const rawPhone = params.get('phone') || params.get('tel') || '';
+      const rawSide = (params.get('side') || params.get('ho') || 'both').toLowerCase();
+      const validSide = rawSide === 'bride' || rawSide === 'gai' ? 'bride' : (rawSide === 'groom' || rawSide === 'trai' ? 'groom' : 'both');
 
       if (cleanName) {
         setGuest({
@@ -117,6 +119,7 @@ export function useGuestInfo() {
           role: validRole,
           tableNumber: rawTable ? `Bàn ${rawTable}` : undefined,
           phone: rawPhone || undefined,
+          side: validSide,
         });
       } else {
         // Default welcoming placeholder
@@ -124,6 +127,7 @@ export function useGuestInfo() {
           name: 'Bạn và Người Thương',
           role: 'ban',
           tableNumber: rawTable ? `Bàn ${rawTable}` : undefined,
+          side: validSide,
         });
       }
     } catch {
