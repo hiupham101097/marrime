@@ -9,6 +9,7 @@ export interface ImageSelectorProps {
   category?: 'hero' | 'groom' | 'bride' | 'moments';
   aspectRatio?: 'square' | 'video' | 'portrait' | 'wide';
   helperText?: string;
+  samplePresets?: Array<{ name: string; url: string }>;
 }
 
 /**
@@ -58,6 +59,7 @@ export const ImageSelector: React.FC<ImageSelectorProps> = ({
   category = 'moments',
   aspectRatio = 'square',
   helperText,
+  samplePresets,
 }) => {
   const [showLibrary, setShowLibrary] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -66,6 +68,9 @@ export const ImageSelector: React.FC<ImageSelectorProps> = ({
 
   // Retrieve curated photo presets for the category
   const getCategoryPresets = () => {
+    if (samplePresets && samplePresets.length > 0) {
+      return samplePresets;
+    }
     switch (category) {
       case 'hero':
         return SAMPLE_PHOTO_LIBRARY.heroBackgrounds;

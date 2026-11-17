@@ -107,6 +107,30 @@ class WeddingStorage {
     return this.data.weddingConfig;
   }
 
+  public getProject(code: string) {
+    if (!this.data.projects) return null;
+    const cleanCode = code.trim().toLowerCase();
+    for (const key of Object.keys(this.data.projects)) {
+      const proj = this.data.projects[key];
+      if (
+        proj.slug.toLowerCase() === cleanCode ||
+        proj.secretPin.toLowerCase() === cleanCode ||
+        key.toLowerCase() === cleanCode
+      ) {
+        return proj;
+      }
+    }
+    if (PRESET_WEDDING_PROJECTS[cleanCode]) {
+      return {
+        slug: cleanCode,
+        secretPin: '123456',
+        data: PRESET_WEDDING_PROJECTS[cleanCode],
+        updatedAt: new Date().toISOString(),
+      };
+    }
+    return null;
+  }
+
   public publishProject(slug: string, secretPin: string, config: WeddingData) {
     if (!this.data.projects) this.data.projects = {};
     this.data.projects[slug] = {

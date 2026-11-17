@@ -762,6 +762,7 @@ export const WeddingStudioPage: React.FC = () => {
                             groom: { ...formData.groom, avatar: val },
                           })
                         }
+                        category="groom"
                         samplePresets={SAMPLE_PHOTO_LIBRARY.groomAvatars}
                       />
                     </div>
@@ -935,6 +936,7 @@ export const WeddingStudioPage: React.FC = () => {
                             bride: { ...formData.bride, avatar: val },
                           })
                         }
+                        category="bride"
                         samplePresets={SAMPLE_PHOTO_LIBRARY.brideAvatars}
                       />
                     </div>
@@ -1225,8 +1227,9 @@ export const WeddingStudioPage: React.FC = () => {
 
                   <ImageSelector
                     label="Ảnh Bìa Lớn Đầu Trang Web:"
-                    value={formData.heroImage}
+                    value={formData.heroImage || ''}
                     onChange={(val) => setFormData({ ...formData, heroImage: val })}
+                    category="hero"
                     samplePresets={SAMPLE_PHOTO_LIBRARY.heroBackgrounds}
                   />
                 </div>
@@ -1254,7 +1257,7 @@ export const WeddingStudioPage: React.FC = () => {
                           category: 'royal' as const,
                           caption: 'Ngày tình yêu đơm hoa kết trái',
                         };
-                        setFormData({ ...formData, gallery: [...formData.gallery, newPhoto] });
+                        setFormData({ ...formData, gallery: [...(formData.gallery || []), newPhoto] });
                       }}
                       className="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-[#A2682A] border border-amber-200 text-xs font-bold flex items-center space-x-1 cursor-pointer transition-colors"
                     >
@@ -1264,7 +1267,7 @@ export const WeddingStudioPage: React.FC = () => {
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {formData.gallery.map((p, idx) => (
+                    {(formData.gallery || []).map((p, idx) => (
                       <div
                         key={p.id}
                         className="rounded-xl border border-stone-200 overflow-hidden bg-stone-50 relative group"
@@ -1281,7 +1284,7 @@ export const WeddingStudioPage: React.FC = () => {
                             type="text"
                             value={p.title}
                             onChange={(e) => {
-                              const updated = [...formData.gallery];
+                              const updated = [...(formData.gallery || [])];
                               updated[idx].title = e.target.value;
                               setFormData({ ...formData, gallery: updated });
                             }}
@@ -1292,7 +1295,7 @@ export const WeddingStudioPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => {
-                            const updated = formData.gallery.filter((_, i) => i !== idx);
+                            const updated = (formData.gallery || []).filter((_, i) => i !== idx);
                             setFormData({ ...formData, gallery: updated });
                           }}
                           className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/60 hover:bg-rose-600 text-white flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
@@ -1753,11 +1756,16 @@ export const WeddingStudioPage: React.FC = () => {
                               <div>
                                 <span className="font-bold text-stone-900">{r.guestName}</span>
                                 <span className="text-stone-500 block text-[10px]">
-                                  {r.attending ? '✅ Sẽ tham dự' : '❌ Tiếc là không đến được'} • {r.guestCount} người
+                                  {r.attending === 'yes' || (r.attending as any) === true
+                                    ? '✅ Sẽ tham dự'
+                                    : '❌ Tiếc là không đến được'}{' '}
+                                  • {r.attendeesCount ?? r.guestCount ?? 1} người
                                 </span>
                               </div>
                               <span className="text-[10px] text-stone-400 font-mono">
-                                {r.submittedAt ? new Date(r.submittedAt).toLocaleDateString('vi-VN') : ''}
+                                {r.createdAt || r.submittedAt
+                                  ? new Date(r.createdAt || (r.submittedAt as string)).toLocaleDateString('vi-VN')
+                                  : ''}
                               </span>
                             </div>
                           ))}

@@ -5,6 +5,9 @@ import {
   GalleryPhotoItem,
   WeddingSectionsConfig,
   WeddingDonateConfig,
+  WeddingTemplate,
+  EnvelopeStyle,
+  WeddingTheme,
 } from './types';
 
 export const DEFAULT_SECTIONS_CONFIG: WeddingSectionsConfig = {
@@ -1415,7 +1418,7 @@ export interface MasterTemplateItem {
   presetKey: string;
   name: string;
   subtitle: string;
-  category: 'all' | 'traditional' | 'modern' | 'romantic' | 'luxury' | 'nature';
+  category: 'all' | 'traditional' | 'modern' | 'romantic' | 'luxury' | 'nature' | 'vintage';
   categoryLabel: string;
   badge?: string;
   tagline: string;

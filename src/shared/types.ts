@@ -204,9 +204,11 @@ export interface RSVPRecord {
   phone?: string;
   attending: 'yes' | 'no' | 'undecided';
   attendeesCount: number;
+  guestCount?: number;
   dietRequirement?: string;
   message?: string;
   createdAt: string;
+  submittedAt?: string;
 }
 
 export interface WishMessage {
